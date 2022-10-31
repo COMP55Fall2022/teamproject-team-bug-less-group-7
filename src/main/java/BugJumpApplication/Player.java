@@ -17,6 +17,9 @@ public class Player {
 		isRightOrientation = true;
 		isJumping = false;
 	}
+	public int GetY(){
+		return this.yAxis;
+	}
 	
 	
 	public int getX() {
