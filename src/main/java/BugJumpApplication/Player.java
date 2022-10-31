@@ -18,6 +18,11 @@ public class Player {
 		isJumping = false;
 	}
 	
+	
+	public int getX() {
+		return this.xAxis;
+	}
+	
 	public void move(int dx, int dy) {
 		 if(dx < 0) {
 			 isRightOrientation = false;
