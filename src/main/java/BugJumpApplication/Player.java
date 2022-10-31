@@ -22,5 +22,9 @@ public class Player {
 		 this.xAxis += dx;
 		 this.yAxis += dy;
 	 }
+	 
+	 public boolean getIsJumping() {
+		 return isJumping;
+	 }
 	
 }
