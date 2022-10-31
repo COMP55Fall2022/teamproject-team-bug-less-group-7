@@ -18,4 +18,15 @@ public class Player {
 		isJumping = false;
 	}
 	
+	 public void move(int dx, int dy) {
+		 if(dx < 0) {
+			 isRightOrientation = false;
+		 }
+		 else {
+			isRightOrientation = true;
+		}
+		 this.xAxis += dx;
+		 this.yAxis += dy;
+	 }
+	
 }
