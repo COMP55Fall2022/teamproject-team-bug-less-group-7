@@ -9,9 +9,6 @@ import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
 public class MainGame extends GraphicsProgram {
-	public static final int WINDOW_WIDTH = 800;
-	public static final int WINDOW_HEIGHT = 600;
-	
 	private Player player;
 	private GRect playerRect;
 	
