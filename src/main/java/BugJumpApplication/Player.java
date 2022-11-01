@@ -10,13 +10,13 @@ public class Player {
 	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
-	public void Player(int x,int y) {
-		//TODO: instantiate weapon
+	public Player(int x,int y) {
 		xAxis = x;
 		yAxis = y;
 		isRightOrientation = true;
 		isJumping = false;
 	}
+	
 	public int GetY(){
 		return this.yAxis;
 	}
