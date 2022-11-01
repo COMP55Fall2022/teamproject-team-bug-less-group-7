@@ -12,7 +12,7 @@ public class MainGame extends GraphicsProgram {
 	private Player player;
 	private GRect playerRect;
 	
-	//private Timer timer = new Timer(30, this);
+	private Timer timer = new Timer(30, this);
 	
 	@Override
 	protected void init() {
@@ -21,11 +21,11 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void run() {
+		timer.start();
 		addKeyListeners();
-		//timer.start();
+		setupTerrain();
 		setupPlayer();
 	}
-	
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -33,19 +33,33 @@ public class MainGame extends GraphicsProgram {
 		
 		if(keycode == 68) {
 			player.move(10, 0);
-			playerRect.setLocation(player.getX(), player.GetY());
 		}
 		else if (keycode == 65) {
 			player.move(-10, 0);
-			playerRect.setLocation(player.getX(), player.GetY());
 		}
 		System.out.println(player.getX() + " " + player.GetY());
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		player.move(1, 0);
-//		playerRect.setLocation(player.getX(), player.GetY());
+		checkCollision();
+		playerRect.setLocation(player.getX(), player.GetY());
+	}
+	
+	private void checkCollision() {
+		GObject obj = getElementAt(player.getX() + 25, player.GetY() + 51);
+		if (obj != null) {
+			player.isJumping = true;
+		}
+		else {
+			player.isJumping = false;
+		}
+	}
+	
+	
+	private void setupTerrain() {
+		add(new GRect(0, 500, PROG_WIDTH, PROG_HEIGHT));
+		add(new GRect(900, 700, PROG_WIDTH, PROG_HEIGHT));
 	}
 	
 	private void setupPlayer() {

@@ -1,12 +1,17 @@
 package BugJumpApplication;
 
+import javax.swing.Timer;
 
-public class Player {
+import acm.program.GraphicsProgram;
+
+import java.awt.event.ActionEvent;
+public class Player extends GraphicsProgram {
 	//TODO: Needs weapon
 	int yAxis;
 	int xAxis;
 	boolean isRightOrientation;
 	boolean isJumping;
+	Timer timer = new Timer(25, this);
 	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
@@ -16,6 +21,22 @@ public class Player {
 		yAxis = y;
 		isRightOrientation = true;
 		isJumping = false;
+		timer.start();
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		return;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (!isJumping) {
+			yAxis += 5;
+		}
+	
 	}
 	
 	public int GetY(){
