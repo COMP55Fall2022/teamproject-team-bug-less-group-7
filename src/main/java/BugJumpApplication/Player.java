@@ -41,12 +41,11 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void jump() {
-		
+		int intialHeight = yAxis;
 		if(!isJumping) {return;}
 		
 		int height = 1;
 		while(height > 0) {
-			
 		}
 	}
 	
