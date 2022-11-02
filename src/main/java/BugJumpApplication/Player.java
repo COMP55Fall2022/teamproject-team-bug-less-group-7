@@ -41,6 +41,7 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void jump() {
+		
 		if(!isJumping) {return;}
 		
 		int height = 1;
