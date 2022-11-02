@@ -10,6 +10,7 @@ public class Player extends GraphicsProgram {
 	int yAxis;
 	int xAxis;
 	boolean isRightOrientation;
+	boolean isInAir;
 	boolean isJumping;
 	Timer timer = new Timer(25, this);
 	
@@ -20,7 +21,7 @@ public class Player extends GraphicsProgram {
 		xAxis = x;
 		yAxis = y;
 		isRightOrientation = true;
-		isJumping = false;
+		isInAir = true;
 		timer.start();
 	}
 	
@@ -33,10 +34,19 @@ public class Player extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (isJumping) {
+		if (isInAir) {
 			yAxis += 5;
 		}
 	
+	}
+	
+	public void jump() {
+		if(!isJumping) {return;}
+		
+		int height = 1;
+		while(height > 0) {
+			
+		}
 	}
 	
 	public int GetY(){

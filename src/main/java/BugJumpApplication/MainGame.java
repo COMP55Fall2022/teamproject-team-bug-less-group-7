@@ -89,10 +89,10 @@ public class MainGame extends GraphicsProgram {
 	private void checkCollision() {
 		GObject obj = getElementAt(player.getX() + 25, player.GetY() + 51);
 		if (obj != null) {
-			player.isJumping = false;
+			player.isInAir = false;
 		}
 		else {
-			player.isJumping = true;
+			player.isInAir = true;
 		}
 	}
 	
