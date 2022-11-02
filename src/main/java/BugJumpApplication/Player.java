@@ -39,6 +39,10 @@ public class Player extends GraphicsProgram {
 	
 	}
 	
+	public void jump() {
+		
+	}
+	
 	public int GetY(){
 		return this.yAxis;
 	}
