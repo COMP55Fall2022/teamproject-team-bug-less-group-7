@@ -16,8 +16,8 @@ public class MainGame extends GraphicsProgram {
 	private Player player;
 	private GRect playerRect;
 	
-	private ArrayList<Integer> keyList;
-	private int xVel;
+	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
+	private int xVel; //left and right velocity of the player object
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -29,6 +29,7 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void run() {
 		keyList = new ArrayList<Integer>();
+		
 		timer.start();
 		addKeyListeners();
 		setupTerrain();
@@ -37,17 +38,10 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		//Gets the keycode of the last key pressed by the player
 		int keyCode = e.getKeyCode();
 		
-		/*
-		if(keycode == 68) {
-			player.move(10, 0);
-		}
-		else if (keycode == 65) {
-			player.move(-10, 0);
-		}
-		System.out.println(player.getX() + " " + player.GetY());
-		*/
+		//Adds key pressed to a list of all keys pressed on the keyboard at once
 		if (!keyList.contains(keyCode)) {
 			keyList.add(keyCode);
 		}
@@ -55,6 +49,8 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
+		//As soon as one key is released from the keyboard, it is removed from the list of all keys
+		//held down by the user
 		if (keyList.contains(e.getKeyCode())) {
 			keyList.remove(keyList.indexOf(e.getKeyCode()));
 		}
@@ -62,15 +58,20 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
 			if (xVel < RIGHT_VELOCITY) {
 				xVel+=2;
 			}
-		} else if (keyList.contains(65) && !keyList.contains(68)) {
+		} 
+		//If the a key is held and the d key is not
+		else if (keyList.contains(65) && !keyList.contains(68)) {
 			if (xVel > LEFT_VELOCITY) {
 				xVel-=2;
 			}
+		//Case for if no key is held or no specific key combination is found
 		} else {
+			//Slows momentum of player to a stop
 			if (xVel != 0) {
 				if (xVel > 0) {
 					xVel-=2;
