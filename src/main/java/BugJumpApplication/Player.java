@@ -8,14 +8,15 @@ import java.awt.event.ActionEvent;
 public class Player extends GraphicsProgram {
 	private static final int JUMP_HEIGHT = 84;
 	//TODO: Needs weapon
-	int yAxis;
-	int xAxis;
+	private int yAxis;
+	private int xAxis;
 	boolean isRightOrientation;
 	boolean isInAir;
 	boolean isJumping;
+	boolean isOnWall;
+	
 	private int initialHeight;
 	Timer timer = new Timer(25, this);
-	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
 	public Player(int x,int y) {
@@ -24,6 +25,7 @@ public class Player extends GraphicsProgram {
 		yAxis = y;
 		isRightOrientation = true;
 		isInAir = true;
+		isOnWall = false;
 		initialHeight = y;
 		timer.start();
 		
@@ -45,7 +47,7 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void jump() {
-//		System.out.println(isInAir);
+		System.out.println(isInAir);
 		if(!isJumping) {
 			return;
 		}		
@@ -59,7 +61,7 @@ public class Player extends GraphicsProgram {
 	}
 
 	public void turnOnJumping() {
-		if(!isJumping && !isInAir) {
+		if(!isJumping && !isInAir || isOnWall) {
 			isJumping = true;
 			initialHeight = yAxis;
 		}
@@ -68,6 +70,7 @@ public class Player extends GraphicsProgram {
 	public void turnOffJumping() {
 		initialHeight = 0;
 		isJumping = false;
+		isOnWall = false;
 	}
 	
 	public int getY(){
