@@ -80,9 +80,15 @@ public class MainGame extends GraphicsProgram {
 				}
 			}
 		}
+		
+		if (keyList.contains(87)) {
+			player.turnOnJumping();
+		}
+		
 		player.move(xVel, 0);
 		checkCollision();
 		playerRect.setLocation(player.getX(), player.GetY());
+		System.out.println(player.GetY());
 		
 	}
 	
@@ -93,6 +99,7 @@ public class MainGame extends GraphicsProgram {
 		}
 		else {
 			player.isInAir = true;
+			player.turnOffJumping();
 		}
 	}
 	

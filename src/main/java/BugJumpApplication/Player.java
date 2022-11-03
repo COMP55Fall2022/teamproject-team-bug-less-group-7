@@ -12,6 +12,8 @@ public class Player extends GraphicsProgram {
 	boolean isRightOrientation;
 	boolean isInAir;
 	boolean isJumping;
+	private int intialHeight;
+	private int timerCounter;
 	Timer timer = new Timer(25, this);
 	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
@@ -37,16 +39,27 @@ public class Player extends GraphicsProgram {
 		if (isInAir) {
 			yAxis += 5;
 		}
-	
+		jump();
 	}
 	
 	public void jump() {
-		int intialHeight = yAxis;
-		if(!isJumping) {return;}
-		
-		int height = 1;
-		while(height > 0) {
+		if(!isJumping) {
+			return;
+		}		
+		yAxis += Math.pow(35+timerCounter++, 2) + intialHeight;
+	}
+
+	public void turnOnJumping() {
+		if(!isJumping) {
+			isJumping = true;
+			intialHeight = yAxis;
 		}
+	}
+	
+	public void turnOffJumping() {
+		intialHeight = 0;
+		timerCounter = 0;
+		isJumping = false;
 	}
 	
 	public int GetY(){
