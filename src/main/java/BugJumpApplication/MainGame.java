@@ -58,6 +58,9 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		playerRect.setLocation(player.getX(), player.getY());
+		checkCollision();
+		
 		//If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
 			if (xVel < RIGHT_VELOCITY) {
@@ -86,20 +89,16 @@ public class MainGame extends GraphicsProgram {
 		}
 		
 		player.move(xVel, 0);
-		checkCollision();
-		playerRect.setLocation(player.getX(), player.getY());
-		//System.out.println(player.getY());
 		
 	}
 	
 	private void checkCollision() {
-		GObject obj = getElementAt(player.getX() + 25, player.getY() + 51);
+		GObject obj = getElementAt(player.getX() + 25, player.getY() + 52);
 		if (obj != null) {
 			player.isInAir = false;
 		}
 		else {
 			player.isInAir = true;
-			player.turnOffJumping();
 		}
 	}
 	

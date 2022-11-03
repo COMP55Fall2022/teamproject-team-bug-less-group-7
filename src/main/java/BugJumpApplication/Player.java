@@ -14,7 +14,6 @@ public class Player extends GraphicsProgram {
 	boolean isInAir;
 	boolean isJumping;
 	private int initialHeight;
-	private int timerCounter;
 	Timer timer = new Timer(25, this);
 	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
@@ -46,12 +45,13 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void jump() {
+//		System.out.println(isInAir);
 		if(!isJumping) {
 			return;
 		}		
-		//yAxis += Math.pow(35+timerCounter++, 2) + intialHeight;
+//		System.out.println(yAxis);
+//		System.out.println(initialHeight - JUMP_HEIGHT);
 		if (yAxis > initialHeight - JUMP_HEIGHT) {
-			System.out.println("called");
 			yAxis -= 12;
 		} else {
 			turnOffJumping();
@@ -67,7 +67,6 @@ public class Player extends GraphicsProgram {
 	
 	public void turnOffJumping() {
 		initialHeight = 0;
-		timerCounter = 0;
 		isJumping = false;
 	}
 	
@@ -92,7 +91,7 @@ public class Player extends GraphicsProgram {
 	 }
 	 
 	 public boolean getIsJumping() {
-		 return isJumping;
+		 return this.isJumping;
 	 }
 	
 }
