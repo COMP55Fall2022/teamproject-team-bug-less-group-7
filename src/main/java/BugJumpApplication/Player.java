@@ -6,13 +6,14 @@ import acm.program.GraphicsProgram;
 
 import java.awt.event.ActionEvent;
 public class Player extends GraphicsProgram {
+	private static final int JUMP_HEIGHT = 84;
 	//TODO: Needs weapon
 	int yAxis;
 	int xAxis;
 	boolean isRightOrientation;
 	boolean isInAir;
 	boolean isJumping;
-	private int intialHeight;
+	private int initialHeight;
 	private int timerCounter;
 	Timer timer = new Timer(25, this);
 	
@@ -24,7 +25,9 @@ public class Player extends GraphicsProgram {
 		yAxis = y;
 		isRightOrientation = true;
 		isInAir = true;
+		initialHeight = y;
 		timer.start();
+		
 	}
 	
 	@Override
@@ -37,7 +40,7 @@ public class Player extends GraphicsProgram {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (isInAir) {
-			yAxis += 5;
+			yAxis += 6;
 		}
 		jump();
 	}
@@ -46,18 +49,24 @@ public class Player extends GraphicsProgram {
 		if(!isJumping) {
 			return;
 		}		
-		yAxis += Math.pow(35+timerCounter++, 2) + intialHeight;
+		//yAxis += Math.pow(35+timerCounter++, 2) + intialHeight;
+		if (yAxis > initialHeight - JUMP_HEIGHT) {
+			System.out.println("called");
+			yAxis -= 12;
+		} else {
+			turnOffJumping();
+		}
 	}
 
 	public void turnOnJumping() {
-		if(!isJumping) {
+		if(!isJumping && !isInAir) {
 			isJumping = true;
-			intialHeight = yAxis;
+			initialHeight = yAxis;
 		}
 	}
 	
 	public void turnOffJumping() {
-		intialHeight = 0;
+		initialHeight = 0;
 		timerCounter = 0;
 		isJumping = false;
 	}
