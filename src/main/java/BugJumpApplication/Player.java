@@ -71,7 +71,7 @@ public class Player extends GraphicsProgram {
 		isJumping = false;
 	}
 	
-	public int GetY(){
+	public int getY(){
 		return this.yAxis;
 	}
 	

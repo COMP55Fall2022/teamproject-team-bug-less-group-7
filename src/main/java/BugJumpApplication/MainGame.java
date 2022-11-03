@@ -87,13 +87,13 @@ public class MainGame extends GraphicsProgram {
 		
 		player.move(xVel, 0);
 		checkCollision();
-		playerRect.setLocation(player.getX(), player.GetY());
-		System.out.println(player.GetY());
+		playerRect.setLocation(player.getX(), player.getY());
+		//System.out.println(player.getY());
 		
 	}
 	
 	private void checkCollision() {
-		GObject obj = getElementAt(player.getX() + 25, player.GetY() + 51);
+		GObject obj = getElementAt(player.getX() + 25, player.getY() + 51);
 		if (obj != null) {
 			player.isInAir = false;
 		}
@@ -111,7 +111,7 @@ public class MainGame extends GraphicsProgram {
 	
 	private void setupPlayer() {
 		player = new Player(200, 300);
-		playerRect = new GRect(player.getX(), player.GetY(), 50, 50);
+		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
 		add(playerRect);
 		
 	}
