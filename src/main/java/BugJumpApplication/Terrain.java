@@ -6,5 +6,14 @@ public class Terrain {
 	private int xAxis;
 	private int yAxis;
 	
+	Terrain tType;
 	
+	
+	public int getY() {
+		return this.yAxis;
+	}
+	
+	public int getX() {
+		return this.xAxis;
+	}
 }
