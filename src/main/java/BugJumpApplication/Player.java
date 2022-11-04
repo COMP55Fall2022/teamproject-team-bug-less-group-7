@@ -16,6 +16,11 @@ public class Player extends GraphicsProgram {
 	boolean isOnWall;
 	
 	private int initialHeight;
+	private int initialTime;
+	
+	private int dy;
+	
+	private int timerCount;
 	Timer timer = new Timer(25, this);
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
@@ -27,6 +32,10 @@ public class Player extends GraphicsProgram {
 		isInAir = true;
 		isOnWall = false;
 		initialHeight = y;
+		initialTime = -1;
+		timerCount = 0;
+		dy = 0;
+		
 		timer.start();
 		
 	}
@@ -39,31 +48,41 @@ public class Player extends GraphicsProgram {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		timerCount++;
 		// TODO Auto-generated method stub
-		if (isInAir) {
-			yAxis += 6;
-		}
+		System.out.println(isInAir);
+		if (isInAir && !isJumping) {
+			if (initialTime == -1) {				
+				initialTime = timerCount;
+			}
+			dy = (timerCount - initialTime);
+		} 
 		jump();
+		yAxis += dy;
+		if (!isInAir) {
+			if (isJumping) {
+				initialTime = -1;
+			}
+			turnOffJumping();
+			dy = 0;
+			
+		}
 	}
 	
 	public void jump() {
-		System.out.println(isInAir);
 		if(!isJumping) {
 			return;
 		}		
-//		System.out.println(yAxis);
-//		System.out.println(initialHeight - JUMP_HEIGHT);
-		if (yAxis > initialHeight - JUMP_HEIGHT) {
-			yAxis -= 12;
-		} else {
-			turnOffJumping();
-		}
+		
+		dy = (timerCount - initialTime) - 15;
+		System.out.println("jump dy"+dy);
 	}
 
 	public void turnOnJumping() {
 		if(!isJumping && !isInAir || isOnWall) {
 			isJumping = true;
 			initialHeight = yAxis;
+			initialTime = timerCount;
 		}
 	}
 	

@@ -132,7 +132,7 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private void setupPlayer() {
-		player = new Player(200, 300);
+		player = new Player(200, 450);
 		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
 		add(playerRect);
 		
