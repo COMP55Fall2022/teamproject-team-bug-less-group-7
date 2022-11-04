@@ -105,7 +105,7 @@ public class MainGame extends GraphicsProgram {
 //		}
 		
 		// functionality for ground detection
-		if(getElementAt(player.getX() + 2, player.getY() + 54) != null || getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54) != null) {
+		if(getElementAt(player.getX() + 5, player.getY() + 54) != null || getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
 			player.isInAir = false;
 		}
 		else {
