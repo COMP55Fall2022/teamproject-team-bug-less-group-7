@@ -9,7 +9,7 @@ public enum TerrainType {
 			case 1: return TerrainType.GRASS;
 			case 2: return TerrainType.DIRT;
 		}
-	;
+	
 	return null;
 		
 	}
