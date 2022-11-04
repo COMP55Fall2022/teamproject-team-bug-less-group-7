@@ -7,10 +7,9 @@ public class Terrain {
 	private int yAxis;
 	
 	TerrainType tType;
-	EnemyType eType;
-		
-	private void Terrain(int x, int y, int width, int height, TerrainType tType) {
 
+		
+	public Terrain(int x, int y, int width, int height, TerrainType tType) {
 		this.yAxis = y;
 		this.xAxis = x;
 		this.height = height;
@@ -18,8 +17,8 @@ public class Terrain {
 		this.tType = tType;
 	}
 	
-	public EnemyType getEnemyType() {
-		return eType;
+	public TerrainType getTerrainType() {
+		return tType;
 	}
 	
 	public int getY() {
