@@ -12,6 +12,8 @@ import acm.program.GraphicsProgram;
 public class MainGame extends GraphicsProgram {
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
+	private static final double PLAYER_WIDTH = 50;
+	private static final double PLAYER_HEIGHT = 50;
 	
 	private Player player;
 	private GRect playerRect;
@@ -32,8 +34,8 @@ public class MainGame extends GraphicsProgram {
 		
 		timer.start();
 		addKeyListeners();
-		setupTerrain();
 		setupPlayer();
+		setupTerrain();
 	}
 	
 	@Override
@@ -96,7 +98,16 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private boolean checkCollision() {
-		GObject obj = getElementAt(player.getX() + 25, player.getY() + 52);
+		
+		//functionality for player inside terrain
+		double px,py;
+		px = player.getX()+PLAYER_WIDTH/2;
+		py = player.getY()+PLAYER_HEIGHT+1;
+		//TODO: search below the player check if it is inside the terrain, if yes while loop
+		//incrementing a y variable until get the y value where terrain ends, teleport player to that
+		//y value to stop clipping
+
+//		player.setY();
 //		if (obj != null) {
 //			player.isInAir = false;
 //		}
@@ -123,6 +134,8 @@ public class MainGame extends GraphicsProgram {
 			return false;
 		}
 		
+		
+		
 	}
 	
 	
@@ -133,7 +146,7 @@ public class MainGame extends GraphicsProgram {
 	
 	private void setupPlayer() {
 		player = new Player(200, 450);
-		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
+		playerRect = new GRect(player.getX(), player.getY(), PLAYER_WIDTH, PLAYER_HEIGHT);
 		add(playerRect);
 		
 	}
