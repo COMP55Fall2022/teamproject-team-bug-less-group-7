@@ -156,28 +156,3 @@ public class MainGame extends GraphicsProgram {
 }
 
 
-//
-//// functionality for wall detection 
-//if(getElementAt(player.getX()-6, player.getY()) != null || 
-//   getElementAt(player.getX()+50+6, player.getY()) != null) {
-//	player.isOnWall = true;
-//	return true;
-//}
-//else {
-//	player.isOnWall = false;
-//	isPrevOrientationRight = null;
-//	return false;
-//}
-//if (checkCollision()) {
-//	if (isPrevOrientationRight == null) {
-//		xVel = 0;
-//		isPrevOrientationRight = player.isRightOrientation;
-//	}
-//	else if (isPrevOrientationRight == player.isRightOrientation) {
-//		xVel = 0;				
-//	} 
-//	else if (isPrevOrientationRight != player.isRightOrientation) {
-//		player.isOnWall = false;
-//	}
-//}
-
