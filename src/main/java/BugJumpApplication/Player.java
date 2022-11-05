@@ -15,7 +15,7 @@ public class Player extends GraphicsProgram {
 	boolean isJumping;
 	boolean isOnWall;
 	
-	private int initialHeight;
+//	private int initialHeight;
 	private int initialTime;
 	
 	private int dy;
@@ -31,7 +31,7 @@ public class Player extends GraphicsProgram {
 		isRightOrientation = true;
 		isInAir = true;
 		isOnWall = false;
-		initialHeight = y;
+//		initialHeight = y;
 		initialTime = -1;
 		timerCount = 0;
 		dy = 0;
@@ -49,8 +49,6 @@ public class Player extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		timerCount++;
-		// TODO Auto-generated method stub
-		System.out.println(isInAir);
 		if (isInAir && !isJumping) {
 			if (initialTime == -1) {				
 				initialTime = timerCount;
@@ -60,9 +58,9 @@ public class Player extends GraphicsProgram {
 		jump();
 		yAxis += dy;
 		if (!isInAir) {
-			if (isJumping) {
-				initialTime = -1;
-			}
+//			if (isJumping) {
+//			}
+			initialTime = -1;
 			turnOffJumping();
 			dy = 0;
 			
@@ -81,13 +79,13 @@ public class Player extends GraphicsProgram {
 	public void turnOnJumping() {
 		if(!isJumping && !isInAir || isOnWall) {
 			isJumping = true;
-			initialHeight = yAxis;
+//			initialHeight = yAxis;
 			initialTime = timerCount;
 		}
 	}
 	
 	public void turnOffJumping() {
-		initialHeight = 0;
+//		initialHeight = 0;
 		isJumping = false;
 		isOnWall = false;
 	}
@@ -109,16 +107,19 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void move(int dx, int dy) {
-		 if(dx < 0) {
-			 isRightOrientation = false;
-		 }
-		 else {
-			isRightOrientation = true;
-		}
+
 		 this.xAxis += dx;
 		 this.yAxis += dy;
 	 }
 	 
+	public void checkOrientation(int dx) {
+	 if(dx < 0) {
+		 isRightOrientation = false;
+	 }
+	 else {
+		isRightOrientation = true;
+	}
+}
 	 public boolean getIsJumping() {
 		 return this.isJumping;
 	 }

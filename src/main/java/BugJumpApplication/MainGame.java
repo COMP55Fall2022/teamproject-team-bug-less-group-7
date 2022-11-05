@@ -2,6 +2,7 @@ package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.time.Year;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -12,11 +13,10 @@ import acm.program.GraphicsProgram;
 public class MainGame extends GraphicsProgram {
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
-	private static final double PLAYER_WIDTH = 50;
-	private static final double PLAYER_HEIGHT = 50;
 	
 	private Player player;
 	private GRect playerRect;
+	private Boolean isPrevOrientationRight = null;
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
 	private int xVel; //left and right velocity of the player object
@@ -34,8 +34,8 @@ public class MainGame extends GraphicsProgram {
 		
 		timer.start();
 		addKeyListeners();
-		setupPlayer();
 		setupTerrain();
+		setupPlayer();
 	}
 	
 	@Override
@@ -85,57 +85,56 @@ public class MainGame extends GraphicsProgram {
 				}
 			}
 		}
+		player.checkOrientation(xVel);
 		
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
 		}
 		
 		if (checkCollision()) {
-			return;
+			if (isPrevOrientationRight == null) {
+				xVel = 0;
+				isPrevOrientationRight = player.isRightOrientation;
+			}
+			else if (isPrevOrientationRight == player.isRightOrientation) {
+				xVel = 0;				
+			} 
+			else if (isPrevOrientationRight != player.isRightOrientation) {
+				player.isOnWall = false;
+			}
 		}
 		player.move(xVel, 0);
 		
 	}
 	
 	private boolean checkCollision() {
-		
-		//functionality for player inside terrain
-		double px,py;
-		px = player.getX()+PLAYER_WIDTH/2;
-		py = player.getY()+PLAYER_HEIGHT+1;
-		//TODO: search below the player check if it is inside the terrain, if yes while loop
-		//incrementing a y variable until get the y value where terrain ends, teleport player to that
-		//y value to stop clipping
 
-//		player.setY();
-//		if (obj != null) {
-//			player.isInAir = false;
-//		}
-//		else {
-//			player.isInAir = true;
-//		}
-		
 		// functionality for ground detection
 		if(getElementAt(player.getX() + 5, player.getY() + 54) != null || getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
+			GObject obj = getElementAt(player.getX() + 4, player.getY() + 52);
 			player.isInAir = false;
+			if (obj != null) {				
+				player.setY((int)obj.getY()-51);
+			}
 		}
 		else {
 			player.isInAir = true;
 		}
 		
-		// functionality for wall detection 
+	// functionality for wall detection 
 		if(getElementAt(player.getX()-6, player.getY()) != null || 
-		   getElementAt(player.getX()+50+6, player.getY()) != null) {
+		   getElementAt(player.getX()+50+6, player.getY()) != null ||
+		   getElementAt(player.getX()+50+6, player.getY() + 50) != null ||
+		   getElementAt(player.getX()-6, player.getY()+50) != null)
+		{
 			player.isOnWall = true;
 			return true;
 		}
 		else {
-			player.isOnWall = false;;
+			player.isOnWall = false;
+			isPrevOrientationRight = null;
 			return false;
 		}
-		
-		
-		
 	}
 	
 	
@@ -145,8 +144,8 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private void setupPlayer() {
-		player = new Player(200, 450);
-		playerRect = new GRect(player.getX(), player.getY(), PLAYER_WIDTH, PLAYER_HEIGHT);
+		player = new Player(200, 300);
+		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
 		add(playerRect);
 		
 	}
@@ -155,3 +154,30 @@ public class MainGame extends GraphicsProgram {
 		new MainGame().start();
 	}
 }
+
+
+//
+//// functionality for wall detection 
+//if(getElementAt(player.getX()-6, player.getY()) != null || 
+//   getElementAt(player.getX()+50+6, player.getY()) != null) {
+//	player.isOnWall = true;
+//	return true;
+//}
+//else {
+//	player.isOnWall = false;
+//	isPrevOrientationRight = null;
+//	return false;
+//}
+//if (checkCollision()) {
+//	if (isPrevOrientationRight == null) {
+//		xVel = 0;
+//		isPrevOrientationRight = player.isRightOrientation;
+//	}
+//	else if (isPrevOrientationRight == player.isRightOrientation) {
+//		xVel = 0;				
+//	} 
+//	else if (isPrevOrientationRight != player.isRightOrientation) {
+//		player.isOnWall = false;
+//	}
+//}
+
