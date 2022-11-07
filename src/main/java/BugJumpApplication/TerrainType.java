@@ -1,8 +1,8 @@
 package BugJumpApplication;
 
 public enum TerrainType {
-	SPIKE, GRASS, DIRT,;
-	int num;
+	SPIKE, GRASS, DIRT;
+	
 	public String toString() {
 		switch(this){
 			case SPIKE: return "spike";

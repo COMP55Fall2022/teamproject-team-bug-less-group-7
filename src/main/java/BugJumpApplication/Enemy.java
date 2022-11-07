@@ -6,18 +6,17 @@ import java.awt.event.ActionEvent;
 
 public class Enemy {
 	
-	
 	Timer time;
 	private int xAxis;
 	private int yAxis;
 	private boolean isRightOrientation;
 	private boolean willAttack;
-	EnemyType type;
+	EnemyType eType;
 	
 	
 	// Enemy constructor; determines type, position, and default variables
 	public Enemy(EnemyType eType, int x, int y) {
-		this.type = eType;
+		this.eType = eType;
 		xAxis = x;
 		yAxis = y;
 		isRightOrientation = true;
@@ -25,7 +24,7 @@ public class Enemy {
 	}
 	//getters and setters
 	public EnemyType getEnemyType() {
-		return type;
+		return eType;
 	}
 	
 	public int getX() {
