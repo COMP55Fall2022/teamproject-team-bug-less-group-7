@@ -43,6 +43,7 @@ public class MainGame extends GraphicsProgram {
 		timer.start();
 		addKeyListeners();
 		setupTerrain();
+		setupCollectables();
 		setupPlayer();
 	}
 	
@@ -116,7 +117,6 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private boolean checkCollision() {
-
 		// functionality for ground detection
 		if(getElementAt(player.getX() + 5, player.getY() + 54) != null ||
 		   getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
@@ -147,19 +147,35 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	
+	// sets up the collectables on the main window
 	private void setupTerrain() {
 		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
-		GImage image = new GImage("/Images/grass.png", terrain.getX(), terrain.getY());
+		GImage image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
 		terrainMap.put(image, terrain);
 		
 		terrain = new Terrain(900, 700, 800, 200, TerrainType.GRASS);
-		image = new GImage("/Images/grass.png", terrain.getX(), terrain.getY());
+		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
 		terrainMap.put(image, terrain);
 
+	}
+	
+	// sets up the collectables on the main window
+	private void setupCollectables() {
+		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
+		GImage image = new GImage(collectable.getCType().toString(), collectable.getX(), collectable.getY());
+		image.setSize((double)Collectable.getWidth(), (double)Collectable.getHeight());
+		add(image);
+		collectablesMap.put(image, collectable);
+		
+		collectable = new Collectable(400, 450, CollectableType.STAR);
+		image = new GImage(collectable.getCType().toString(), collectable.getX(), collectable.getY());
+		image.setSize((double)Collectable.getWidth(), (double)Collectable.getHeight());
+		add(image);
+		collectablesMap.put(image, collectable);
 	}
 	
 	private void setupPlayer() {

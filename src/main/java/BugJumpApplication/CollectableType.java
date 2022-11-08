@@ -22,11 +22,11 @@ HEART,STAR,CHEESE,HANDHELD,MELEE,NONE;
 	}
 	public String toString() {
 		switch(this) {
-			case HEART: return "heart";
-			case STAR: return "star";
-			case CHEESE: return "cheese";
-			case HANDHELD: return "handheld";
-			case MELEE: return "melee";
+			case HEART: return "/Images/heart.png";
+			case STAR: return "/Images/star.png";
+			//case CHEESE: return "/Images/cheese.png";
+			//case HANDHELD: return "handheld";
+			//case MELEE: return "melee";
 		}
 		return "n/a";
 	}

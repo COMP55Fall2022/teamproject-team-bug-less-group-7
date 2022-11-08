@@ -5,9 +5,9 @@ public enum TerrainType {
 	
 	public String toString() {
 		switch(this){
-			case SPIKE: return "spike";
-			case GRASS: return "grass";
-			case DIRT: return "dirt";
+			case SPIKE: return "/Images/spike.png";
+			case GRASS: return "/Images/grass.png";
+			case DIRT: return "/Images/dirt.png";
 		}
 
 		return "n/a";
