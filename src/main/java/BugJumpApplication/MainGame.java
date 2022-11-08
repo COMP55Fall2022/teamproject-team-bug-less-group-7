@@ -2,15 +2,10 @@ package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.Timer;
-
-import org.checkerframework.common.reflection.qual.NewInstance;
-
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
@@ -20,10 +15,10 @@ public class MainGame extends GraphicsProgram {
 	
 	private Player player;
 	private GRect playerRect;
-	private Boolean isPrevOrientationRight = null;
+	private int xVel; //left and right velocity of the player object
+	private Boolean isPrevOrientationRight = null; // used to wall detection
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
-	private int xVel; //left and right velocity of the player object
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -114,10 +109,12 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
+	//Checks player's left, right, and bottom collision
 	private boolean checkCollision() {
 		// functionality for ground detection
-		if(getElementAt(player.getX()+2, player.getY() + 54) != null ||
-		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54) != null) {
+		if(objectCheck(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
+		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
+			
 			GObject obj = getElementAt(player.getX() + 4, player.getY() + 52);
 			player.isInAir = false;
 			if (obj != null) {				
@@ -129,14 +126,15 @@ public class MainGame extends GraphicsProgram {
 		}
 		
 	// functionality for wall detection 		
-		if (getElementAt(player.getX()-6, player.getY()) != null || 
-		    getElementAt(player.getX()-6, player.getY()+50) != null) {
+		if (objectCheck(new GObject[] {getElementAt(player.getX()-6, player.getY()),
+		    getElementAt(player.getX()-6, player.getY()+50)})) {
+			
 			isPrevOrientationRight = false;
 			player.isOnWall = true;
 			return true;
 		}
-		else if(getElementAt(player.getX()+50+6, player.getY()) != null ||
-				getElementAt(player.getX()+50+6, player.getY() + 50) != null) {
+		else if(objectCheck(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
+				getElementAt(player.getX()+50+6, player.getY() + 50)})) {
 			isPrevOrientationRight = true;
 			player.isOnWall = true;
 			return true;
@@ -147,6 +145,26 @@ public class MainGame extends GraphicsProgram {
 			return false;
 		}
 	}
+	
+	// Checks for: (1) if all detection points are null
+	// (2) if not, checks if they interact with a collectable, enemy, or bullet
+	private boolean objectCheck(GObject[] arr) {	
+		
+	int nullCount = 0;
+	for (GObject gImage : arr) {
+		if(gImage == null) {nullCount++; continue;}
+		
+		if (collectablesMap.containsKey(gImage)) {
+			collectablesMap.remove(gImage);
+			remove(gImage);
+			return false;
+		}
+	}	
+	if (nullCount == arr.length) {return false;}
+		
+		return true;
+	}
+	
 	
 	
 	// sets up the collectables on the main window
