@@ -159,10 +159,7 @@ public class MainGame extends GraphicsProgram {
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
 		terrainMap.put(image, terrain);
-		
-		
-//		add(new GRect(0, 500, PROG_WIDTH, PROG_HEIGHT));
-//		add(new GRect(900, 700, PROG_WIDTH, PROG_HEIGHT));
+
 	}
 	
 	private void setupPlayer() {
