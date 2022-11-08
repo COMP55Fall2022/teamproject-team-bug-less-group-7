@@ -18,7 +18,7 @@ public class Terrain {
 	}
 	
 	public TerrainType getTerrainType() {
-		return tType;
+		return this.tType;
 	}
 	
 	public int getY() {
@@ -28,4 +28,14 @@ public class Terrain {
 	public int getX() {
 		return this.xAxis;
 	}
+
+	public int getWidth() {
+		return this.width;
+	}
+
+	public int getHeight() {
+		return this.height;
+	}
+	
+	
 }

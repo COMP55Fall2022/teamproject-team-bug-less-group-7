@@ -4,8 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.Timer;
+
+import org.checkerframework.common.reflection.qual.NewInstance;
 
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
@@ -22,6 +26,10 @@ public class MainGame extends GraphicsProgram {
 	private int xVel; //left and right velocity of the player object
 		
 	private Timer timer = new Timer(30, this);
+	
+	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
+	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
+	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	
 	@Override
 	protected void init() {
@@ -110,7 +118,8 @@ public class MainGame extends GraphicsProgram {
 	private boolean checkCollision() {
 
 		// functionality for ground detection
-		if(getElementAt(player.getX() + 5, player.getY() + 54) != null || getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
+		if(getElementAt(player.getX() + 5, player.getY() + 54) != null ||
+		   getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
 			GObject obj = getElementAt(player.getX() + 4, player.getY() + 52);
 			player.isInAir = false;
 			if (obj != null) {				
@@ -139,8 +148,21 @@ public class MainGame extends GraphicsProgram {
 	
 	
 	private void setupTerrain() {
-		add(new GRect(0, 500, PROG_WIDTH, PROG_HEIGHT));
-		add(new GRect(900, 700, PROG_WIDTH, PROG_HEIGHT));
+		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
+		GImage image = new GImage("/Images/grass.png", terrain.getX(), terrain.getY());
+		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
+		add(image);
+		terrainMap.put(image, terrain);
+		
+		terrain = new Terrain(900, 700, 800, 200, TerrainType.GRASS);
+		image = new GImage("/Images/grass.png", terrain.getX(), terrain.getY());
+		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
+		add(image);
+		terrainMap.put(image, terrain);
+		
+		
+//		add(new GRect(0, 500, PROG_WIDTH, PROG_HEIGHT));
+//		add(new GRect(900, 700, PROG_WIDTH, PROG_HEIGHT));
 	}
 	
 	private void setupPlayer() {
