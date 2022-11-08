@@ -73,7 +73,7 @@ public class Player extends GraphicsProgram {
 		}		
 		
 		dy = (timerCount - initialTime) - 15;
-		System.out.println("jump dy"+dy);
+//		System.out.println("jump dy"+dy);
 	}
 
 	public void turnOnJumping() {
@@ -107,7 +107,7 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void move(int dx, int dy) {
-
+		checkOrientation(dx);
 		 this.xAxis += dx;
 		 this.yAxis += dy;
 	 }
@@ -116,7 +116,7 @@ public class Player extends GraphicsProgram {
 	 if(dx < 0) {
 		 isRightOrientation = false;
 	 }
-	 else {
+	 else if (dx > 0){
 		isRightOrientation = true;
 	}
 }

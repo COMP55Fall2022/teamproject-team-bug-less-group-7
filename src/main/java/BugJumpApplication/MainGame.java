@@ -101,25 +101,23 @@ public class MainGame extends GraphicsProgram {
 		}
 		
 		if (checkCollision()) {
-			if (isPrevOrientationRight == null) {
-				xVel = 0;
-				isPrevOrientationRight = player.isRightOrientation;
-			}
-			else if (isPrevOrientationRight == player.isRightOrientation) {
+			if (isPrevOrientationRight == player.isRightOrientation) {
 				xVel = 0;				
 			} 
 			else if (isPrevOrientationRight != player.isRightOrientation) {
 				player.isOnWall = false;
 			}
 		}
+//		System.out.println("isPrev:" + isPrevOrientationRight);
+//		System.out.println("isRightOrientation: " + player.isRightOrientation);
 		player.move(xVel, 0);
 		
 	}
 	
 	private boolean checkCollision() {
 		// functionality for ground detection
-		if(getElementAt(player.getX() + 5, player.getY() + 54) != null ||
-		   getElementAt(player.getX() + playerRect.getWidth()-5, player.getY() + 54) != null) {
+		if(getElementAt(player.getX()+2, player.getY() + 54) != null ||
+		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54) != null) {
 			GObject obj = getElementAt(player.getX() + 4, player.getY() + 52);
 			player.isInAir = false;
 			if (obj != null) {				
@@ -130,12 +128,16 @@ public class MainGame extends GraphicsProgram {
 			player.isInAir = true;
 		}
 		
-	// functionality for wall detection 
-		if(getElementAt(player.getX()-6, player.getY()) != null || 
-		   getElementAt(player.getX()+50+6, player.getY()) != null ||
-		   getElementAt(player.getX()+50+6, player.getY() + 50) != null ||
-		   getElementAt(player.getX()-6, player.getY()+50) != null)
-		{
+	// functionality for wall detection 		
+		if (getElementAt(player.getX()-6, player.getY()) != null || 
+		    getElementAt(player.getX()-6, player.getY()+50) != null) {
+			isPrevOrientationRight = false;
+			player.isOnWall = true;
+			return true;
+		}
+		else if(getElementAt(player.getX()+50+6, player.getY()) != null ||
+				getElementAt(player.getX()+50+6, player.getY() + 50) != null) {
+			isPrevOrientationRight = true;
 			player.isOnWall = true;
 			return true;
 		}
