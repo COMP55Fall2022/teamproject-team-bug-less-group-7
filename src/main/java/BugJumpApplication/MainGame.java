@@ -26,6 +26,8 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	
+	private int stars;
+	
 	@Override
 	protected void init() {
 		setSize(1080, 1920);
@@ -40,6 +42,7 @@ public class MainGame extends GraphicsProgram {
 		setupTerrain();
 		setupCollectables();
 		setupPlayer();
+		stars = 0;
 	}
 	
 	@Override
