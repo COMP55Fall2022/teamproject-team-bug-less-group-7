@@ -15,13 +15,10 @@ public class Player extends GraphicsProgram {
 	boolean isJumping;
 	boolean isOnWall;
 	
-	private int hearts;
-	
-//	private int initialHeight;
 	private int initialTime;
 	
 	private int dy;
-	
+
 	private int timerCount;
 	Timer timer = new Timer(25, this);
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
@@ -37,7 +34,6 @@ public class Player extends GraphicsProgram {
 		initialTime = -1;
 		timerCount = 0;
 		dy = 0;
-		hearts = 3;
 		
 		timer.start();
 		
@@ -107,14 +103,6 @@ public class Player extends GraphicsProgram {
 	
 	public void setX(int x) {
 		xAxis = x;
-	}
-	
-	public int getHearts() {
-		return hearts;
-	}
-	
-	public void setHearts(int h) {
-		hearts = h;
 	}
 	
 	public void move(int dx, int dy) {
