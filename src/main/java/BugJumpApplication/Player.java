@@ -17,7 +17,7 @@ public class Player extends GraphicsProgram {
 	
 	private int initialTime;
 	
-	private int hearts = 3;
+	private int hearts;
 	
 	private int dy;
 
@@ -35,6 +35,7 @@ public class Player extends GraphicsProgram {
 //		initialHeight = y;
 		initialTime = -1;
 		timerCount = 0;
+		hearts = 3;
 		dy = 0;
 		
 		timer.start();
@@ -105,6 +106,14 @@ public class Player extends GraphicsProgram {
 	
 	public void setX(int x) {
 		xAxis = x;
+	}
+	
+	public int getHearts() {
+		return hearts;
+	}
+
+	public void setHearts(int h) {
+		hearts = h;
 	}
 	
 	public void move(int dx, int dy) {
