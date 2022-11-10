@@ -32,13 +32,9 @@ public class Player extends GraphicsProgram {
 		isRightOrientation = true;
 		isInAir = true;
 		isOnWall = false;
-//		initialHeight = y;
 		initialTime = -1;
 		timerCount = 0;
-		dy = 0;
-		
-		timer.start();
-		
+		dy = 0;		
 	}
 	
 	@Override
@@ -47,8 +43,12 @@ public class Player extends GraphicsProgram {
 		return;
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void startTimer() {
+		timer.start();
+	}
+	
+	
+	public void action() {
 		timerCount++;
 		if (isInAir && !isJumping) {
 			if (initialTime == -1) {				

@@ -26,6 +26,9 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	
+	private GLabel starsGlable;
+	private GLabel heartGLabel;
+	
 	private int stars;
 	
 	@Override
@@ -37,11 +40,13 @@ public class MainGame extends GraphicsProgram {
 	public void run() {
 		keyList = new ArrayList<Integer>();
 		
-		timer.start();
 		addKeyListeners();
 		setupTerrain();
 		setupCollectables();
 		setupPlayer();
+		setupGUI();
+		timer.start();
+		//player.startTimer();
 		stars = 0;
 	}
 	
@@ -158,6 +163,7 @@ public class MainGame extends GraphicsProgram {
 		if(gImage == null) {nullCount++; continue;}
 		
 		if (collectablesMap.containsKey(gImage)) {
+			
 			collectablesMap.remove(gImage);
 			remove(gImage);
 			return false;
@@ -166,6 +172,11 @@ public class MainGame extends GraphicsProgram {
 	if (nullCount == arr.length) {return false;}
 		
 		return true;
+	}
+	
+	private void setupGUI() {
+		//starsGlable = new GLabel("Stars: " + player., xVel, LEFT_VELOCITY)
+
 	}
 	
 	
