@@ -2,6 +2,7 @@ package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -48,6 +49,13 @@ public class MainGame extends GraphicsProgram {
 		timer.start();
 		player.startTimer();
 		stars = 0;
+	}
+	public int getStars() {
+		return stars;
+	}
+
+	public void setHearts(int s) {
+		stars = s;
 	}
 	
 	@Override
@@ -164,9 +172,27 @@ public class MainGame extends GraphicsProgram {
 		
 		if (collectablesMap.containsKey(gImage)) {
 			
+			//Checks Map for which collectable is associated to which gImage and switches to perform
+			//effects accordingly
+			switch(collectablesMap.get(gImage).getCType()) {
+				case HEART:
+					//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)
+					if (player.getHearts() < 3) {
+						player.setHearts(player.getHearts()+1);
+					}
+					break;
+				case STAR:
+					//Increments total stars by 1;
+					stars++;
+					break;
+				default:
+					//Should not be called unless collectable has incorrect collectable type
+					System.out.println("INVALID COLLECTABLE TYPE");
+			}
+			
+			//Removes collected collectable
 			collectablesMap.remove(gImage);
 			remove(gImage);
-			return false;
 		}
 	}	
 	if (nullCount == arr.length) {return false;}
