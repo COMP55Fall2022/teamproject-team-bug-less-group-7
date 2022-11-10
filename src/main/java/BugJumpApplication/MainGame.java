@@ -49,6 +49,13 @@ public class MainGame extends GraphicsProgram {
 		//player.startTimer();
 		stars = 0;
 	}
+	public int getStars() {
+		return stars;
+	}
+
+	public void setHearts(int s) {
+		stars = s;
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
