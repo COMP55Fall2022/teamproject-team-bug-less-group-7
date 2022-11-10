@@ -35,7 +35,7 @@ public class Player extends GraphicsProgram {
 		initialTime = -1;
 		timerCount = 0;
 		
-		hearts = 3;
+		hearts = 2;
 		dy = 0;
 		}
 	
@@ -113,6 +113,9 @@ public class Player extends GraphicsProgram {
 
 	public void setHearts(int h) {
 		hearts = h;
+		if (hearts > 3) {
+			hearts = 3;
+		}
 	}
 	
 	public void move(int dx, int dy) {

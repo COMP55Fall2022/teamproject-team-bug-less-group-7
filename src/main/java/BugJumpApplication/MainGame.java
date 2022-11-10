@@ -2,7 +2,6 @@ package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,11 +29,12 @@ public class MainGame extends GraphicsProgram {
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
 	
-	private int stars;
+	private int stars = 0;
 	
 	@Override
 	protected void init() {
 		setSize(1080, 1920);
+		requestFocus();
 	}
 	
 	@Override
@@ -48,7 +48,6 @@ public class MainGame extends GraphicsProgram {
 		setupGUI();
 		timer.start();
 		player.startTimer();
-		stars = 0;
 	}
 	public int getStars() {
 		return stars;
@@ -81,7 +80,6 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		playerRect.setLocation(player.getX(), player.getY());
-		//checkCollision();
 		
 		//If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
@@ -176,14 +174,16 @@ public class MainGame extends GraphicsProgram {
 			//effects accordingly
 			switch(collectablesMap.get(gImage).getCType()) {
 				case HEART:
-					//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)
-					if (player.getHearts() < 3) {
-						player.setHearts(player.getHearts()+1);
-					}
+					//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)}
+					player.setHearts(player.getHearts()+1);
+					heartGLabel.setLabel("Hearts: " + player.getHearts());
+					
 					break;
 				case STAR:
 					//Increments total stars by 1;
 					stars++;
+					starsGlable.setLabel("Stars: " + stars);
+					
 					break;
 				default:
 					//Should not be called unless collectable has incorrect collectable type
@@ -193,6 +193,7 @@ public class MainGame extends GraphicsProgram {
 			//Removes collected collectable
 			collectablesMap.remove(gImage);
 			remove(gImage);
+			return false;
 		}
 	}	
 	if (nullCount == arr.length) {return false;}
@@ -201,8 +202,11 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private void setupGUI() {
-		//starsGlable = new GLabel("Stars: " + player., xVel, LEFT_VELOCITY)
-
+		starsGlable = new GLabel("Stars: " + stars, 50, 50);
+		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 1300, 50);
+		add(heartGLabel);
+		add(starsGlable);
+		
 	}
 	
 	
