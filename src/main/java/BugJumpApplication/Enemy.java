@@ -3,6 +3,8 @@ package BugJumpApplication;
 import javax.swing.Timer;
 import acm.program.GraphicsProgram;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import acm.util.RandomGenerator;
 
 public class Enemy {
 	
@@ -11,6 +13,8 @@ public class Enemy {
 	private int yAxis;
 	private boolean isRightOrientation;
 	private boolean willAttack;
+	private boolean hitBarrier;
+	private RandomGenerator rgen = RandomGenerator.getInstance();
 	EnemyType eType;
 	
 	
@@ -29,6 +33,10 @@ public class Enemy {
 	
 	public int getX() {
 		return xAxis;
+	}
+	
+	public void setX(int x) {
+		xAxis = x;
 	}
 	
 	public int getY() {
@@ -54,8 +62,24 @@ public class Enemy {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		//TODO: implement (player affects enemies
+		if (willAttack == false) {
+			if (isRightOrientation == true) {
+				xAxis = xAxis + 5;
+			}
+			if (isRightOrientation == false) {
+				xAxis = xAxis - 5;
+			}
+		}
+		if (hitBarrier == true) {
+			if (isRightOrientation == true) {
+				isRightOrientation = false;
+			}
+			else {
+				isRightOrientation = true;
+			}
+		}
 	}
+	//TODO: make barriers for enemy to hit.
 	
 	public void startTimer() {
 		time.start();
