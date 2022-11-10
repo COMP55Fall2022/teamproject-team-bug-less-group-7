@@ -17,6 +17,8 @@ public class Player extends GraphicsProgram {
 	
 	private int initialTime;
 	
+	private int hearts = 3;
+	
 	private int dy;
 
 	private int timerCount;
