@@ -13,6 +13,7 @@ public class MainMenu extends GraphicsProgram {
 	
 	public static void main(String[] args) {
 		new MainMenu().start();
+		MainGame.main(args);
 	}
 	
 }

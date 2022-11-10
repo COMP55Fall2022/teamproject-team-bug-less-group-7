@@ -60,7 +60,6 @@ public class Player extends GraphicsProgram {
 		jump();
 		yAxis += dy;
 		if (!isInAir) {
-
 			initialTime = -1;
 			turnOffJumping();
 			dy = 0;
@@ -74,13 +73,11 @@ public class Player extends GraphicsProgram {
 		}		
 		
 		dy = (timerCount - initialTime) - 15;
-//		System.out.println("jump dy"+dy);
 	}
 
 	public void turnOnJumping() {
 		if(!isJumping && !isInAir || isOnWall) {
 			isJumping = true;
-//			initialHeight = yAxis;
 			initialTime = timerCount;
 		}
 	}

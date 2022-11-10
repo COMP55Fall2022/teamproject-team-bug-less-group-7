@@ -117,19 +117,23 @@ public class MainGame extends GraphicsProgram {
 				player.isOnWall = false;
 			}
 		}
-//		System.out.println("isPrev:" + isPrevOrientationRight);
-//		System.out.println("isRightOrientation: " + player.isRightOrientation);
 		player.move(xVel, 0);
 		
 	}
 	
-	//Checks player's left, right, and bottom collision
+	//Checks player's left, right, top, and bottom collision
 	private boolean checkCollision() {
+		
+//		
+//		if (objectCheck(new GObject[] {getElementAt(player.getX(), player.getY()-6), })) {
+//			
+//		}
+		
 		// functionality for ground detection
 		if(objectCheck(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
 		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
 			
-			GObject obj = getElementAt(player.getX() + 4, player.getY() + 52);
+			GObject obj = getElementAt(player.getX() + 25, player.getY() + 52);
 			player.isInAir = false;
 			if (obj != null) {				
 				player.setY((int)obj.getY()-51);
@@ -143,12 +147,22 @@ public class MainGame extends GraphicsProgram {
 		if (objectCheck(new GObject[] {getElementAt(player.getX()-6, player.getY()),
 		    getElementAt(player.getX()-6, player.getY()+50)})) {
 			
+			GObject obj = getElementAt(player.getX() - 6, player.getY()+25);
+			if (obj != null) {				
+				player.setX((int)obj.getX()+(int)obj.getWidth());
+			}
 			isPrevOrientationRight = false;
+			
 			player.isOnWall = true;
 			return true;
 		}
 		else if(objectCheck(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
 				getElementAt(player.getX()+50+6, player.getY() + 50)})) {
+			
+			GObject obj = getElementAt(player.getX()+50+6, player.getY()+25);
+			if (obj != null) {				
+				player.setX((int)obj.getX()-50);
+			}
 			isPrevOrientationRight = true;
 			player.isOnWall = true;
 			return true;
@@ -220,6 +234,12 @@ public class MainGame extends GraphicsProgram {
 		terrainMap.put(image, terrain);
 		
 		terrain = new Terrain(900, 700, 800, 200, TerrainType.GRASS);
+		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
+		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
+		add(image);
+		terrainMap.put(image, terrain);
+		
+		terrain = new Terrain(700, 200, 200, 100, TerrainType.DIRT);
 		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
