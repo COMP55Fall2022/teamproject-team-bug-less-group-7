@@ -37,10 +37,7 @@ public class Player extends GraphicsProgram {
 		
 		hearts = 3;
 		dy = 0;
-		
-		timer.start();
-		
-	}
+		}
 	
 	@Override
 	public void run() {
@@ -51,9 +48,8 @@ public class Player extends GraphicsProgram {
 	public void startTimer() {
 		timer.start();
 	}
-	
-	
-	public void action() {
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		timerCount++;
 		if (isInAir && !isJumping) {
 			if (initialTime == -1) {				
@@ -64,8 +60,7 @@ public class Player extends GraphicsProgram {
 		jump();
 		yAxis += dy;
 		if (!isInAir) {
-//			if (isJumping) {
-//			}
+
 			initialTime = -1;
 			turnOffJumping();
 			dy = 0;

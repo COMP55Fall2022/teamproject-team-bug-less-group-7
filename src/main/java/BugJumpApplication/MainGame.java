@@ -46,7 +46,7 @@ public class MainGame extends GraphicsProgram {
 		setupPlayer();
 		setupGUI();
 		timer.start();
-		//player.startTimer();
+		player.startTimer();
 		stars = 0;
 	}
 	
