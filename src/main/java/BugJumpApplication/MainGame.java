@@ -10,6 +10,8 @@ import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
 public class MainGame extends GraphicsProgram {
+	private static final int PROGRAMHEIGHT = 1080;
+	private static final int PROGRAMWIDTH = 1920;
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
 	
@@ -33,7 +35,7 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	protected void init() {
-		setSize(1080, 1920);
+		setSize(PROGRAMWIDTH, PROGRAMHEIGHT);
 		requestFocus();
 	}
 	
@@ -123,26 +125,36 @@ public class MainGame extends GraphicsProgram {
 	
 	//Checks player's left, right, top, and bottom collision
 	private boolean checkCollision() {
-		
+		if (objectCheck(new GObject[] {getElementAt(player.getX()+.333*50, player.getY()-6),
+			getElementAt(player.getX()+.667*50, player.getY()-6)})) {
+				GObject obj = getElementAt(player.getX() + 25, player.getY()-6);
+				player.turnOffJumping();
+				if (obj != null) {				
+					player.setY((int)obj.getY()+(int)obj.getHeight()+1);
+				}
+		}
+			
 //		
-//		if (objectCheck(new GObject[] {getElementAt(player.getX(), player.getY()-6), })) {
-//			
-//		}
-		
 		// functionality for ground detection
 		if(objectCheck(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
 		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
 			
-			GObject obj = getElementAt(player.getX() + 25, player.getY() + 52);
 			player.isInAir = false;
+			GObject obj = getElementAt(player.getX() + 5, player.getY() + 52);
+			GObject obj2 = getElementAt(player.getX() + 50-5, player.getY()+52);
 			if (obj != null) {				
 				player.setY((int)obj.getY()-51);
 			}
+			else if (obj2 != null) {
+				player.setY((int)obj2.getY()-51);
+			} 
 		}
 		else {
 			player.isInAir = true;
 		}
 		
+		
+
 	// functionality for wall detection 		
 		if (objectCheck(new GObject[] {getElementAt(player.getX()-6, player.getY()),
 		    getElementAt(player.getX()-6, player.getY()+50)})) {
@@ -172,6 +184,10 @@ public class MainGame extends GraphicsProgram {
 			isPrevOrientationRight = null;
 			return false;
 		}
+		
+		
+		
+		
 	}
 	
 	// Checks for: (1) if all detection points are null
@@ -210,19 +226,17 @@ public class MainGame extends GraphicsProgram {
 			return false;
 		}
 	}	
-	if (nullCount == arr.length) {return false;}
-		
-		return true;
+	if (nullCount == arr.length) {return false;}	
+	return true;
 	}
 	
 	private void setupGUI() {
-		starsGlable = new GLabel("Stars: " + stars, 50, 50);
-		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 1300, 50);
+		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 50, 50);
+		starsGlable = new GLabel("Stars: " + stars, 1400 , 50);
 		add(heartGLabel);
 		add(starsGlable);
 		
 	}
-	
 	
 	
 	// sets up the collectables on the main window
@@ -239,7 +253,7 @@ public class MainGame extends GraphicsProgram {
 		add(image);
 		terrainMap.put(image, terrain);
 		
-		terrain = new Terrain(700, 200, 200, 100, TerrainType.DIRT);
+		terrain = new Terrain(700, 300, 200, 100, TerrainType.DIRT);
 		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
@@ -269,6 +283,9 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
+	public void startGame() {
+		new MainGame().start();
+	}
 	public static void main(String[] args) {
 		new MainGame().start();
 	}

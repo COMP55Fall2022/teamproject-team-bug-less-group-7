@@ -8,23 +8,23 @@ import acm.util.RandomGenerator;
 
 public class Enemy {
 	
-	Timer time;
+	private Timer time;
 	private int xAxis;
 	private int yAxis;
 	private boolean isRightOrientation;
 	private boolean willAttack;
 	private boolean hitBarrier;
 	private RandomGenerator rgen = RandomGenerator.getInstance();
-	EnemyType eType;
+	private EnemyType eType;
 	
 	
 	// Enemy constructor; determines type, position, and default variables
-	public Enemy(EnemyType eType, int x, int y) {
+	public Enemy(int x, int y, EnemyType eType) {
+		this.xAxis = x;
+		this.yAxis = y;
 		this.eType = eType;
-		xAxis = x;
-		yAxis = y;
-		isRightOrientation = true;
-		willAttack = false;
+		this.willAttack = false;
+		this.isRightOrientation = true;
 	}
 	//getters and setters
 	public EnemyType getEnemyType() {
@@ -66,8 +66,9 @@ public class Enemy {
 			if (isRightOrientation == true) {
 				xAxis = xAxis + 5;
 			}
-			if (isRightOrientation == false) {
+			else {
 				xAxis = xAxis - 5;
+
 			}
 		}
 		if (hitBarrier == true) {
