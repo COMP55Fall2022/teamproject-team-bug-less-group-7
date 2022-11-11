@@ -238,7 +238,6 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
-	
 	// sets up the collectables on the main window
 	private void setupTerrain() {
 		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
@@ -258,22 +257,25 @@ public class MainGame extends GraphicsProgram {
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		add(image);
 		terrainMap.put(image, terrain);
-
 	}
 	
 	// sets up the collectables on the main window
 	private void setupCollectables() {
 		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
-		GImage image = new GImage(collectable.getCType().toString(), collectable.getX(), collectable.getY());
-		image.setSize((double)Collectable.getWidth(), (double)Collectable.getHeight());
+		GImage image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
 		collectablesMap.put(image, collectable);
 		
 		collectable = new Collectable(400, 450, CollectableType.STAR);
-		image = new GImage(collectable.getCType().toString(), collectable.getX(), collectable.getY());
-		image.setSize((double)Collectable.getWidth(), (double)Collectable.getHeight());
+		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
 		collectablesMap.put(image, collectable);
+		
+		collectable = new Collectable(800, 250, CollectableType.MELEE);
+		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
+		add(image);
+		collectablesMap.put(image, collectable);
+		add(new GImage(CollectableType.CHEESE.toString()));
 	}
 	
 	private void setupPlayer() {

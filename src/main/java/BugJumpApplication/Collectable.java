@@ -34,5 +34,10 @@ public class Collectable {
 		return height;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.cType.toString();
+	}
 	
 }

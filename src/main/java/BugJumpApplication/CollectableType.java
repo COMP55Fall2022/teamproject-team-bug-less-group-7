@@ -24,9 +24,9 @@ HEART,STAR,CHEESE,HANDHELD,MELEE,NONE;
 		switch(this) {
 			case HEART: return "/Images/heart.png";
 			case STAR: return "/Images/star.png";
-			//case CHEESE: return "/Images/cheese.png";
-			//case HANDHELD: return "handheld";
-			//case MELEE: return "melee";
+			case CHEESE: return "/Images/cheese.png";
+			case HANDHELD: return "/Images/handheld.png";
+			case MELEE: return "/Images/melee.png";
 		}
 		return "n/a";
 	}
