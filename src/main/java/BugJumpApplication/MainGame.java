@@ -141,7 +141,6 @@ public class MainGame extends GraphicsProgram {
 		if (keyList.contains(49) && player.weapon != null) {
 			bulletMap.put(null, player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation));
 		}
-		
 	}
 	
 	//Checks player's left, right, top, and bottom collision
@@ -309,7 +308,7 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	private void setupEnemies() {
-		Enemy tempEnemy = new Enemy (500,450,EnemyType.SPIDER);
+		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
 		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
 		enemyRect.setFillColor(Color.RED);
 		enemyRect.setFilled(true);

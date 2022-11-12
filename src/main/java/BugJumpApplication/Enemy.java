@@ -52,13 +52,8 @@ public class Enemy {
 	}
 	
 	//TODO: find a way to get the enemies to notice the player and act accordingly
-	public void switchAwareness() {
-		if (willAttack == false) {
-			willAttack = true;
-		}
-		else {
-			willAttack = false;
-		}
+	public void switchAwareness(boolean input) {
+		willAttack = input;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -93,20 +88,38 @@ public class Enemy {
 	
 	//TODO: implement attack (bullet)
 	public Bullet[] attack() {
-		//if melee enemy
+		//Array of bullets to be returned
 		Bullet[] bulletArr;
 		switch(eType) {
+			//if melee enemy
 			case SPIDER:
 			case WORM:
 				return null;
+			//shoots 5 bullets in a flower shape, left, left-up, up, right-up, and right
 			case FLOWER:
-				
+				bulletArr = new Bullet[5];
+				for (int i = 0; i < bulletArr.length; i++) {
+					if (i < 2) {
+						bulletArr[i] = new Bullet(xAxis,yAxis,-2 + i,0 + i,false);
+					} else {
+						bulletArr[i] = new Bullet(xAxis,yAxis,-2 + i,2 - (i-2),false);
+					}
+				}
 				break;
+			//shoots 1 bullet in the direction its facing horizontally
 			case BEATLE:
+				bulletArr = new Bullet[1];
+				if (isRightOrientation) {
+					bulletArr[0] = new Bullet(xAxis,yAxis,2,0,false);
+				} else {
+					bulletArr[0] = new Bullet(xAxis,yAxis,-2,0,false);
+				}
 				break;
+			//default
 			default:
-				
+				bulletArr = new Bullet[0];
+				System.out.println("INVALID ENEMY TYPE");
 		}
-		return null;
+		return bulletArr;
 	}
 }
