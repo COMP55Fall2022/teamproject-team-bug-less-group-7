@@ -3,7 +3,8 @@ package BugJumpApplication;
 import acm.graphics.GPoint;
 
 public class Weapon {
-
+	private static final int BULLETWIDTH = 96;
+	private static final int BULLETHEIGHT = 96;
 	WeaponType wType;
 	
 	public Weapon(WeaponType wType){
@@ -18,7 +19,7 @@ public class Weapon {
 		
 		if (isRightOrientation == true) {
 			
-			return new Bullet((int)point.getX() + 60, (int)point.getY()+25, 1, 0, true);
+			return new Bullet((int)point.getX() + 60, (int)point.getY(), 1, 0, true);
 		}
 		else {
 			return new Bullet((int)point.getX() - 10, (int)point.getY()+25, -1, 0, true);
