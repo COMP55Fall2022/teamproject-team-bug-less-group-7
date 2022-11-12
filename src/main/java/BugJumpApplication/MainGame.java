@@ -33,7 +33,7 @@ public class MainGame extends GraphicsProgram {
 	private Timer timer = new Timer(30, this);
 	
 	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
-	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
+	private HashMap<GRect, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
@@ -237,7 +237,7 @@ public class MainGame extends GraphicsProgram {
 				if (bullets != null) {
 					for (int i = 0; i < bullets.length; i++) {
 						Bullet b = bullets[i];
-						GImage bImage = new GImage("/Images/heart.png",b.getX(),b.getY());
+						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
 						bulletMap.put(bImage,b);
 						add(bImage);
 					}
@@ -351,17 +351,24 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
+//	private void setupEnemies() {
+//		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
+//		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
+//		enemyRect.setFillColor(Color.RED);
+//		enemyRect.setFilled(true);
+//		add(enemyRect);
+//		enemies.add(tempEnemy);
+//		enemyRects.add(enemyRect);
+//	}
+	
 	private void setupEnemies() {
 		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
 		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
 		enemyRect.setFillColor(Color.RED);
 		enemyRect.setFilled(true);
 		add(enemyRect);
-		enemies.add(tempEnemy);
-		enemyRects.add(enemyRect);
+		enemiesMap.put(enemyRect, tempEnemy);
 	}
-	
-
 	public void startGame() {
 		new MainGame().start();
 	}
