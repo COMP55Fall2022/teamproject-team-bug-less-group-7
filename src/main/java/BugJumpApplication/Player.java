@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 public class Player extends GraphicsProgram {
 	private static final int JUMP_HEIGHT = 84;
 	//TODO: Needs weapon
+	
+	public Weapon weapon;
 	private int yAxis;
 	private int xAxis;
 	boolean isRightOrientation;

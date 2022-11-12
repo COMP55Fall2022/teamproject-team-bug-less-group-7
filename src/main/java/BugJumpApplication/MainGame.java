@@ -1,5 +1,6 @@
 package BugJumpApplication;
 
+import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
 	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
+	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
@@ -120,6 +122,10 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 		player.move(xVel, 0);
+		
+		if (keyList.contains(49) && player.weapon != null) {
+			bulletMap.put(null, player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation));
+		}
 		
 	}
 	
@@ -215,6 +221,8 @@ public class MainGame extends GraphicsProgram {
 					starsGlable.setLabel("Stars: " + stars);
 					
 					break;
+				case HANDHELD:
+					player.weapon = new Weapon(WeaponType.HANDHELD);
 				default:
 					//Should not be called unless collectable has incorrect collectable type
 					System.out.println("INVALID COLLECTABLE TYPE");
@@ -271,7 +279,7 @@ public class MainGame extends GraphicsProgram {
 		add(image);
 		collectablesMap.put(image, collectable);
 		
-		collectable = new Collectable(800, 250, CollectableType.MELEE);
+		collectable = new Collectable(800, 250, CollectableType.HANDHELD);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
 		collectablesMap.put(image, collectable);
