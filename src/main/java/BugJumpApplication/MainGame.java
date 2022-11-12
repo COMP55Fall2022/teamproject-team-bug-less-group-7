@@ -15,12 +15,16 @@ public class MainGame extends GraphicsProgram {
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
 	
+	
 	private Player player;
 	private GRect playerRect;
 	private int xVel; //left and right velocity of the player object
 	private Boolean isPrevOrientationRight = null; // used to wall detection
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
+	
+	private ArrayList<EnemyType> enemies; //ArrayList for all enemies
+	
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -42,6 +46,7 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void run() {
 		keyList = new ArrayList<Integer>();
+		enemies = new ArrayList<EnemyType>();
 		
 		addKeyListeners();
 		setupTerrain();
@@ -285,6 +290,12 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
+	private void setupEnemies() {
+	
+		
+	}
+	
+
 	public void startGame() {
 		new MainGame().start();
 	}
