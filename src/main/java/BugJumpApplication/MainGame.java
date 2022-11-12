@@ -273,20 +273,26 @@ public class MainGame extends GraphicsProgram {
 					break;
 				case HANDHELD:
 					player.weapon = new Weapon(WeaponType.HANDHELD);
+					break;
 				default:
 					//Should not be called unless collectable has incorrect collectable type
 					System.out.println("INVALID COLLECTABLE TYPE");
 			}
-			
-			//Removes collected collectable
 			collectablesMap.remove(gImage);
+			remove(gImage);
+			return false;
+		}
+		else if(bulletMap.containsKey(gImage)) {
+			player.setHearts(player.getHearts()-1);
+			heartGLabel.setLabel("Hearts: " + player.getHearts());
+			bulletMap.remove(gImage);
 			remove(gImage);
 			return false;
 		}
 	}	
 	if (nullCount == arr.length) {return false;}	
 	return true;
-	}
+}
 	
 	private void setupGUI() {
 		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 50, 50);
