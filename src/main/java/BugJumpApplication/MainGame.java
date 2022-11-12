@@ -10,11 +10,14 @@ import javax.swing.Timer;
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
+import java.awt.Color;
+
 public class MainGame extends GraphicsProgram {
 	private static final int PROGRAMHEIGHT = 1080;
 	private static final int PROGRAMWIDTH = 1920;
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
+	
 	
 	private Player player;
 	private GRect playerRect;
@@ -22,6 +25,9 @@ public class MainGame extends GraphicsProgram {
 	private Boolean isPrevOrientationRight = null; // used to wall detection
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
+	
+	private ArrayList<Enemy> enemies; //ArrayList for all enemies
+	private ArrayList<GRect> enemyRects; //ArrayList for all enemy Rects
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -44,12 +50,15 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void run() {
 		keyList = new ArrayList<Integer>();
+		enemies = new ArrayList<Enemy>();
+		enemyRects = new ArrayList<GRect>();
 		
 		addKeyListeners();
 		setupTerrain();
 		setupCollectables();
 		setupPlayer();
 		setupGUI();
+		setupEnemies();
 		timer.start();
 		player.startTimer();
 	}
@@ -84,6 +93,12 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		playerRect.setLocation(player.getX(), player.getY());
+		
+		//Moves all Enemy rects to follow all enemy objects
+		for (int i = 0; i < enemies.size();i++) {
+			Enemy temp = enemies.get(i);
+			enemyRects.get(i).setLocation(temp.getX(),temp.getY());
+		}
 		
 		//If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
@@ -293,6 +308,17 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
+	private void setupEnemies() {
+		Enemy tempEnemy = new Enemy (500,450,EnemyType.SPIDER);
+		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
+		enemyRect.setFillColor(Color.RED);
+		enemyRect.setFilled(true);
+		add(enemyRect);
+		enemies.add(tempEnemy);
+		enemyRects.add(enemyRect);
+	}
+	
+
 	public void startGame() {
 		new MainGame().start();
 	}

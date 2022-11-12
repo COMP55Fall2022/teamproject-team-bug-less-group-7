@@ -92,4 +92,21 @@ public class Enemy {
 	
 	
 	//TODO: implement attack (bullet)
+	public Bullet[] attack() {
+		//if melee enemy
+		Bullet[] bulletArr;
+		switch(eType) {
+			case SPIDER:
+			case WORM:
+				return null;
+			case FLOWER:
+				
+				break;
+			case BEATLE:
+				break;
+			default:
+				
+		}
+		return null;
+	}
 }
