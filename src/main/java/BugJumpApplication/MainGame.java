@@ -238,6 +238,8 @@ public class MainGame extends GraphicsProgram {
 					for (int i = 0; i < bullets.length; i++) {
 						Bullet b = bullets[i];
 						GImage bImage = new GImage("/Images/heart.png",b.getX(),b.getY());
+						bulletMap.put(bImage,b);
+						add(bImage);
 					}
 				} else {
 					//TODO: Melee attack
