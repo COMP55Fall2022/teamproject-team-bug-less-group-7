@@ -11,7 +11,6 @@ import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
 import java.awt.Color;
-import java.awt.Image;
 
 public class MainGame extends GraphicsProgram {
 	private static final int PROGRAMHEIGHT = 1080;
@@ -71,21 +70,24 @@ public class MainGame extends GraphicsProgram {
 		stars = s;
 	}
 	
+	/**
+	 * Gets the keycode of the last key pressed by the player. 
+	 * Adds key pressed to a list of all keys pressed on the keyboard at once
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//Gets the keycode of the last key pressed by the player
 		int keyCode = e.getKeyCode();
 		
-		//Adds key pressed to a list of all keys pressed on the keyboard at once
 		if (!keyList.contains(keyCode)) {
 			keyList.add(keyCode);
 		}
 	}
 	
+	/**
+	 * As soon as one key is released from the keyboard, it is removed from the list of all keys held down by the user
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//As soon as one key is released from the keyboard, it is removed from the list of all keys
-		//held down by the user
 		if (keyList.contains(e.getKeyCode())) {
 			keyList.remove(keyList.indexOf(e.getKeyCode()));
 		}
@@ -143,7 +145,8 @@ public class MainGame extends GraphicsProgram {
 		// adding a bullet on the screen when pressing 
 		if (keyList.contains(32) && player.weapon != null) {
 			Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
-			GImage image =  new GImage("/Images/bullet.png", bullet.getX(), bullet.getY());
+			GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
+			if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
 			bulletMap.put(image, bullet);
 			add(image);
 		}
@@ -151,6 +154,9 @@ public class MainGame extends GraphicsProgram {
 		doEnemyActions();
 	}
 	
+	/**
+	 * updates bullet location on the GUI
+	 */
 	private void updateBullet() {
 		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) {
 			GImage key = entry.getKey();
@@ -161,14 +167,40 @@ public class MainGame extends GraphicsProgram {
 				remove(key);
 				return;
 			}
-			key.setLocation(val.getX(), val.getY());
+			key.movePolar(val.getVelocity(), val.getTheta());
+			//key.getLocation()
+			
 			
 		}
 	}
 	
-	//Checks player's left, right, top, and bottom collision
+	//For now just attacks but could do other stuff?
+	private void doEnemyActions() {
+		for (Enemy each : enemies) {
+			if (each.getAwareness()) {
+				Bullet[] bullets = each.attack();
+				if (bullets != null) {
+					for (int i = 0; i < bullets.length; i++) {
+						Bullet b = bullets[i];
+						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
+						bulletMap.put(bImage,b);
+						add(bImage);
+					}
+				} 
+				else {
+					//TODO: Melee attack
+				}
+			}
+		}
+	}
+	
+
+	/**
+	 * ONLY Checks player's left, right, top, and bottom collision. work hand-on-hand with objectPlayerCollision()
+	 * @return true if player is colliding with a wall. False otherwise
+	 */
 	private boolean checkCollision() {
-		if (objectCheck(new GObject[] {getElementAt(player.getX()+.333*50, player.getY()-6),
+		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()+.333*50, player.getY()-6),
 			getElementAt(player.getX()+.667*50, player.getY()-6)})) {
 				GObject obj = getElementAt(player.getX() + 25, player.getY()-6);
 				player.turnOffJumping();
@@ -177,9 +209,9 @@ public class MainGame extends GraphicsProgram {
 				}
 		}
 			
-//		
+		
 		// functionality for ground detection
-		if(objectCheck(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
+		if(objectPlayerCollision(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
 		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
 			
 			player.isInAir = false;
@@ -195,11 +227,10 @@ public class MainGame extends GraphicsProgram {
 		else {
 			player.isInAir = true;
 		}
-		
-		
+			
 
 	// functionality for wall detection 		
-		if (objectCheck(new GObject[] {getElementAt(player.getX()-6, player.getY()),
+		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()-6, player.getY()),
 		    getElementAt(player.getX()-6, player.getY()+50)})) {
 			
 			GObject obj = getElementAt(player.getX() - 6, player.getY()+25);
@@ -211,7 +242,7 @@ public class MainGame extends GraphicsProgram {
 			player.isOnWall = true;
 			return true;
 		}
-		else if(objectCheck(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
+		else if(objectPlayerCollision(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
 				getElementAt(player.getX()+50+6, player.getY() + 50)})) {
 			
 			GObject obj = getElementAt(player.getX()+50+6, player.getY()+25);
@@ -229,28 +260,15 @@ public class MainGame extends GraphicsProgram {
 		}
 	}
 	
-	//For now just attacks but could do other stuff?
-	private void doEnemyActions() {
-		for (Enemy each : enemies) {
-			if (each.getAwareness()) {
-				Bullet[] bullets = each.attack();
-				if (bullets != null) {
-					for (int i = 0; i < bullets.length; i++) {
-						Bullet b = bullets[i];
-						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
-						bulletMap.put(bImage,b);
-						add(bImage);
-					}
-				} else {
-					//TODO: Melee attack
-				}
-			}
-		}
-	}
 	
-	// Checks for: (1) if all detection points are null
-	// (2) if not, checks if they interact with a collectable, enemy, or bullet
-	private boolean objectCheck(GObject[] arr) {	
+	/**
+	 * 
+	 * @param arr an array of GObjects used to check if they exist. These are our player collision points
+	 * @return false if all GObjects are null or player is colliding with a enemy, or collectable. 
+	 * True if one or more collision points aren't null and are colliding wih a wall
+	 * 
+	 */
+	private boolean objectPlayerCollision(GObject[] arr) {	
 		
 	int nullCount = 0;
 	for (GObject gImage : arr) {
@@ -296,6 +314,9 @@ public class MainGame extends GraphicsProgram {
 	return true;
 }
 	
+	/**
+	 * Sets up the collectables on the main window
+	 */
 	private void setupGUI() {
 		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 50, 50);
 		starsGlable = new GLabel("Stars: " + stars, 1400 , 50);
@@ -304,7 +325,9 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
-	// sets up the collectables on the main window
+	/**
+	 * Sets up the collectables on the main window
+	 */
 	private void setupTerrain() {
 		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
 		GImage image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());

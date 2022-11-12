@@ -19,10 +19,10 @@ public class Weapon {
 		
 		if (isRightOrientation == true) {
 			
-			return new Bullet((int)point.getX() + 60, (int)point.getY(), 1, 0, true);
+			return new Bullet((int)point.getX() + 60, (int)point.getY(), 12, 0, true);
 		}
 		else {
-			return new Bullet((int)point.getX() - 10, (int)point.getY()+25, -1, 0, true);
+			return new Bullet((int)point.getX()-BULLETWIDTH-10, (int)point.getY(), 12, 180, true);
 		}
 	}
 	

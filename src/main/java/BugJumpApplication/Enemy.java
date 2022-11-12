@@ -100,9 +100,9 @@ public class Enemy {
 				bulletArr = new Bullet[5];
 				for (int i = 0; i < bulletArr.length; i++) {
 					if (i < 2) {
-						bulletArr[i] = new Bullet(xAxis,yAxis,-2 + i,0 + i,false);
+						bulletArr[i] = new Bullet(xAxis, yAxis, -2 + i,0 + i,false);
 					} else {
-						bulletArr[i] = new Bullet(xAxis,yAxis,-2 + i,2 - (i-2),false);
+						bulletArr[i] = new Bullet(xAxis, yAxis, -2 + i, 2 - (i-2), false);
 					}
 				}
 				break;
