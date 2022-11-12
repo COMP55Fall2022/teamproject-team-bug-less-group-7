@@ -94,9 +94,18 @@ public class Enemy {
 	//TODO: implement attack (bullet)
 	public Bullet[] attack() {
 		//if melee enemy
-		if(eType == EnemyType.SPIDER || eType == EnemyType.WORM) {
-			//TODO: Attack in MainGame
-			return null;
+		switch(eType) {
+			case SPIDER:
+			case WORM:
+				return null;
+			case FLOWER:
+				
+				break;
+			case BEATLE:
+				break;
+			default:
+				
 		}
+		
 	}
 }
