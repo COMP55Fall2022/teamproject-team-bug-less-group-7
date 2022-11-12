@@ -8,6 +8,7 @@ import acm.program.GraphicsProgram;
 
 public class Bullet extends GraphicsProgram{
 	private Timer timer = new Timer(25, this);
+	private int runoutTimer = 100;
 	private int xAxis;
 	private int yAxis;
 	private int dx;
@@ -33,6 +34,8 @@ public class Bullet extends GraphicsProgram{
 	public void actionPerformed(ActionEvent e) {
 		xAxis += dx;
 		yAxis += dy;
+		runoutTimer--;
+		
 	}
 	
 	public int getX() {
@@ -47,6 +50,19 @@ public class Bullet extends GraphicsProgram{
 		return this.isFriendly;
 	}
 	
+	public boolean hasTimerRunout() {
+		if (runoutTimer <= 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public int getTimer() {
+		return runoutTimer;
+	}
+	
 	public void startTimer() {
 		timer.start();
 	}
@@ -54,4 +70,5 @@ public class Bullet extends GraphicsProgram{
 	public void stopTimer() {
 		timer.stop();
 	}
+	
 }
