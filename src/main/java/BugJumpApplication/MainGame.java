@@ -214,7 +214,10 @@ public class MainGame extends GraphicsProgram {
 			if (each.getAwareness()) {
 				Bullet[] bullets = each.attack();
 				if (bullets != null) {
-					
+					for (int i = 0; i < bullets.length; i++) {
+						Bullet b = bullets[i];
+						GImage bImage = new GImage("/Images/heart.png",b.getX(),b.getY());
+					}
 				} else {
 					//TODO: Melee attack
 				}
