@@ -1,16 +1,17 @@
 package BugJumpApplication;
 
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.swing.Timer;
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
 import java.awt.Color;
+import java.awt.Image;
 
 public class MainGame extends GraphicsProgram {
 	private static final int PROGRAMHEIGHT = 1080;
@@ -93,6 +94,7 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		playerRect.setLocation(player.getX(), player.getY());
+		updateBullet();
 		
 		//Moves all Enemy rects to follow all enemy objects
 		for (int i = 0; i < enemies.size();i++) {
@@ -138,11 +140,30 @@ public class MainGame extends GraphicsProgram {
 		}
 		player.move(xVel, 0);
 		
-		if (keyList.contains(49) && player.weapon != null) {
-			bulletMap.put(null, player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation));
+		// adding a bullet on the screen when pressing 
+		if (keyList.contains(32) && player.weapon != null) {
+			Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
+			GImage image =  new GImage("/Images/bullet.png", bullet.getX(), bullet.getY());
+			bulletMap.put(image, bullet);
+			add(image);
 		}
 		
 		doEnemyActions();
+	}
+	
+	private void updateBullet() {
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) {
+			GImage key = entry.getKey();
+			Bullet val = entry.getValue();
+			
+			if (val.hasTimerRunout()) {
+				bulletMap.remove(key);
+				remove(key);
+				return;
+			}
+			key.setLocation(val.getX(), val.getY());
+			
+		}
 	}
 	
 	//Checks player's left, right, top, and bottom collision
