@@ -141,6 +141,8 @@ public class MainGame extends GraphicsProgram {
 		if (keyList.contains(49) && player.weapon != null) {
 			bulletMap.put(null, player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation));
 		}
+		
+		doEnemyActions();
 	}
 	
 	//Checks player's left, right, top, and bottom collision
@@ -204,10 +206,20 @@ public class MainGame extends GraphicsProgram {
 			isPrevOrientationRight = null;
 			return false;
 		}
-		
-		
-		
-		
+	}
+	
+	//For now just attacks but could do other stuff?
+	private void doEnemyActions() {
+		for (Enemy each : enemies) {
+			if (each.getAwareness()) {
+				Bullet[] bullets = each.attack();
+				if (bullets != null) {
+					
+				} else {
+					//TODO: Melee attack
+				}
+			}
+		}
 	}
 	
 	// Checks for: (1) if all detection points are null
