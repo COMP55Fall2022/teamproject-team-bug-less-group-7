@@ -25,6 +25,7 @@ public class Bullet extends GraphicsProgram{
 	
 	@Override
 	public void run() {
+		System.out.println();
 		return;
 	}
 	
