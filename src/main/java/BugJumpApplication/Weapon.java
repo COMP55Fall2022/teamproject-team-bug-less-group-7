@@ -22,8 +22,11 @@ public class Weapon {
 			return new Bullet((int)point.getX() + 60, (int)point.getY(), 12, 0, true);
 		}
 		else {
-			return new Bullet((int)point.getX()-BULLETWIDTH, (int)point.getY(), 12, 180, true);
+			return new Bullet((int)point.getX() - BULLETWIDTH, (int)point.getY(), 12, 180, true);
 		}
 	}
 	
+	public void attack() {
+		
+	}
 }

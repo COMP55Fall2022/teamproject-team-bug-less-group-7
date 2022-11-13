@@ -7,7 +7,7 @@ import javax.swing.Timer;
 import acm.program.GraphicsProgram;
 
 public class Bullet extends GraphicsProgram{
-	private Timer timer = new Timer(25, this);
+	private Timer timer;
 	private int runoutTimer = 100;
 	private int xAxis;
 	private int yAxis;
@@ -21,7 +21,18 @@ public class Bullet extends GraphicsProgram{
 		this.vel = vel;
 		this.theta = theta;
 		this.isFriendly = isFriendly;
+		this.timer = new Timer(25, this);
 		timer.start();
+	}
+	
+	public Bullet(int x, int y, int vel, int theta, boolean isFriendly, int timer) {
+		this.xAxis = x;
+		this.yAxis = y;
+		this.vel = vel;
+		this.theta = theta;
+		this.isFriendly = isFriendly;
+		this.timer = new Timer(timer, this);
+		this.timer.start();
 	}
 	
 	@Override

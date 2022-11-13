@@ -148,83 +148,41 @@ public class MainGame extends GraphicsProgram {
 		
 		// adding a bullet on the screen when pressing Space
 		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
-			Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
-			GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
-			if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
-			bulletMap.put(image, bullet);
-			add(image);
-			fireRate = 35;
+			switch (player.weapon.wType) {
+			case HANDHELD: {
+				Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
+				GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
+				if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
+				bulletMap.put(image, bullet);
+				add(image);
+				fireRate = 35;
+				break;
+			}
+			case MELEE:
+				Bullet bullet;
+				GImage image; 
+				if (player.isRightOrientation) {
+					bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 2);
+					image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
+				}
+				else {
+					bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 2);
+					image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
+				}
+				bulletMap.put(image, bullet);
+				add(image);
+				fireRate = 35;
+				break;
+			default:
+				System.out.println("Unknown Weapon Type");
+			}
 		}
 		if (player.weapon != null) {fireRate--;}
 		doEnemyActions();
 	}
 
 	
-	private boolean checkBulletCollision(GImage key, Bullet val) {
-		GObject obj1 = getElementAt(key.getX()-2, key.getY());
-		GObject obj2 = getElementAt(key.getX()-2, key.getY()+key.getHeight());
-		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight()/2);
-		
-		if (obj1 == playerRect || obj2 == playerRect || obj2 == playerRect) {
-			
-			return true;
-		}
-		if (enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3)) {
-			return true;
-		}
 	
-		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3)) {				
-			return true;
-		}
-		return false;
-		
-	}
-	
-	/**
-	 * updates bullet location on the GUI
-	 */
-	private void updateBullet() {
-		if (bulletMap.isEmpty()) {return;}
-		
-		GImage key;
-		Bullet val;
-		ArrayList<GImage> keysToRemove = new ArrayList<>();
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-			key = entry.getKey();
-			val = entry.getValue();
-			
-			key.movePolar(val.getVelocity(), val.getTheta());
-			if(checkBulletCollision(key, val)) {keysToRemove.add(key); continue;}
-			if (val.hasTimerRunout()) {keysToRemove.add(key);}		
-		}
-		
-		for (GImage gImage : keysToRemove) {
-			bulletMap.remove(gImage);
-			remove(gImage);
-		}
-	}
-	
-	
-	//For now just attacks but could do other stuff?
-	private void doEnemyActions() {
-		for (Enemy each : enemies) {
-			if (each.getAwareness()) {
-				Bullet[] bullets = each.attack();
-				if (bullets != null) {
-					for (int i = 0; i < bullets.length; i++) {
-						Bullet b = bullets[i];
-						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
-						bulletMap.put(bImage,b);
-						add(bImage);
-					}
-				} 
-				else {
-					//TODO: Melee attack
-				}
-			}
-		}
-	}
-
 	/**
 	 * ONLY Checks player's left, right, top, and bottom collision. work hand-on-hand with objectPlayerCollision()
 	 * @return true if player is colliding with a wall. False otherwise
@@ -322,6 +280,9 @@ public class MainGame extends GraphicsProgram {
 					case HANDHELD:
 						player.weapon = new Weapon(WeaponType.HANDHELD);
 						break;
+					case MELEE:
+						player.weapon = new Weapon(WeaponType.MELEE);
+						break;
 					default:
 						//Should not be called unless collectable has incorrect collectable type
 						System.out.println("INVALID COLLECTABLE TYPE");
@@ -337,6 +298,72 @@ public class MainGame extends GraphicsProgram {
 		if (nullCount == arr.length) {return false;}	
 		return true;
 }
+	
+	private boolean checkBulletCollision(GImage key, Bullet val) {
+		GObject obj1 = getElementAt(key.getX()-2, key.getY()+key.getHeight()*.667);
+		GObject obj2 = getElementAt(key.getX()-2, key.getY()+key.getHeight());
+		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight()*.667);
+		
+		if (obj1 == playerRect || obj2 == playerRect || obj2 == playerRect) {
+			
+			return true;
+		}
+		if (enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3)) {
+			return true;
+		}
+	
+		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3)) {				
+			return true;
+		}
+		return false;
+		
+	}
+	
+	/**
+	 * updates bullet location on the GUI
+	 */
+	private void updateBullet() {
+		if (bulletMap.isEmpty()) {return;}
+		
+		GImage key;
+		Bullet val;
+		ArrayList<GImage> keysToRemove = new ArrayList<>();
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			key = entry.getKey();
+			val = entry.getValue();
+			
+			key.movePolar(val.getVelocity(), val.getTheta());
+			if(checkBulletCollision(key, val)) {keysToRemove.add(key); continue;}
+			if (val.hasTimerRunout()) {keysToRemove.add(key);}		
+		}
+		
+		for (GImage gImage : keysToRemove) {
+			bulletMap.remove(gImage);
+			remove(gImage);
+		}
+	}
+	
+	
+	//For now just attacks but could do other stuff?
+	private void doEnemyActions() {
+		for (Enemy each : enemies) {
+			if (each.getAwareness()) {
+				Bullet[] bullets = each.attack();
+				if (bullets != null) {
+					for (int i = 0; i < bullets.length; i++) {
+						Bullet b = bullets[i];
+						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
+						bulletMap.put(bImage,b);
+						add(bImage);
+					}
+				} 
+				else {
+					//TODO: Melee attack
+				}
+			}
+		}
+	}
+
 	
 	/**
 	 * Sets up the collectables on the main window
@@ -379,12 +406,12 @@ public class MainGame extends GraphicsProgram {
 		add(image);
 		collectablesMap.put(image, collectable);
 		
-		collectable = new Collectable(400, 450, CollectableType.STAR);
+		collectable = new Collectable(400, 450, CollectableType.HANDHELD);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
 		collectablesMap.put(image, collectable);
 		
-		collectable = new Collectable(800, 250, CollectableType.HANDHELD);
+		collectable = new Collectable(800, 250, CollectableType.MELEE);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
 		collectablesMap.put(image, collectable);
