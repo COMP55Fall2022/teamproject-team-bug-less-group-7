@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.swing.Timer;
+import javax.xml.validation.Validator;
+
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
@@ -22,12 +24,9 @@ public class MainGame extends GraphicsProgram {
 	private Player player;
 	private GRect playerRect;
 	private int xVel; //left and right velocity of the player object
-	private Boolean isPrevOrientationRight = null; // used to wall detection
+	private int fireRate = 0;
+	private Boolean isPrevOrientationRight = null; // used for wall detection
 	
-	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
-	
-	private ArrayList<Enemy> enemies; //ArrayList for all enemies
-	private ArrayList<GRect> enemyRects; //ArrayList for all enemy Rects
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -35,6 +34,10 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GRect, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
+	
+	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
+	private ArrayList<Enemy> enemies; //ArrayList for all enemies
+	private ArrayList<GRect> enemyRects; //ArrayList for all enemy Rects
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
@@ -142,37 +145,65 @@ public class MainGame extends GraphicsProgram {
 		}
 		player.move(xVel, 0);
 		
-		// adding a bullet on the screen when pressing 
-		if (keyList.contains(32) && player.weapon != null) {
+		
+		// adding a bullet on the screen when pressing Space
+		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
 			Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
 			GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
 			if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
 			bulletMap.put(image, bullet);
 			add(image);
+			fireRate = 35;
 		}
-		
+		if (player.weapon != null) {fireRate--;}
 		doEnemyActions();
+	}
+
+	
+	private boolean checkBulletCollision(GImage key, Bullet val) {
+		GObject obj1 = getElementAt(key.getX()-2, key.getY());
+		GObject obj2 = getElementAt(key.getX()-2, key.getY()+key.getHeight());
+		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight()/2);
+		
+		if (obj1 == playerRect || obj2 == playerRect || obj2 == playerRect) {
+			
+			return true;
+		}
+		if (enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3)) {
+			return true;
+		}
+	
+		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3)) {				
+			return true;
+		}
+		return false;
+		
 	}
 	
 	/**
 	 * updates bullet location on the GUI
 	 */
 	private void updateBullet() {
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) {
-			GImage key = entry.getKey();
-			Bullet val = entry.getValue();
+		if (bulletMap.isEmpty()) {return;}
+		
+		GImage key;
+		Bullet val;
+		ArrayList<GImage> keysToRemove = new ArrayList<>();
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			key = entry.getKey();
+			val = entry.getValue();
 			
-			if (val.hasTimerRunout()) {
-				bulletMap.remove(key);
-				remove(key);
-				return;
-			}
 			key.movePolar(val.getVelocity(), val.getTheta());
-			//key.getLocation()
-			
-			
+			if(checkBulletCollision(key, val)) {keysToRemove.add(key); continue;}
+			if (val.hasTimerRunout()) {keysToRemove.add(key);}		
+		}
+		
+		for (GImage gImage : keysToRemove) {
+			bulletMap.remove(gImage);
+			remove(gImage);
 		}
 	}
+	
 	
 	//For now just attacks but could do other stuff?
 	private void doEnemyActions() {
@@ -193,7 +224,6 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 	}
-	
 
 	/**
 	 * ONLY Checks player's left, right, top, and bottom collision. work hand-on-hand with objectPlayerCollision()
@@ -269,49 +299,43 @@ public class MainGame extends GraphicsProgram {
 	 * 
 	 */
 	private boolean objectPlayerCollision(GObject[] arr) {	
-		
-	int nullCount = 0;
-	for (GObject gImage : arr) {
-		if(gImage == null) {nullCount++; continue;}
-		
-		if (collectablesMap.containsKey(gImage)) {
+		int nullCount = 0;
+		for (GObject gImage : arr) {
+			if(gImage == null) {nullCount++; continue;}
 			
-			//Checks Map for which collectable is associated to which gImage and switches to perform
-			//effects accordingly
-			switch(collectablesMap.get(gImage).getCType()) {
-				case HEART:
-					//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)}
-					player.setHearts(player.getHearts()+1);
-					heartGLabel.setLabel("Hearts: " + player.getHearts());
-					
-					break;
-				case STAR:
-					//Increments total stars by 1;
-					stars++;
-					starsGlable.setLabel("Stars: " + stars);
-					
-					break;
-				case HANDHELD:
-					player.weapon = new Weapon(WeaponType.HANDHELD);
-					break;
-				default:
-					//Should not be called unless collectable has incorrect collectable type
-					System.out.println("INVALID COLLECTABLE TYPE");
+			if (collectablesMap.containsKey(gImage)) {
+				//Checks Map for which collectable is associated to which gImage and switches to perform
+				//effects accordingly
+				switch(collectablesMap.get(gImage).getCType()) {
+					case HEART:
+						//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)}
+						player.setHearts(player.getHearts()+1);
+						heartGLabel.setLabel("Hearts: " + player.getHearts());
+						
+						break;
+					case STAR:
+						//Increments total stars by 1;
+						stars++;
+						starsGlable.setLabel("Stars: " + stars);
+						
+						break;
+					case HANDHELD:
+						player.weapon = new Weapon(WeaponType.HANDHELD);
+						break;
+					default:
+						//Should not be called unless collectable has incorrect collectable type
+						System.out.println("INVALID COLLECTABLE TYPE");
+				}
+				collectablesMap.remove(gImage);
+				remove(gImage);
+				return false;
 			}
-			collectablesMap.remove(gImage);
-			remove(gImage);
-			return false;
-		}
-		else if(bulletMap.containsKey(gImage)) {
-			player.setHearts(player.getHearts()-1);
-			heartGLabel.setLabel("Hearts: " + player.getHearts());
-			bulletMap.remove(gImage);
-			remove(gImage);
-			return false;
-		}
-	}	
-	if (nullCount == arr.length) {return false;}	
-	return true;
+			else if (terrainMap.containsKey(gImage) && terrainMap.get(gImage).getTerrainType() == TerrainType.SPIKE) {
+				player.setHearts(0);
+			} 
+		} 
+		if (nullCount == arr.length) {return false;}	
+		return true;
 }
 	
 	/**
@@ -392,9 +416,11 @@ public class MainGame extends GraphicsProgram {
 		add(enemyRect);
 		enemiesMap.put(enemyRect, tempEnemy);
 	}
+	
 	public void startGame() {
 		new MainGame().start();
 	}
+	
 	public static void main(String[] args) {
 		new MainGame().start();
 	}
