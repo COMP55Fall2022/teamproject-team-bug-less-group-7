@@ -31,7 +31,8 @@ public class Bullet extends GraphicsProgram{
 		this.vel = vel;
 		this.theta = theta;
 		this.isFriendly = isFriendly;
-		this.timer = new Timer(timer, this);
+		this.timer = new Timer(25, this);
+		runoutTimer = timer;
 		this.timer.start();
 	}
 	
