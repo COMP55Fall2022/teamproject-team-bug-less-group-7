@@ -162,11 +162,11 @@ public class MainGame extends GraphicsProgram {
 				Bullet bullet;
 				GImage image; 
 				if (player.isRightOrientation) {
-					bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 2);
+					bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 15);
 					image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				else {
-					bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 2);
+					bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 15);
 					image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				bulletMap.put(image, bullet);
