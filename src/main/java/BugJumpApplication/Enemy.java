@@ -99,11 +99,7 @@ public class Enemy {
 			case FLOWER:
 				bulletArr = new Bullet[5];
 				for (int i = 0; i < bulletArr.length; i++) {
-					if (i < 2) {
-						bulletArr[i] = new Bullet(xAxis, yAxis, -2 + i,0 + i,false);
-					} else {
-						bulletArr[i] = new Bullet(xAxis, yAxis, -2 + i, 2 - (i-2), false);
-					}
+						bulletArr[i] = new Bullet(xAxis, yAxis, 2,180 + i*45,false);
 				}
 				break;
 			//shoots 1 bullet in the direction its facing horizontally
@@ -112,7 +108,7 @@ public class Enemy {
 				if (isRightOrientation) {
 					bulletArr[0] = new Bullet(xAxis,yAxis,2,0,false);
 				} else {
-					bulletArr[0] = new Bullet(xAxis,yAxis,-2,0,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,2,180,false);
 				}
 				break;
 			//default
