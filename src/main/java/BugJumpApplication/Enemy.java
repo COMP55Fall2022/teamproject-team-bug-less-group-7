@@ -99,7 +99,7 @@ public class Enemy {
 			case FLOWER:
 				bulletArr = new Bullet[5];
 				for (int i = 0; i < bulletArr.length; i++) {
-						bulletArr[i] = new Bullet(xAxis, yAxis, 2,180 + i*45,false);
+						bulletArr[i] = new Bullet(xAxis, yAxis, 2,180 - i*45,false);
 				}
 				break;
 			//shoots 1 bullet in the direction its facing horizontally

@@ -178,7 +178,9 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 		if (player.weapon != null) {fireRate--;}
+		enemyAwareness();
 		doEnemyActions();
+		
 	}
 
 	
@@ -348,13 +350,18 @@ public class MainGame extends GraphicsProgram {
 	private void doEnemyActions() {
 		for (Enemy each : enemies) {
 			if (each.getAwareness()) {
+				System.out.println("aware");
 				Bullet[] bullets = each.attack();
 				if (bullets != null) {
+					System.out.println("firing");
 					for (int i = 0; i < bullets.length; i++) {
 						Bullet b = bullets[i];
-						GImage bImage = new GImage("/Images/heart.png", b.getX(),b.getY());
+						GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
 						bulletMap.put(bImage,b);
 						add(bImage);
+					}
+					for (Bullet e : bullets) {
+						System.out.println(e.getTheta());
 					}
 				} 
 				else {
@@ -425,26 +432,26 @@ public class MainGame extends GraphicsProgram {
 		
 	}
 	
-//	private void setupEnemies() {
-//		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-//		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-//		enemyRect.setFillColor(Color.RED);
-//		enemyRect.setFilled(true);
-//		add(enemyRect);
-//		enemies.add(tempEnemy);
-//		enemyRects.add(enemyRect);
-//	}
-	
 	private void setupEnemies() {
 		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
 		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
 		enemyRect.setFillColor(Color.RED);
 		enemyRect.setFilled(true);
 		add(enemyRect);
-		enemiesMap.put(enemyRect, tempEnemy);
+		enemies.add(tempEnemy);
+		enemyRects.add(enemyRect);
 	}
-private void enemyAwarness() {
-		
+	
+//	private void setupEnemies() {
+//		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
+//		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
+//		enemyRect.setFillColor(Color.RED);
+//		enemyRect.setFilled(true);
+//		add(enemyRect);
+//		enemiesMap.put(enemyRect, tempEnemy);
+//	}
+private void enemyAwareness() {
+		//System.out.println("Called Function");
 		for(Enemy all: enemies) {
 		double m, ePointx, ePointy, dx, dy; 
 		m = 0;
@@ -453,24 +460,40 @@ private void enemyAwarness() {
 			
 			m = (ePointy - player.getY())/(ePointx - player.getX());
 			
-			if(m > 1) {
-				dy = m;
-				dx = +-1;
+//			if(m > 1) {
+//				dy = m;
+//				dx = +-1;
+//			}
+//			else {
+//				dx = m;
+//				dy = +-1;
+//			}
+			if(ePointx > player.getX()) {
+				dx = -1;
+			} else {
+				dx = 1;
 			}
-			else {
-				dx = m;
-				dy = +-1;
-			}
-			while(ePointx != player.getX() || ePointy != player.getY()) {
 			
+			dy = m;
+			int count = 0;
+			while((ePointx != player.getX() || ePointy != player.getY()) && count < 500) {
+				count++;
 				ePointx += dx;
 				ePointy += dy;
-				System.out.println();
+//				System.out.println(dx + " = " + dy + " = " + m);
+//				System.out.println("e" +ePointx + " : " + ePointy);
+//				System.out.println("p" + player.getX()+ " : " + player.getY());
 			
 				GObject obj1 = getElementAt(ePointx, ePointy);
 				if(terrainMap.containsKey(obj1)) {
-				all.switchAwareness(true);
-				break;
+					all.switchAwareness(false);
+					//System.out.println("sees terrain");
+					return;
+				}
+				else if (Math.abs(player.getX()-ePointx) <= 20 && Math.abs(player.getY()-ePointy) <= 20) {
+					all.switchAwareness(true);
+					//System.out.println("sees player");
+					return;
 				}
 			
 			}	
