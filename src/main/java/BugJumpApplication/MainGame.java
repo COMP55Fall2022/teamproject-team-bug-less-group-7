@@ -26,7 +26,7 @@ public class MainGame extends GraphicsProgram {
 	private int xVel; //left and right velocity of the player object
 	private int fireRate = 0;
 	private Boolean isPrevOrientationRight = null; // used for wall detection
-	
+	private Boolean isDead = false;
 		
 	private Timer timer = new Timer(30, this);
 	
@@ -102,51 +102,49 @@ public class MainGame extends GraphicsProgram {
 	public void actionPerformed(ActionEvent e) {
 		playerRect.setLocation(player.getX(), player.getY());
 		updateBullet();
-		
-		//Moves all Enemy rects to follow all enemy objects
-		for (int i = 0; i < enemies.size();i++) {
+
+		// Moves all Enemy rects to follow all enemy objects
+		for (int i = 0; i < enemies.size(); i++) {
 			Enemy temp = enemies.get(i);
-			enemyRects.get(i).setLocation(temp.getX(),temp.getY());
+			enemyRects.get(i).setLocation(temp.getX(), temp.getY());
 		}
-		
-		//If the d key is held and the a key is not
+
+		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
 			if (xVel < RIGHT_VELOCITY) {
-				xVel+=2;
+				xVel += 2;
 			}
-		} 
-		//If the a key is held and the d key is not
+		}
+		// If the a key is held and the d key is not
 		else if (keyList.contains(65) && !keyList.contains(68)) {
 			if (xVel > LEFT_VELOCITY) {
-				xVel-=2;
+				xVel -= 2;
 			}
-		//Case for if no key is held or no specific key combination is found
+			// Case for if no key is held or no specific key combination is found
 		} else {
-			//Slows momentum of player to a stop
+			// Slows momentum of player to a stop
 			if (xVel != 0) {
 				if (xVel > 0) {
-					xVel-=2;
+					xVel -= 2;
 				} else {
-					xVel+=2;
+					xVel += 2;
 				}
 			}
 		}
 		player.checkOrientation(xVel);
-		
+
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
 		}
-		
+
 		if (checkCollision()) {
 			if (isPrevOrientationRight == player.isRightOrientation) {
-				xVel = 0;				
-			} 
-			else if (isPrevOrientationRight != player.isRightOrientation) {
+				xVel = 0;
+			} else if (isPrevOrientationRight != player.isRightOrientation) {
 				player.isOnWall = false;
 			}
 		}
 		player.move(xVel, 0);
-		
 		
 		// adding a bullet on the screen when pressing Space
 		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
@@ -181,6 +179,10 @@ public class MainGame extends GraphicsProgram {
 		}
 		if (player.weapon != null) {fireRate--;}
 		doEnemyActions();
+		
+		if (player.getY() > PROGRAMHEIGHT || player.getHearts() < 1) {
+			isDead = true;
+		}
 	}
 
 	
