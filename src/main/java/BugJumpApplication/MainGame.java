@@ -443,7 +443,41 @@ public class MainGame extends GraphicsProgram {
 		add(enemyRect);
 		enemiesMap.put(enemyRect, tempEnemy);
 	}
-	
+private void enemyAwarness() {
+		
+		for(Enemy all: enemies) {
+		double m, ePointx, ePointy, dx, dy; 
+		m = 0;
+			ePointx = all.getX(); 		
+			ePointy = all.getY();
+			
+			m = (ePointy - player.getY())/(ePointx - player.getX());
+			
+			if(m > 1) {
+				dy = m;
+				dx = +-1;
+			}
+			else {
+				dx = m;
+				dy = +-1;
+			}
+			while(ePointx != player.getX() || ePointy != player.getY()) {
+			
+				ePointx += dx;
+				ePointy += dy;
+				System.out.println();
+			
+				GObject obj1 = getElementAt(ePointx, ePointy);
+				if(terrainMap.containsKey(obj1)) {
+				all.switchAwareness(true);
+				break;
+				}
+			
+			}	
+			all.switchAwareness(false);
+		}
+	}
+
 	public void startGame() {
 		new MainGame().start();
 	}
