@@ -16,6 +16,7 @@ public class Enemy {
 	private boolean hitBarrier;
 	private RandomGenerator rgen = RandomGenerator.getInstance();
 	private EnemyType eType;
+	private int lastShotTimer;
 	
 	
 	// Enemy constructor; determines type, position, and default variables
@@ -25,6 +26,7 @@ public class Enemy {
 		this.eType = eType;
 		this.willAttack = false;
 		this.isRightOrientation = true;
+		lastShotTimer = 0;
 	}
 	//getters and setters
 	public EnemyType getEnemyType() {
@@ -51,6 +53,13 @@ public class Enemy {
 		return willAttack;
 	}
 	
+	public int getLastShot() {
+		return lastShotTimer;
+	}
+	
+	public void setLastShot(int lst) {
+		lastShotTimer = lst;
+	}
 	//TODO: find a way to get the enemies to notice the player and act accordingly
 	public void switchAwareness(boolean input) {
 		willAttack = input;

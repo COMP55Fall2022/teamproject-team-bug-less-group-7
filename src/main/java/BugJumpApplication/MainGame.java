@@ -29,6 +29,7 @@ public class MainGame extends GraphicsProgram {
 	private Boolean isDead = false;
 		
 	private Timer timer = new Timer(30, this);
+	private int timerCount = 0;
 	
 	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
 	private HashMap<GRect, Enemy> enemiesMap = new HashMap<>();
@@ -100,6 +101,7 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		timerCount++;
 		playerRect.setLocation(player.getX(), player.getY());
 		updateBullet();
 
@@ -354,22 +356,25 @@ public class MainGame extends GraphicsProgram {
 	private void doEnemyActions() {
 		for (Enemy each : enemies) {
 			if (each.getAwareness()) {
-				System.out.println("aware");
-				Bullet[] bullets = each.attack();
-				if (bullets != null) {
-					System.out.println("firing");
-					for (int i = 0; i < bullets.length; i++) {
-						Bullet b = bullets[i];
-						GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
-						bulletMap.put(bImage,b);
-						add(bImage);
+				//System.out.println("aware");
+				if (timerCount - each.getLastShot() >= 150) {
+					each.setLastShot(timerCount);
+					Bullet[] bullets = each.attack();
+					if (bullets != null) {
+						System.out.println("firing");
+						for (int i = 0; i < bullets.length; i++) {
+							Bullet b = bullets[i];
+							GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
+							bulletMap.put(bImage,b);
+							add(bImage);
+						}
+						for (Bullet e : bullets) {
+							System.out.println(e.getTheta());
+						}
+					} 
+					else {
+						//TODO: Melee attack
 					}
-					for (Bullet e : bullets) {
-						System.out.println(e.getTheta());
-					}
-				} 
-				else {
-					//TODO: Melee attack
 				}
 			}
 		}
