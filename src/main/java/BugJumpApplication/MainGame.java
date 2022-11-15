@@ -181,12 +181,9 @@ public class MainGame extends GraphicsProgram {
 		enemyAwareness();
 		doEnemyActions();
 		
-<<<<<<< HEAD
-=======
 		if (player.getY() > PROGRAMHEIGHT || player.getHearts() < 1) {
 			isDead = true;
 		}
->>>>>>> branch 'main' of https://github.com/COMP55Fall2022/teamproject-team-bug-less-group-7.git
 	}
 
 	
