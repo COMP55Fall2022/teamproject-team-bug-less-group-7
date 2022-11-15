@@ -62,8 +62,10 @@ public class MainGame extends GraphicsProgram {
 		setupPlayer();
 		setupGUI();
 		setupEnemies();
+		getGCanvas().setBackground(Color.decode("#8addf2")); 
 		timer.start();
 		player.startTimer();
+		
 	}
 	public int getStars() {
 		return stars;
@@ -343,6 +345,7 @@ public class MainGame extends GraphicsProgram {
 			bulletMap.remove(gImage);
 			remove(gImage);
 		}
+		
 	}
 	
 	
