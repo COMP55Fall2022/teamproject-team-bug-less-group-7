@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.swing.Timer;
-import javax.xml.validation.Validator;
 
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
@@ -47,7 +46,7 @@ public class MainGame extends GraphicsProgram {
 	
 	@Override
 	protected void init() {
-		setSize(PROGRAMWIDTH, PROGRAMHEIGHT);
+		setSize(PROGRAMHEIGHT, PROGRAMWIDTH);
 		requestFocus();
 	}
 	
@@ -105,11 +104,11 @@ public class MainGame extends GraphicsProgram {
 		playerRect.setLocation(player.getX(), player.getY());
 		updateBullet();
 
-		// Moves all Enemy rects to follow all enemy objects
-		for (int i = 0; i < enemies.size(); i++) {
-			Enemy temp = enemies.get(i);
-			enemyRects.get(i).setLocation(temp.getX(), temp.getY());
-		}
+//		// Moves all Enemy rects to follow all enemy objects
+//		for (int i = 0; i < enemies.size(); i++) {
+//			Enemy temp = enemies.get(i);
+//			enemyRects.get(i).setLocation(temp.getX(), temp.getY());
+//		}
 
 		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
@@ -280,8 +279,7 @@ public class MainGame extends GraphicsProgram {
 						break;
 					case STAR:
 						//Increments total stars by 1;
-						stars++;
-						starsGlable.setLabel("Stars: " + stars);
+						starsGlable.setLabel("Stars: " + ++stars);
 						
 						break;
 					case HANDHELD:
@@ -307,19 +305,23 @@ public class MainGame extends GraphicsProgram {
 }
 	
 	private boolean checkBulletCollision(GImage key, Bullet val) {
-		GObject obj1 = getElementAt(key.getX()-2, key.getY()+key.getHeight()*.667);
+		GObject obj1 = getElementAt(key.getX()-2, key.getY());
 		GObject obj2 = getElementAt(key.getX()-2, key.getY()+key.getHeight());
-		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight()*.667);
+		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY());
+		GObject obj4 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
 		
-		if (obj1 == playerRect || obj2 == playerRect || obj2 == playerRect) {
+		if (val.isFriendly() == false && (obj1 == playerRect || obj2 == playerRect || obj3 == playerRect || obj4 == playerRect)) {
 			
 			return true;
 		}
-		if (enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3)) {
+//		if (val.isFriendly() && enemyRects.contains(obj4) enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3) || enemiesMap.containsKey(obj4)) {
+//			return true;
+//		}
+		if (val.isFriendly() && (enemyRects.contains(obj1) || enemyRects.contains(obj2)  || enemyRects.contains(obj3)  || enemyRects.contains(obj4))){
 			return true;
 		}
 	
-		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3)) {				
+		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3) || terrainMap.containsKey(obj4)) {				
 			return true;
 		}
 		return false;
@@ -354,32 +356,119 @@ public class MainGame extends GraphicsProgram {
 	
 	//For now just attacks but could do other stuff?
 	private void doEnemyActions() {
+		
 		for (Enemy each : enemies) {
 			if (each.getAwareness()) {
-				//System.out.println("aware");
+				System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
 					if (bullets != null) {
-						System.out.println("firing");
+//						System.out.println("firing");
 						for (int i = 0; i < bullets.length; i++) {
 							Bullet b = bullets[i];
 							GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
 							bulletMap.put(bImage,b);
 							add(bImage);
 						}
-						for (Bullet e : bullets) {
-							System.out.println(e.getTheta());
-						}
+//						for (Bullet e : bullets) {
+//							System.out.println(e.getTheta());
+//						}
 					} 
 					else {
 						//TODO: Melee attack
 					}
 				}
 			}
+			else {
+				enemyRects.get(enemies.indexOf(each)).setLocation(each.getX(), each.getY());
+				
+				if(getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
+					each.setIsRightOrientation(true);
+				}
+				else if (getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
+					each.setIsRightOrientation(false);
+				}
+
+			}
 		}
 	}
 
+//	private void enemyAwareness() {
+//		//System.out.println("Called Function");
+//		for(Enemy all: enemies) {
+//		double m, ePointx, ePointy, dx, dy; 
+//		m = 0;
+//			ePointx = all.getX(); 		
+//			ePointy = all.getY();
+//			
+//			m = (ePointy - player.getY())/(ePointx - player.getX());
+//			
+////			if(m > 1) {
+////				dy = m;
+////				dx = +-1;
+////			}
+////			else {
+////				dx = m;
+////				dy = +-1;
+////			}
+//			if(ePointx > player.getX()) {
+//				dx = -1;
+//			} else {
+//				dx = 1;
+//			}
+//			
+//			dy = m;
+//			int count = 0;
+//			while(((ePointx != player.getX() || ePointy != player.getY())) && count < 500) {
+//				count++;
+//				ePointx += dx;
+//				ePointy += dy;
+//				System.out.println(dx + " = " + dy + " = " + m);
+//				System.out.println("e" +ePointx + " : " + ePointy);
+//				System.out.println("p" + player.getX()+ " : " + player.getY());
+//			
+//				GObject obj1 = getElementAt(ePointx, ePointy);
+//				System.out.println("X: " + Math.abs(player.getX()-ePointx));
+//				System.out.println("Y: " + Math.abs(player.getY()-ePointy));
+//				if(terrainMap.containsKey(obj1)) {
+//					all.switchAwareness(false);
+//					//System.out.println("sees terrain");
+//					return;
+//				}
+//				else if (Math.abs(player.getX()-ePointx) <= 20 && Math.abs(player.getY()-ePointy) <= 20) {
+//					all.switchAwareness(true);
+//					System.out.println("sees player");
+//					return;
+//				}
+				
+			
+//			}	
+			//all.switchAwareness(false);
+//		}
+//	}
+	
+	private void enemyAwareness() {
+		int ePointx, ePointy;
+		for(Enemy all: enemies) {
+
+			ePointx = all.getX(); 		
+			ePointy = all.getY();
+ 
+			//Note: Make sure to change enemy isRightOrientation depending
+			// on where the player is 
+			System.out.println(Math.abs(player.getX()-ePointx));
+			if (Math.abs(player.getX()-ePointx) <= 400 && Math.abs(player.getY()-ePointy) <= 150) {
+				all.switchAwareness(true);
+				System.out.println("sees player");
+				break;
+			}
+			else {
+				all.switchAwareness(false);
+				System.out.println("Awareness : False");
+			}
+		}
+	}
 	
 	/**
 	 * Sets up the collectables on the main window
@@ -459,56 +548,6 @@ public class MainGame extends GraphicsProgram {
 //		add(enemyRect);
 //		enemiesMap.put(enemyRect, tempEnemy);
 //	}
-private void enemyAwareness() {
-		//System.out.println("Called Function");
-		for(Enemy all: enemies) {
-		double m, ePointx, ePointy, dx, dy; 
-		m = 0;
-			ePointx = all.getX(); 		
-			ePointy = all.getY();
-			
-			m = (ePointy - player.getY())/(ePointx - player.getX());
-			
-//			if(m > 1) {
-//				dy = m;
-//				dx = +-1;
-//			}
-//			else {
-//				dx = m;
-//				dy = +-1;
-//			}
-			if(ePointx > player.getX()) {
-				dx = -1;
-			} else {
-				dx = 1;
-			}
-			
-			dy = m;
-			int count = 0;
-			while((ePointx != player.getX() || ePointy != player.getY()) && count < 500) {
-				count++;
-				ePointx += dx;
-				ePointy += dy;
-//				System.out.println(dx + " = " + dy + " = " + m);
-//				System.out.println("e" +ePointx + " : " + ePointy);
-//				System.out.println("p" + player.getX()+ " : " + player.getY());
-			
-				GObject obj1 = getElementAt(ePointx, ePointy);
-				if(terrainMap.containsKey(obj1)) {
-					all.switchAwareness(false);
-					//System.out.println("sees terrain");
-					return;
-				}
-				else if (Math.abs(player.getX()-ePointx) <= 20 && Math.abs(player.getY()-ePointy) <= 20) {
-					all.switchAwareness(true);
-					//System.out.println("sees player");
-					return;
-				}
-			
-			}	
-			all.switchAwareness(false);
-		}
-	}
 
 	public void startGame() {
 		new MainGame().start();

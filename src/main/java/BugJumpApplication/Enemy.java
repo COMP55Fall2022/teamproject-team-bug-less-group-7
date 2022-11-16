@@ -3,12 +3,11 @@ package BugJumpApplication;
 import javax.swing.Timer;
 import acm.program.GraphicsProgram;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import acm.util.RandomGenerator;
 
-public class Enemy {
+public class Enemy extends GraphicsProgram{
 	
-	private Timer time;
+	private Timer timer = new Timer(35, this);
 	private int xAxis;
 	private int yAxis;
 	private boolean isRightOrientation;
@@ -26,8 +25,15 @@ public class Enemy {
 		this.eType = eType;
 		this.willAttack = false;
 		this.isRightOrientation = true;
+		this.timer.start();
 		lastShotTimer = 0;
 	}
+	
+	@Override
+	public void run() {
+		return;
+	}
+	
 	//getters and setters
 	public EnemyType getEnemyType() {
 		return eType;
@@ -65,6 +71,10 @@ public class Enemy {
 		willAttack = input;
 	}
 	
+	public void setIsRightOrientation(boolean condition) {
+		isRightOrientation = condition;
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if (willAttack == false) {
 			if (isRightOrientation == true) {
@@ -72,26 +82,25 @@ public class Enemy {
 			}
 			else {
 				xAxis = xAxis - 5;
-
 			}
 		}
-		if (hitBarrier == true) {
-			if (isRightOrientation == true) {
-				isRightOrientation = false;
-			}
-			else {
-				isRightOrientation = true;
-			}
-		}
+//		if (hitBarrier == true) {
+//			if (isRightOrientation == true) {
+//				isRightOrientation = false;
+//			}
+//			else {
+//				isRightOrientation = true;
+//			}
+//		}
 	}
 	//TODO: make barriers for enemy to hit.
 	
 	public void startTimer() {
-		time.start();
+		timer.start();
 	}
 	
 	public void stopTimer() {
-		time.stop();
+		timer.stop();
 	}
 	
 	
@@ -100,8 +109,8 @@ public class Enemy {
 		//Array of bullets to be returned
 		Bullet[] bulletArr;
 		switch(eType) {
-			//if melee enemy
 			case SPIDER:
+				return null;
 			case WORM:
 				return null;
 			//shoots 5 bullets in a flower shape, left, left-up, up, right-up, and right
@@ -115,7 +124,7 @@ public class Enemy {
 			case BEATLE:
 				bulletArr = new Bullet[1];
 				if (isRightOrientation) {
-					bulletArr[0] = new Bullet(xAxis,yAxis,2,0,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,2,0, false);
 				} else {
 					bulletArr[0] = new Bullet(xAxis,yAxis,2,180,false);
 				}
