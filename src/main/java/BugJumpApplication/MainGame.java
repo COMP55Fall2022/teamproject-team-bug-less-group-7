@@ -31,7 +31,7 @@ public class MainGame extends GraphicsProgram {
 	private int timerCount = 0;
 	
 	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
-	private HashMap<GRect, Enemy> enemiesMap = new HashMap<>();
+	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
@@ -357,7 +357,8 @@ public class MainGame extends GraphicsProgram {
 	//For now just attacks but could do other stuff?
 	private void doEnemyActions() {
 		
-		for (Enemy each : enemies) {
+		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+			Enemy each = entry.getValue();
 			if (each.getAwareness()) {
 				System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
