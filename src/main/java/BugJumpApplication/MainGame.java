@@ -536,8 +536,22 @@ public class MainGame extends GraphicsProgram {
 		enemyRect.setFillColor(Color.RED);
 		enemyRect.setFilled(true);
 		add(enemyRect);
-		enemies.add(tempEnemy);
-		enemyRects.add(enemyRect);
+		
+		enemiesMap.put(enemyRect, tempEnemy);
+		
+		tempEnemy = new Enemy (750,250,EnemyType.BEATLE);
+		enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
+		enemyRect.setFillColor(Color.BLACK);
+		enemyRect.setFilled(true);
+		enemiesMap.put(enemyRect, tempEnemy);
+		add(enemyRect);
+			
+		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
+		enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
+		enemyRect.setFillColor(Color.GRAY);
+		enemyRect.setFilled(true);
+		enemiesMap.put(enemyRect, tempEnemy);
+		add(enemyRect);
 	}
 	
 //	private void setupEnemies() {
