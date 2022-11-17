@@ -10,12 +10,14 @@ public class Enemy extends GraphicsProgram{
 	private Timer timer = new Timer(35, this);
 	private int xAxis;
 	private int yAxis;
+	private int lastShotTimer;
+	private int lives = 4;
+
 	private boolean isRightOrientation;
 	private boolean willAttack;
-	private boolean hitBarrier;
-	private RandomGenerator rgen = RandomGenerator.getInstance();
+	
 	private EnemyType eType;
-	private int lastShotTimer;
+
 	
 	
 	// Enemy constructor; determines type, position, and default variables
@@ -66,6 +68,15 @@ public class Enemy extends GraphicsProgram{
 	public void setLastShot(int lst) {
 		lastShotTimer = lst;
 	}
+	
+	public int getLives() {
+		return lives;
+	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
 	//TODO: find a way to get the enemies to notice the player and act accordingly
 	public void switchAwareness(boolean input) {
 		willAttack = input;
@@ -84,16 +95,7 @@ public class Enemy extends GraphicsProgram{
 				xAxis = xAxis - 5;
 			}
 		}
-//		if (hitBarrier == true) {
-//			if (isRightOrientation == true) {
-//				isRightOrientation = false;
-//			}
-//			else {
-//				isRightOrientation = true;
-//			}
-//		}
 	}
-	//TODO: make barriers for enemy to hit.
 	
 	public void startTimer() {
 		timer.start();

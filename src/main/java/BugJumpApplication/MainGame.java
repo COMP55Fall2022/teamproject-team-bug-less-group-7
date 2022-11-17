@@ -296,6 +296,9 @@ public class MainGame extends GraphicsProgram {
 				remove(gImage);
 				return false;
 			}
+			else if (enemiesMap.containsKey(gImage)) {
+				
+			}
 			else if (terrainMap.containsKey(gImage) && terrainMap.get(gImage).getTerrainType() == TerrainType.SPIKE) {
 				player.setHearts(0);
 			} 
@@ -310,14 +313,20 @@ public class MainGame extends GraphicsProgram {
 		GObject obj3 = getElementAt(key.getX()+key.getWidth()+2, key.getY());
 		GObject obj4 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
 		
+		
 		if (val.isFriendly() == false && (obj1 == playerRect || obj2 == playerRect || obj3 == playerRect || obj4 == playerRect)) {
-			
+			if (!(player.getHitCooldown() > 0)) {				
+				player.setHearts(player.getHearts()-1);
+				heartGLabel.setLabel("Hearts: " + player.getHearts());
+				player.resetHitCooldown();
+			}
 			return true;
 		}
 //		if (val.isFriendly() && enemyRects.contains(obj4) enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3) || enemiesMap.containsKey(obj4)) {
 //			return true;
 //		}
-		if (val.isFriendly() && (enemyRects.contains(obj1) || enemyRects.contains(obj2)  || enemyRects.contains(obj3)  || enemyRects.contains(obj4))){
+		if (val.isFriendly() && (enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4)){
+			
 			return true;
 		}
 	
@@ -377,6 +386,7 @@ public class MainGame extends GraphicsProgram {
 					} 
 					else {
 						//TODO: Melee attack
+						
 					}
 				}
 			}

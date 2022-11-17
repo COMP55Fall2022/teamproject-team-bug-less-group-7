@@ -6,25 +6,25 @@ import acm.program.GraphicsProgram;
 
 import java.awt.event.ActionEvent;
 public class Player extends GraphicsProgram {
-	private static final int JUMP_HEIGHT = 84;
-	//TODO: Needs weapon
 	
-	public Weapon weapon;
 	private int yAxis;
 	private int xAxis;
+	private int dy;
+	
 	boolean isRightOrientation;
 	boolean isInAir;
 	boolean isJumping;
 	boolean isOnWall;
 	
 	private int initialTime;
-	
-	private int hearts;
-	
-	private int dy;
-
 	private int timerCount;
+	
+	public Weapon weapon;
+	private int hearts;
+	private int hitCooldown = 0;
+	
 	Timer timer = new Timer(25, this);
+	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
 	public Player(int x,int y) {
@@ -50,9 +50,16 @@ public class Player extends GraphicsProgram {
 	public void startTimer() {
 		timer.start();
 	}
+	
+	private void updateCounters() {
+		timerCount++;
+		if (hitCooldown > 0) {hitCooldown--;}
+
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		timerCount++;
+		updateCounters();
+		
 		if (isInAir && !isJumping) {
 			if (initialTime == -1) {				
 				initialTime = timerCount;
@@ -88,6 +95,14 @@ public class Player extends GraphicsProgram {
 //		initialHeight = 0;
 		isJumping = false;
 		isOnWall = false;
+	}
+	
+	public void resetHitCooldown() {
+		hitCooldown = 50;
+	}
+	
+	public int getHitCooldown() {
+		return hitCooldown;
 	}
 	
 	public int getY(){
