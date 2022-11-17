@@ -535,14 +535,14 @@ public class MainGame extends GraphicsProgram {
 		
 		collectable = new Collectable(800, 250, CollectableType.MELEE);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
+		collectablesMap.put(image, collectable);
 		add(image);
 		
 		collectable = new Collectable(800, 650, CollectableType.STAR);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
-		
-		
 		collectablesMap.put(image, collectable);
+
 		add(new GImage(CollectableType.CHEESE.toString()));
 	}
 	
@@ -559,12 +559,10 @@ public class MainGame extends GraphicsProgram {
 		enemiesMap.put(image, tempEnemy);
 		add(image);
 		
-		
 		tempEnemy = new Enemy (750,250,EnemyType.WORM);
 		image = new GImage("/Images/worm.png",tempEnemy.getX(),tempEnemy.getY());
-		
-		enemiesMap.put(image, tempEnemy);
 		add(image);
+		enemiesMap.put(image, tempEnemy);
 			
 		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
 		image = new GImage("/Images/spider.png",tempEnemy.getX(),tempEnemy.getY());
