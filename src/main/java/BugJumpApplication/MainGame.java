@@ -540,26 +540,21 @@ public class MainGame extends GraphicsProgram {
 	
 	private void setupEnemies() {
 		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-		enemyRect.setFillColor(Color.RED);
-		enemyRect.setFilled(true);
-		add(enemyRect);
+		GImage image = new GImage("/Images/sunflower.png",tempEnemy.getX(),tempEnemy.getY());
+		enemiesMap.put(image, tempEnemy);
+		add(image);
 		
-		enemiesMap.put(enemyRect, tempEnemy);
 		
-		tempEnemy = new Enemy (750,250,EnemyType.BEATLE);
-		enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-		enemyRect.setFillColor(Color.BLACK);
-		enemyRect.setFilled(true);
-		enemiesMap.put(enemyRect, tempEnemy);
-		add(enemyRect);
+		tempEnemy = new Enemy (750,250,EnemyType.WORM);
+		image = new GImage("/Images/worm.png",tempEnemy.getX(),tempEnemy.getY());
+		
+		enemiesMap.put(image, tempEnemy);
+		add(image);
 			
 		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
-		enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-		enemyRect.setFillColor(Color.GRAY);
-		enemyRect.setFilled(true);
-		enemiesMap.put(enemyRect, tempEnemy);
-		add(enemyRect);
+		image = new GImage("/Images/spider.png",tempEnemy.getX(),tempEnemy.getY());
+		enemiesMap.put(image, tempEnemy);
+		add(image);
 		
 		System.out.println();
 	}
