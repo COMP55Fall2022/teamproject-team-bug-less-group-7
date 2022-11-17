@@ -31,7 +31,7 @@ public class MainGame extends GraphicsProgram {
 	private int timerCount = 0;
 	
 	private HashMap<GImage, Collectable> collectablesMap = new HashMap<>();
-	private HashMap<GRect, Enemy> enemiesMap = new HashMap<>();
+	private HashMap<GImage, Enemy> enemiesMap = new HashMap<>();
 	private HashMap<GImage, Terrain> terrainMap = new HashMap<>();
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
@@ -357,7 +357,9 @@ public class MainGame extends GraphicsProgram {
 	//For now just attacks but could do other stuff?
 	private void doEnemyActions() {
 		
-		for (Enemy each : enemies) {
+		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+			Enemy each = entry.getValue();
+			GImage eachImage = entry.getKey();
 			if (each.getAwareness()) {
 				System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
@@ -381,7 +383,7 @@ public class MainGame extends GraphicsProgram {
 				}
 			}
 			else {
-				enemyRects.get(enemies.indexOf(each)).setLocation(each.getX(), each.getY());
+				eachImage.setLocation(each.getX(),each.getY());
 				
 				if(getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
@@ -450,8 +452,8 @@ public class MainGame extends GraphicsProgram {
 	
 	private void enemyAwareness() {
 		int ePointx, ePointy;
-		for(Enemy all: enemies) {
-
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			Enemy all = entry.getValue();
 			ePointx = all.getX(); 		
 			ePointy = all.getY();
  
