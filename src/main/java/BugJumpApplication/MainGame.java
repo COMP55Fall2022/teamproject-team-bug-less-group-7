@@ -519,6 +519,12 @@ public class MainGame extends GraphicsProgram {
 		collectable = new Collectable(800, 250, CollectableType.MELEE);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
+		
+		collectable = new Collectable(800, 650, CollectableType.STAR);
+		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
+		add(image);
+		
+		
 		collectablesMap.put(image, collectable);
 		add(new GImage(CollectableType.CHEESE.toString()));
 	}
