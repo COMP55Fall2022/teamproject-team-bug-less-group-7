@@ -452,8 +452,8 @@ public class MainGame extends GraphicsProgram {
 	
 	private void enemyAwareness() {
 		int ePointx, ePointy;
-		for(Enemy all: enemies) {
-
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			Enemy all = entry.getValue();
 			ePointx = all.getX(); 		
 			ePointy = all.getY();
  
