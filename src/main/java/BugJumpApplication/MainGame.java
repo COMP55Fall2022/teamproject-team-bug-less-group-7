@@ -297,7 +297,12 @@ public class MainGame extends GraphicsProgram {
 				return false;
 			}
 			else if (enemiesMap.containsKey(gImage)) {
-				
+				if (!(player.getHitCooldown() > 0)) {				
+					player.setHearts(player.getHearts()-1);
+					heartGLabel.setLabel("Hearts: " + player.getHearts());
+					player.resetHitCooldown();
+				}
+				return false;
 			}
 			else if (terrainMap.containsKey(gImage) && terrainMap.get(gImage).getTerrainType() == TerrainType.SPIKE) {
 				player.setHearts(0);
@@ -325,8 +330,7 @@ public class MainGame extends GraphicsProgram {
 //		if (val.isFriendly() && enemyRects.contains(obj4) enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3) || enemiesMap.containsKey(obj4)) {
 //			return true;
 //		}
-		if (val.isFriendly() && (enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4)){
-			
+		if (val.isFriendly() && ((enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4))){
 			return true;
 		}
 	
@@ -370,7 +374,7 @@ public class MainGame extends GraphicsProgram {
 			Enemy each = entry.getValue();
 			GImage eachImage = entry.getKey();
 			if (each.getAwareness()) {
-				System.out.println("aware");
+				//System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
@@ -469,15 +473,15 @@ public class MainGame extends GraphicsProgram {
  
 			//Note: Make sure to change enemy isRightOrientation depending
 			// on where the player is 
-			System.out.println(Math.abs(player.getX()-ePointx));
+			//System.out.println(Math.abs(player.getX()-ePointx));
 			if (Math.abs(player.getX()-ePointx) <= 400 && Math.abs(player.getY()-ePointy) <= 150) {
 				all.switchAwareness(true);
-				System.out.println("sees player");
+				//System.out.println("sees player");
 				break;
 			}
 			else {
 				all.switchAwareness(false);
-				System.out.println("Awareness : False");
+				//System.out.println("Awareness : False");
 			}
 		}
 	}
