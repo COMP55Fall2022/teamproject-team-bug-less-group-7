@@ -558,6 +558,8 @@ public class MainGame extends GraphicsProgram {
 		enemyRect.setFilled(true);
 		enemiesMap.put(enemyRect, tempEnemy);
 		add(enemyRect);
+		
+		System.out.println();
 	}
 	
 //	private void setupEnemies() {
