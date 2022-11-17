@@ -304,6 +304,9 @@ public class MainGame extends GraphicsProgram {
 				}
 				return false;
 			}
+			else if (bulletMap.containsKey(gImage)) {
+				return false;
+			}
 			else if (terrainMap.containsKey(gImage) && terrainMap.get(gImage).getTerrainType() == TerrainType.SPIKE) {
 				player.setHearts(0);
 			} 
@@ -373,7 +376,7 @@ public class MainGame extends GraphicsProgram {
 		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
 			Enemy each = entry.getValue();
 			GImage eachImage = entry.getKey();
-			if (each.getAwareness()) {
+			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEATLE || each.getEnemyType() == EnemyType.FLOWER)) {
 				//System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
@@ -390,10 +393,6 @@ public class MainGame extends GraphicsProgram {
 //							System.out.println(e.getTheta());
 //						}
 					} 
-					else {
-						//TODO: Melee attack
-						
-					}
 				}
 			}
 			else {
@@ -467,10 +466,12 @@ public class MainGame extends GraphicsProgram {
 	private void enemyAwareness() {
 		int ePointx, ePointy;
 		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+
 			Enemy all = entry.getValue();
 			ePointx = all.getX(); 		
 			ePointy = all.getY();
  
+			if(all.getEnemyType() != EnemyType.BEATLE && all.getEnemyType() != EnemyType.FLOWER) {continue;}
 			//Note: Make sure to change enemy isRightOrientation depending
 			// on where the player is 
 			//System.out.println(Math.abs(player.getX()-ePointx));
@@ -570,8 +571,7 @@ public class MainGame extends GraphicsProgram {
 		enemiesMap.put(image, tempEnemy);
 		add(image);
 		
-		System.out.println();
-	}
+		}
 	
 //	private void setupEnemies() {
 //		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
