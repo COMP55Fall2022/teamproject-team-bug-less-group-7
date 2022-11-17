@@ -359,6 +359,7 @@ public class MainGame extends GraphicsProgram {
 		
 		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
 			Enemy each = entry.getValue();
+			GImage eachImage = entry.getKey();
 			if (each.getAwareness()) {
 				System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
@@ -382,7 +383,7 @@ public class MainGame extends GraphicsProgram {
 				}
 			}
 			else {
-				enemyRects.get(enemies.indexOf(each)).setLocation(each.getX(), each.getY());
+				eachImage.setLocation(each.getX(),each.getY());
 				
 				if(getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
