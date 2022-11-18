@@ -523,17 +523,17 @@ public class MainGame extends GraphicsProgram {
 	
 	private void setupEnemies() {
 		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-		GImage image = new GImage("/Images/sunflower.png",tempEnemy.getX(),tempEnemy.getY());
+		GImage image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		add(image);
 		
 		tempEnemy = new Enemy (750,250,EnemyType.WORM);
-		image = new GImage("/Images/worm.png",tempEnemy.getX(),tempEnemy.getY());
+		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		add(image);
 		enemiesMap.put(image, tempEnemy);
 			
 		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
-		image = new GImage("/Images/spider.png",tempEnemy.getX(),tempEnemy.getY());
+		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		add(image);
 		
