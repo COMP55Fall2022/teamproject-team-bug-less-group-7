@@ -25,6 +25,7 @@ public class MainGame extends GraphicsProgram {
 	private int xVel; //left and right velocity of the player object
 	private int fireRate = 0;
 	private Boolean isPrevOrientationRight = null; // used for wall detection
+	private int playerWidth;
 	private Boolean isDead = false;
 		
 	private Timer timer = new Timer(30, this);
@@ -187,24 +188,29 @@ public class MainGame extends GraphicsProgram {
 			case MELEE: {
 				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerSword.png");}
 				else {playerImage.setImage("/Images/leftPlayerSword.png");}
-				break;
+				playerWidth = (int)playerImage.getWidth();
+				return;
 			}
 			case HANDHELD:
 				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerGun.png");}
 				else {playerImage.setImage("/Images/leftPlayerGun.png");}
-				break;
+				playerWidth = (int)playerImage.getWidth();
+				return;
 			default:
 				System.out.println("Invalid weapon type : changePlayerImage()");
-				break;
+				return;
 			}
 		}
 		else {
-			System.out.println("test");
 			if (player.isRightOrientation) {
 				playerImage.setImage("/Images/rightPlayer.png");
+				playerWidth = (int)playerImage.getWidth();
+				return;
 			}
 			else {
 				playerImage.setImage("/Images/leftPlayer.png");
+				playerWidth = (int)playerImage.getWidth();
+				return;
 			}
 		}
 	}
@@ -214,9 +220,9 @@ public class MainGame extends GraphicsProgram {
 	 * @return true if player is colliding with a wall. False otherwise
 	 */
 	private boolean checkCollision() {
-		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()+.333*50, player.getY()-6),
-			getElementAt(player.getX()+.667*50, player.getY()-6)})) {
-				GObject obj = getElementAt(player.getX() + 25, player.getY()-6);
+		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()+.333*playerWidth, player.getY()-6),
+			getElementAt(player.getX()+.667*playerWidth, player.getY()-6)})) {
+				GObject obj = getElementAt(player.getX() + playerWidth/2, player.getY()-6);
 				player.turnOffJumping();
 				if (obj != null) {				
 					player.setY((int)obj.getY()+(int)obj.getHeight()+1);
@@ -226,11 +232,11 @@ public class MainGame extends GraphicsProgram {
 		
 		// functionality for ground detection
 		if(objectPlayerCollision(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
-		   getElementAt(player.getX() + playerImage.getWidth()-2, player.getY() + 54)})) {
+		   getElementAt(player.getX() + (playerWidth-2), player.getY() + 54)})) {
 			
 			player.isInAir = false;
 			GObject obj = getElementAt(player.getX() + 5, player.getY() + 52);
-			GObject obj2 = getElementAt(player.getX() + 50-5, player.getY()+52);
+			GObject obj2 = getElementAt(player.getX() + (playerWidth-5), player.getY()+52);
 			if (obj != null) {				
 				player.setY((int)obj.getY()-51);
 			}
@@ -248,20 +254,19 @@ public class MainGame extends GraphicsProgram {
 		    getElementAt(player.getX()-6, player.getY()+50)})) {
 			
 			GObject obj = getElementAt(player.getX() - 6, player.getY()+25);
-			if (obj != null) {				
+			if (obj != null) {		
 				player.setX((int)obj.getX()+(int)obj.getWidth());
 			}
 			isPrevOrientationRight = false;
-			
 			player.isOnWall = true;
 			return true;
 		}
-		else if(objectPlayerCollision(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
-				getElementAt(player.getX()+50+6, player.getY() + 50)})) {
+		else if(objectPlayerCollision(new GObject[] {getElementAt(player.getX()+playerWidth+6, player.getY()),
+				getElementAt(player.getX()+playerWidth+6, player.getY() + 50)})) {
 			
-			GObject obj = getElementAt(player.getX()+50+6, player.getY()+25);
+			GObject obj = getElementAt(player.getX()+playerWidth+6, player.getY()+25);
 			if (obj != null) {				
-				player.setX((int)obj.getX()-50);
+				player.setX((int)obj.getX()-playerWidth);
 			}
 			isPrevOrientationRight = true;
 			player.isOnWall = true;
@@ -426,60 +431,6 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 	}
-
-//	private void enemyAwareness() {
-//		//System.out.println("Called Function");
-//		for(Enemy all: enemies) {
-//		double m, ePointx, ePointy, dx, dy; 
-//		m = 0;
-//			ePointx = all.getX(); 		
-//			ePointy = all.getY();
-//			
-//			m = (ePointy - player.getY())/(ePointx - player.getX());
-//			
-////			if(m > 1) {
-////				dy = m;
-////				dx = +-1;
-////			}
-////			else {
-////				dx = m;
-////				dy = +-1;
-////			}
-//			if(ePointx > player.getX()) {
-//				dx = -1;
-//			} else {
-//				dx = 1;
-//			}
-//			
-//			dy = m;
-//			int count = 0;
-//			while(((ePointx != player.getX() || ePointy != player.getY())) && count < 500) {
-//				count++;
-//				ePointx += dx;
-//				ePointy += dy;
-//				System.out.println(dx + " = " + dy + " = " + m);
-//				System.out.println("e" +ePointx + " : " + ePointy);
-//				System.out.println("p" + player.getX()+ " : " + player.getY());
-//			
-//				GObject obj1 = getElementAt(ePointx, ePointy);
-//				System.out.println("X: " + Math.abs(player.getX()-ePointx));
-//				System.out.println("Y: " + Math.abs(player.getY()-ePointy));
-//				if(terrainMap.containsKey(obj1)) {
-//					all.switchAwareness(false);
-//					//System.out.println("sees terrain");
-//					return;
-//				}
-//				else if (Math.abs(player.getX()-ePointx) <= 20 && Math.abs(player.getY()-ePointy) <= 20) {
-//					all.switchAwareness(true);
-//					System.out.println("sees player");
-//					return;
-//				}
-				
-			
-//			}	
-			//all.switchAwareness(false);
-//		}
-//	}
 	
 	private void enemyAwareness() {
 		int ePointx, ePointy;
@@ -565,6 +516,7 @@ public class MainGame extends GraphicsProgram {
 	private void setupPlayer() {
 		player = new Player(200, 300);
 		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
+		playerWidth = (int)playerImage.getWidth();
 		add(playerImage);
 		
 	}
