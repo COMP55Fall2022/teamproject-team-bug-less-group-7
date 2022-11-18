@@ -119,16 +119,16 @@ public class Enemy extends GraphicsProgram{
 			case FLOWER:
 				bulletArr = new Bullet[5];
 				for (int i = 0; i < bulletArr.length; i++) {
-						bulletArr[i] = new Bullet(xAxis, yAxis, 2,180 - i*45,false);
+						bulletArr[i] = new Bullet(xAxis, yAxis, 5,180 - i*45,false);
 				}
 				break;
 			//shoots 1 bullet in the direction its facing horizontally
 			case BEATLE:
 				bulletArr = new Bullet[1];
 				if (isRightOrientation) {
-					bulletArr[0] = new Bullet(xAxis,yAxis,2,0, false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,5,0, false);
 				} else {
-					bulletArr[0] = new Bullet(xAxis,yAxis,2,180,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,5,180,false);
 				}
 				break;
 			//default

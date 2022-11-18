@@ -21,7 +21,7 @@ public class MainGame extends GraphicsProgram {
 	
 	
 	private Player player;
-	private GRect playerRect;
+	private GImage playerImage;
 	private int xVel; //left and right velocity of the player object
 	private int fireRate = 0;
 	private Boolean isPrevOrientationRight = null; // used for wall detection
@@ -36,8 +36,6 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
-	private ArrayList<Enemy> enemies; //ArrayList for all enemies
-	private ArrayList<GRect> enemyRects; //ArrayList for all enemy Rects
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
@@ -53,8 +51,6 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void run() {
 		keyList = new ArrayList<Integer>();
-		enemies = new ArrayList<Enemy>();
-		enemyRects = new ArrayList<GRect>();
 		
 		addKeyListeners();
 		setupTerrain();
@@ -101,20 +97,15 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		timerCount++;
-		playerRect.setLocation(player.getX(), player.getY());
+		playerImage.setLocation(player.getX(), player.getY());
 		updateBullet();
-
-//		// Moves all Enemy rects to follow all enemy objects
-//		for (int i = 0; i < enemies.size(); i++) {
-//			Enemy temp = enemies.get(i);
-//			enemyRects.get(i).setLocation(temp.getX(), temp.getY());
-//		}
 
 		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
 			if (xVel < RIGHT_VELOCITY) {
 				xVel += 2;
 			}
+			
 		}
 		// If the a key is held and the d key is not
 		else if (keyList.contains(65) && !keyList.contains(68)) {
@@ -133,6 +124,7 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 		player.checkOrientation(xVel);
+		changePlayerImage();
 
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
@@ -183,11 +175,39 @@ public class MainGame extends GraphicsProgram {
 		doEnemyActions();
 		
 		if (player.getY() > PROGRAMHEIGHT || player.getHearts() < 1) {
+			System.out.println("player is dead");
 			isDead = true;
 		}
 	}
 
 	
+	private void changePlayerImage() {
+		if (player.weapon != null) {
+			switch (player.weapon.getWeaponType()) {
+			case MELEE: {
+				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerSword.png");}
+				else {playerImage.setImage("/Images/leftPlayerSword.png");}
+				break;
+			}
+			case HANDHELD:
+				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerGun.png");}
+				else {playerImage.setImage("/Images/leftPlayerGun.png");}
+				break;
+			default:
+				System.out.println("Invalid weapon type : changePlayerImage()");
+				break;
+			}
+		}
+		else {
+			System.out.println("test");
+			if (player.isRightOrientation) {
+				playerImage.setImage("/Images/rightPlayer.png");
+			}
+			else {
+				playerImage.setImage("/Images/leftPlayer.png");
+			}
+		}
+	}
 	
 	/**
 	 * ONLY Checks player's left, right, top, and bottom collision. work hand-on-hand with objectPlayerCollision()
@@ -206,7 +226,7 @@ public class MainGame extends GraphicsProgram {
 		
 		// functionality for ground detection
 		if(objectPlayerCollision(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
-		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
+		   getElementAt(player.getX() + playerImage.getWidth()-2, player.getY() + 54)})) {
 			
 			player.isInAir = false;
 			GObject obj = getElementAt(player.getX() + 5, player.getY() + 52);
@@ -322,7 +342,7 @@ public class MainGame extends GraphicsProgram {
 		GObject obj4 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
 		
 		
-		if (val.isFriendly() == false && (obj1 == playerRect || obj2 == playerRect || obj3 == playerRect || obj4 == playerRect)) {
+		if (val.isFriendly() == false && (obj1 == playerImage || obj2 == playerImage || obj3 == playerImage || obj4 == playerImage)) {
 			if (!(player.getHitCooldown() > 0)) {				
 				player.setHearts(player.getHearts()-1);
 				heartGLabel.setLabel("Hearts: " + player.getHearts());
@@ -377,21 +397,16 @@ public class MainGame extends GraphicsProgram {
 			Enemy each = entry.getValue();
 			GImage eachImage = entry.getKey();
 			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEATLE || each.getEnemyType() == EnemyType.FLOWER)) {
-				//System.out.println("aware");
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
 					if (bullets != null) {
-//						System.out.println("firing");
 						for (int i = 0; i < bullets.length; i++) {
 							Bullet b = bullets[i];
 							GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
 							bulletMap.put(bImage,b);
 							add(bImage);
 						}
-//						for (Bullet e : bullets) {
-//							System.out.println(e.getTheta());
-//						}
 					} 
 				}
 			}
@@ -400,9 +415,12 @@ public class MainGame extends GraphicsProgram {
 				
 				if(getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
+					//eachImage.setImage("/Images/rightBullet.png");
 				}
 				else if (getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(false);
+					//eachImage.setImage("/Images/leftBullet.png");
+
 				}
 
 			}
@@ -472,9 +490,7 @@ public class MainGame extends GraphicsProgram {
 			ePointy = all.getY();
  
 			if(all.getEnemyType() != EnemyType.BEATLE && all.getEnemyType() != EnemyType.FLOWER) {continue;}
-			//Note: Make sure to change enemy isRightOrientation depending
-			// on where the player is 
-			//System.out.println(Math.abs(player.getX()-ePointx));
+ 
 			if (Math.abs(player.getX()-ePointx) <= 400 && Math.abs(player.getY()-ePointy) <= 150) {
 				all.switchAwareness(true);
 				//System.out.println("sees player");
@@ -548,8 +564,8 @@ public class MainGame extends GraphicsProgram {
 	
 	private void setupPlayer() {
 		player = new Player(200, 300);
-		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
-		add(playerRect);
+		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
+		add(playerImage);
 		
 	}
 	
@@ -570,15 +586,6 @@ public class MainGame extends GraphicsProgram {
 		add(image);
 		
 		}
-	
-//	private void setupEnemies() {
-//		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-//		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-//		enemyRect.setFillColor(Color.RED);
-//		enemyRect.setFilled(true);
-//		add(enemyRect);
-//		enemiesMap.put(enemyRect, tempEnemy);
-//	}
 
 	public void startGame() {
 		new MainGame().start();
