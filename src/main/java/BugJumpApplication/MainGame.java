@@ -21,10 +21,11 @@ public class MainGame extends GraphicsProgram {
 	
 	
 	private Player player;
-	private GRect playerRect;
+	private GImage playerImage;
 	private int xVel; //left and right velocity of the player object
 	private int fireRate = 0;
 	private Boolean isPrevOrientationRight = null; // used for wall detection
+	private int playerWidth;
 	private Boolean isDead = false;
 		
 	private Timer timer = new Timer(30, this);
@@ -36,8 +37,6 @@ public class MainGame extends GraphicsProgram {
 	private HashMap<GImage, Bullet> bulletMap = new HashMap<>();
 	
 	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
-	private ArrayList<Enemy> enemies; //ArrayList for all enemies
-	private ArrayList<GRect> enemyRects; //ArrayList for all enemy Rects
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
@@ -53,8 +52,6 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void run() {
 		keyList = new ArrayList<Integer>();
-		enemies = new ArrayList<Enemy>();
-		enemyRects = new ArrayList<GRect>();
 		
 		addKeyListeners();
 		setupTerrain();
@@ -101,20 +98,15 @@ public class MainGame extends GraphicsProgram {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		timerCount++;
-		playerRect.setLocation(player.getX(), player.getY());
+		playerImage.setLocation(player.getX(), player.getY());
 		updateBullet();
-
-//		// Moves all Enemy rects to follow all enemy objects
-//		for (int i = 0; i < enemies.size(); i++) {
-//			Enemy temp = enemies.get(i);
-//			enemyRects.get(i).setLocation(temp.getX(), temp.getY());
-//		}
 
 		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
 			if (xVel < RIGHT_VELOCITY) {
 				xVel += 2;
 			}
+			
 		}
 		// If the a key is held and the d key is not
 		else if (keyList.contains(65) && !keyList.contains(68)) {
@@ -133,6 +125,7 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 		player.checkOrientation(xVel);
+		changePlayerImage();
 
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
@@ -183,20 +176,53 @@ public class MainGame extends GraphicsProgram {
 		doEnemyActions();
 		
 		if (player.getY() > PROGRAMHEIGHT || player.getHearts() < 1) {
+			System.out.println("player is dead");
 			isDead = true;
 		}
 	}
 
 	
+	private void changePlayerImage() {
+		if (player.weapon != null) {
+			switch (player.weapon.getWeaponType()) {
+			case MELEE: {
+				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerSword.png");}
+				else {playerImage.setImage("/Images/leftPlayerSword.png");}
+				playerWidth = (int)playerImage.getWidth();
+				return;
+			}
+			case HANDHELD:
+				if (player.isRightOrientation) {playerImage.setImage("/Images/rightPlayerGun.png");}
+				else {playerImage.setImage("/Images/leftPlayerGun.png");}
+				playerWidth = (int)playerImage.getWidth();
+				return;
+			default:
+				System.out.println("Invalid weapon type : changePlayerImage()");
+				return;
+			}
+		}
+		else {
+			if (player.isRightOrientation) {
+				playerImage.setImage("/Images/rightPlayer.png");
+				playerWidth = (int)playerImage.getWidth();
+				return;
+			}
+			else {
+				playerImage.setImage("/Images/leftPlayer.png");
+				playerWidth = (int)playerImage.getWidth();
+				return;
+			}
+		}
+	}
 	
 	/**
 	 * ONLY Checks player's left, right, top, and bottom collision. work hand-on-hand with objectPlayerCollision()
 	 * @return true if player is colliding with a wall. False otherwise
 	 */
 	private boolean checkCollision() {
-		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()+.333*50, player.getY()-6),
-			getElementAt(player.getX()+.667*50, player.getY()-6)})) {
-				GObject obj = getElementAt(player.getX() + 25, player.getY()-6);
+		if (objectPlayerCollision(new GObject[] {getElementAt(player.getX()+.333*playerWidth, player.getY()-6),
+			getElementAt(player.getX()+.667*playerWidth, player.getY()-6)})) {
+				GObject obj = getElementAt(player.getX() + playerWidth/2, player.getY()-6);
 				player.turnOffJumping();
 				if (obj != null) {				
 					player.setY((int)obj.getY()+(int)obj.getHeight()+1);
@@ -206,11 +232,11 @@ public class MainGame extends GraphicsProgram {
 		
 		// functionality for ground detection
 		if(objectPlayerCollision(new GObject[]{getElementAt(player.getX()+2, player.getY() + 54), 
-		   getElementAt(player.getX() + playerRect.getWidth()-2, player.getY() + 54)})) {
+		   getElementAt(player.getX() + (playerWidth-2), player.getY() + 54)})) {
 			
 			player.isInAir = false;
 			GObject obj = getElementAt(player.getX() + 5, player.getY() + 52);
-			GObject obj2 = getElementAt(player.getX() + 50-5, player.getY()+52);
+			GObject obj2 = getElementAt(player.getX() + (playerWidth-5), player.getY()+52);
 			if (obj != null) {				
 				player.setY((int)obj.getY()-51);
 			}
@@ -228,20 +254,19 @@ public class MainGame extends GraphicsProgram {
 		    getElementAt(player.getX()-6, player.getY()+50)})) {
 			
 			GObject obj = getElementAt(player.getX() - 6, player.getY()+25);
-			if (obj != null) {				
+			if (obj != null) {		
 				player.setX((int)obj.getX()+(int)obj.getWidth());
 			}
 			isPrevOrientationRight = false;
-			
 			player.isOnWall = true;
 			return true;
 		}
-		else if(objectPlayerCollision(new GObject[] {getElementAt(player.getX()+50+6, player.getY()),
-				getElementAt(player.getX()+50+6, player.getY() + 50)})) {
+		else if(objectPlayerCollision(new GObject[] {getElementAt(player.getX()+playerWidth+6, player.getY()),
+				getElementAt(player.getX()+playerWidth+6, player.getY() + 50)})) {
 			
-			GObject obj = getElementAt(player.getX()+50+6, player.getY()+25);
+			GObject obj = getElementAt(player.getX()+playerWidth+6, player.getY()+25);
 			if (obj != null) {				
-				player.setX((int)obj.getX()-50);
+				player.setX((int)obj.getX()-playerWidth);
 			}
 			isPrevOrientationRight = true;
 			player.isOnWall = true;
@@ -304,6 +329,9 @@ public class MainGame extends GraphicsProgram {
 				}
 				return false;
 			}
+			else if (bulletMap.containsKey(gImage)) {
+				return false;
+			}
 			else if (terrainMap.containsKey(gImage) && terrainMap.get(gImage).getTerrainType() == TerrainType.SPIKE) {
 				player.setHearts(0);
 			} 
@@ -319,7 +347,7 @@ public class MainGame extends GraphicsProgram {
 		GObject obj4 = getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
 		
 		
-		if (val.isFriendly() == false && (obj1 == playerRect || obj2 == playerRect || obj3 == playerRect || obj4 == playerRect)) {
+		if (val.isFriendly() == false && (obj1 == playerImage || obj2 == playerImage || obj3 == playerImage || obj4 == playerImage)) {
 			if (!(player.getHitCooldown() > 0)) {				
 				player.setHearts(player.getHearts()-1);
 				heartGLabel.setLabel("Hearts: " + player.getHearts());
@@ -373,27 +401,18 @@ public class MainGame extends GraphicsProgram {
 		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
 			Enemy each = entry.getValue();
 			GImage eachImage = entry.getKey();
-			if (each.getAwareness()) {
-				//System.out.println("aware");
+			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEATLE || each.getEnemyType() == EnemyType.FLOWER)) {
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
 					if (bullets != null) {
-//						System.out.println("firing");
 						for (int i = 0; i < bullets.length; i++) {
 							Bullet b = bullets[i];
 							GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
 							bulletMap.put(bImage,b);
 							add(bImage);
 						}
-//						for (Bullet e : bullets) {
-//							System.out.println(e.getTheta());
-//						}
 					} 
-					else {
-						//TODO: Melee attack
-						
-					}
 				}
 			}
 			else {
@@ -401,79 +420,28 @@ public class MainGame extends GraphicsProgram {
 				
 				if(getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
+					//eachImage.setImage("/Images/rightBullet.png");
 				}
 				else if (getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(false);
+					//eachImage.setImage("/Images/leftBullet.png");
+
 				}
 
 			}
 		}
 	}
-
-//	private void enemyAwareness() {
-//		//System.out.println("Called Function");
-//		for(Enemy all: enemies) {
-//		double m, ePointx, ePointy, dx, dy; 
-//		m = 0;
-//			ePointx = all.getX(); 		
-//			ePointy = all.getY();
-//			
-//			m = (ePointy - player.getY())/(ePointx - player.getX());
-//			
-////			if(m > 1) {
-////				dy = m;
-////				dx = +-1;
-////			}
-////			else {
-////				dx = m;
-////				dy = +-1;
-////			}
-//			if(ePointx > player.getX()) {
-//				dx = -1;
-//			} else {
-//				dx = 1;
-//			}
-//			
-//			dy = m;
-//			int count = 0;
-//			while(((ePointx != player.getX() || ePointy != player.getY())) && count < 500) {
-//				count++;
-//				ePointx += dx;
-//				ePointy += dy;
-//				System.out.println(dx + " = " + dy + " = " + m);
-//				System.out.println("e" +ePointx + " : " + ePointy);
-//				System.out.println("p" + player.getX()+ " : " + player.getY());
-//			
-//				GObject obj1 = getElementAt(ePointx, ePointy);
-//				System.out.println("X: " + Math.abs(player.getX()-ePointx));
-//				System.out.println("Y: " + Math.abs(player.getY()-ePointy));
-//				if(terrainMap.containsKey(obj1)) {
-//					all.switchAwareness(false);
-//					//System.out.println("sees terrain");
-//					return;
-//				}
-//				else if (Math.abs(player.getX()-ePointx) <= 20 && Math.abs(player.getY()-ePointy) <= 20) {
-//					all.switchAwareness(true);
-//					System.out.println("sees player");
-//					return;
-//				}
-				
-			
-//			}	
-			//all.switchAwareness(false);
-//		}
-//	}
 	
 	private void enemyAwareness() {
 		int ePointx, ePointy;
 		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+
 			Enemy all = entry.getValue();
 			ePointx = all.getX(); 		
 			ePointy = all.getY();
  
-			//Note: Make sure to change enemy isRightOrientation depending
-			// on where the player is 
-			//System.out.println(Math.abs(player.getX()-ePointx));
+			if(all.getEnemyType() != EnemyType.BEATLE && all.getEnemyType() != EnemyType.FLOWER) {continue;}
+ 
 			if (Math.abs(player.getX()-ePointx) <= 400 && Math.abs(player.getY()-ePointy) <= 150) {
 				all.switchAwareness(true);
 				//System.out.println("sees player");
@@ -534,53 +502,42 @@ public class MainGame extends GraphicsProgram {
 		
 		collectable = new Collectable(800, 250, CollectableType.MELEE);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
+		collectablesMap.put(image, collectable);
 		add(image);
 		
 		collectable = new Collectable(800, 650, CollectableType.STAR);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		add(image);
-		
-		
 		collectablesMap.put(image, collectable);
+
 		add(new GImage(CollectableType.CHEESE.toString()));
 	}
 	
 	private void setupPlayer() {
 		player = new Player(200, 300);
-		playerRect = new GRect(player.getX(), player.getY(), 50, 50);
-		add(playerRect);
+		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
+		playerWidth = (int)playerImage.getWidth();
+		add(playerImage);
 		
 	}
 	
 	private void setupEnemies() {
 		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-		GImage image = new GImage("/Images/sunflower.png",tempEnemy.getX(),tempEnemy.getY());
+		GImage image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		add(image);
-		
 		
 		tempEnemy = new Enemy (750,250,EnemyType.WORM);
-		image = new GImage("/Images/worm.png",tempEnemy.getX(),tempEnemy.getY());
-		
-		enemiesMap.put(image, tempEnemy);
+		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		add(image);
+		enemiesMap.put(image, tempEnemy);
 			
 		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
-		image = new GImage("/Images/spider.png",tempEnemy.getX(),tempEnemy.getY());
+		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		add(image);
 		
-		System.out.println();
-	}
-	
-//	private void setupEnemies() {
-//		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-//		GRect enemyRect = new GRect(tempEnemy.getX(),tempEnemy.getY(),50,50);
-//		enemyRect.setFillColor(Color.RED);
-//		enemyRect.setFilled(true);
-//		add(enemyRect);
-//		enemiesMap.put(enemyRect, tempEnemy);
-//	}
+		}
 
 	public void startGame() {
 		new MainGame().start();
