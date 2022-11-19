@@ -40,6 +40,7 @@ public class MainGame extends GraphicsProgram {
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
+	private AudioPlayer audio;
 	
 	private int stars = 0;
 	
@@ -53,6 +54,8 @@ public class MainGame extends GraphicsProgram {
 	public void run() {
 		keyList = new ArrayList<Integer>();
 		
+		audio = audio.getInstance();
+		audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
 		addKeyListeners();
 		setupTerrain();
 		setupCollectables();
@@ -544,6 +547,8 @@ public class MainGame extends GraphicsProgram {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		new MainGame().start();
 	}
 }
