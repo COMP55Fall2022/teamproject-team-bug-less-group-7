@@ -138,13 +138,16 @@ public class Player extends GraphicsProgram {
 		 this.yAxis += dy;
 	 }
 	 
-	public void checkOrientation(int dx) {
+	public boolean checkOrientation(int dx) {
 	 if(dx < 0) {
 		 isRightOrientation = false;
+		 return true;
 	 }
 	 else if (dx > 0){
 		isRightOrientation = true;
+		return true;
 	}
+	 return false;
 }
 	 public boolean getIsJumping() {
 		 return this.isJumping;

@@ -86,6 +86,9 @@ public class Enemy extends GraphicsProgram{
 		isRightOrientation = condition;
 	}
 	
+	public void moveXAxis(int val) {
+		xAxis += val;
+	}
 	public void actionPerformed(ActionEvent e) {
 		if (willAttack == false) {
 			if (isRightOrientation == true) {

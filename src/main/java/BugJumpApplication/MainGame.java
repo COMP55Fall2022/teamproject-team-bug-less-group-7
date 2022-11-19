@@ -100,6 +100,8 @@ public class MainGame extends GraphicsProgram {
 		timerCount++;
 		playerImage.setLocation(player.getX(), player.getY());
 		updateBullet();
+		enemyAwareness();
+		doEnemyActions();
 
 		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
@@ -124,8 +126,10 @@ public class MainGame extends GraphicsProgram {
 				}
 			}
 		}
-		player.checkOrientation(xVel);
-		changePlayerImage();
+		if(player.checkOrientation(xVel)) {
+			changePlayerImage();
+		}
+		
 
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
@@ -138,7 +142,54 @@ public class MainGame extends GraphicsProgram {
 				player.isOnWall = false;
 			}
 		}
-		player.move(xVel, 0);
+		
+		if (player.getX() <= 100 && xVel < 0) {
+			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
+				GImage key = entry.getKey();
+				Terrain val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Collectable val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Enemy val = entry.getValue();
+
+				val.moveXAxis(-xVel);
+				if (val.getAwareness()) {
+					key.setLocation(val.getX(), val.getY());
+				}
+				
+			}
+		}
+		else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
+			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
+				GImage key = entry.getKey();
+				Terrain val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Collectable val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Enemy val = entry.getValue();
+				val.moveXAxis(-xVel);
+				if (val.getAwareness()) {
+					key.setLocation(val.getX(), val.getY());
+				}
+			}
+		}
+		else {
+			
+			player.move(xVel, 0);
+		}	
+
 		
 		// adding a bullet on the screen when pressing Space
 		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
@@ -172,8 +223,7 @@ public class MainGame extends GraphicsProgram {
 			}
 		}
 		if (player.weapon != null) {fireRate--;}
-		enemyAwareness();
-		doEnemyActions();
+
 		
 		if (player.getY() > PROGRAMHEIGHT || player.getHearts() < 1) {
 			System.out.println("player is dead");
