@@ -1,4 +1,5 @@
 package edu.pacific.comp55.starter;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GImage;
@@ -36,5 +37,11 @@ public class SomePane extends GraphicsPane {
 		if (obj == img) {
 			program.switchToMenu();
 		}
+	}
+
+	@Override
+	public void performAction(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,38 +1,36 @@
-//package BugJumpApplication;
-//
-//import edu.pacific.comp55.starter.GraphicsApplication;
-//
-//public class MainApplication extends GraphicsApplication {
-////	public static final int WINDOW_WIDTH = 800;
-////	public static final int WINDOW_HEIGHT = 600;
-////	public static final String MUSIC_FOLDER = "sounds";
-////	private static final String[] SOUND_FILES = { "r2d2.mp3", "somethinlikethis.mp3" };
-////
-////	private MainMenu menu;
-////	private MainGame game;
-////
-////	
-////	public void init() {
-////		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-////	}
-////
-////	public void run() {
-////		System.out.println("Hello, world!");
-////		menu = new MainMenu(this);
-////		game = new MainGame(this);
-////		switchToMenu();
-////	}
-////
-////	public void switchToMenu() {
-////		switchToScreen(menu);
-////	}
-////
-////	public void switchToSome() {
-////		switchToScreen(somePane);
-////	}
-////
-////	
-////	public static void main(String[] args) {
-////		new MainApplication().start();
-////	}
-//}
+package BugJumpApplication;
+
+import edu.pacific.comp55.starter.GraphicsApplication;
+
+public class MainApplication extends GraphicsApplication {
+	private static final int PROGRAMHEIGHT = 1080;
+	private static final int PROGRAMWIDTH = 1920;
+
+
+	private MainMenu menu;
+	private MainGame game;
+	
+	public void init() {
+		setSize(PROGRAMHEIGHT, PROGRAMWIDTH);
+	}
+
+	public void run() {
+		setupInteractions();
+		menu = new MainMenu(this);
+		game = new MainGame(this);
+		switchToMenu();
+	}
+
+	public void switchToMenu() {
+		switchToScreen(menu);
+	}
+
+	public void switchToGame() {
+		switchToScreen(game);
+	}
+
+	
+	public static void main(String[] args) {
+		new MainApplication().start();
+	}
+}

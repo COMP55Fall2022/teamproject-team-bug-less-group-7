@@ -1,8 +1,10 @@
-package edu.pacific.comp55.starter;
+package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
+import edu.pacific.comp55.starter.Displayable;
 
 public interface Interfaceable extends Displayable {
 	public void mousePressed(MouseEvent e);

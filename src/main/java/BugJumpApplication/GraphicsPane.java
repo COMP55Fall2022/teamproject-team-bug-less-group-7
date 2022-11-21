@@ -1,4 +1,4 @@
-package edu.pacific.comp55.starter;
+package BugJumpApplication;
 
 
 
@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+
+import edu.pacific.comp55.starter.Interfaceable;
 
 public abstract class GraphicsPane implements Interfaceable {
 	@Override

@@ -1,6 +1,7 @@
 package edu.pacific.comp55.starter;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GObject;
@@ -33,5 +34,11 @@ public class MenuPane extends GraphicsPane {
 		if (obj == rect) {
 			program.switchToSome();
 		}
+	}
+
+	@Override
+	public void performAction(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
