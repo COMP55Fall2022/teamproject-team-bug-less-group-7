@@ -17,7 +17,6 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {
 		setupInteractions();
 		menu = new MainMenu(this);
-		game = new MainGame(this);
 		switchToMenu();
 	}
 
@@ -26,7 +25,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToGame() {
-		switchToScreen(game);
+		switchToScreen(new MainGame(this));
 	}
 
 	

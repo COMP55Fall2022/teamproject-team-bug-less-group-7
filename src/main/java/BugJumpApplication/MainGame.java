@@ -44,28 +44,6 @@ public class MainGame extends GraphicsPane {
 	
 	private int stars = 0;
 	
-//	@Override
-//	protected void init() {
-//		setSize(PROGRAMHEIGHT, PROGRAMWIDTH);
-//		requestFocus();
-//	}
-	
-//	@Override
-//	public void run() {
-//		keyList = new ArrayList<Integer>();
-//		
-//		//audio = audio.getInstance();
-//		//audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
-//		addKeyListeners();
-//		setupTerrain();
-//		setupCollectables();
-//		setupPlayer();
-//		setupGUI();
-//		setupEnemies();
-//		getGCanvas().setBackground(Color.decode("#8addf2")); 
-//		timer.start();
-//		player.startTimer();
-//	}
 	
 	public MainGame(MainApplication e) {
 		program = e;
@@ -469,9 +447,7 @@ public class MainGame extends GraphicsPane {
 			}
 			return true;
 		}
-//		if (val.isFriendly() && enemyRects.contains(obj4) enemiesMap.containsKey(obj1) || enemiesMap.containsKey(obj2) || enemiesMap.containsKey(obj3) || enemiesMap.containsKey(obj4)) {
-//			return true;
-//		}
+
 		if (val.isFriendly() && ((enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4))){
 			return true;
 		}
@@ -534,12 +510,9 @@ public class MainGame extends GraphicsPane {
 				
 				if((program.getElementAt(each.getX()-2, each.getY()+52) == background || program.getElementAt(each.getX()-2, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
-					//eachImage.setImage("/Images/rightBullet.png");
 				}
 				else if ((program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(false);
-					//eachImage.setImage("/Images/leftBullet.png");
-
 				}
 
 			}
@@ -656,14 +629,6 @@ public class MainGame extends GraphicsPane {
 		program.add(image);
 		
 		}
-
-//	public void startGame() {
-//		new MainGame().start();
-//	}
-//	
-//	public static void main(String[] args) {
-//		new MainGame().start();
-//	}
 
 }
 

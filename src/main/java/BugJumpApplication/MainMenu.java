@@ -55,9 +55,5 @@ public class MainMenu extends GraphicsPane {
 		return;
 	}
 	
-//	public static void main(String[] args) {
-//		new MainMenu().start();
-//	}
-	
 	
 }
