@@ -28,7 +28,6 @@ public class Player extends GraphicsProgram {
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
 	public Player(int x,int y) {
-		//TODO: instantiate weapon
 		xAxis = x;
 		yAxis = y;
 		isRightOrientation = true;
@@ -37,13 +36,12 @@ public class Player extends GraphicsProgram {
 		initialTime = -1;
 		timerCount = 0;
 		
-		hearts = 2;
+		hearts = 4;
 		dy = 0;
-		}
+	}
 	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		return;
 	}
 	
@@ -54,7 +52,6 @@ public class Player extends GraphicsProgram {
 	private void updateCounters() {
 		timerCount++;
 		if (hitCooldown > 0) {hitCooldown--;}
-
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -77,13 +74,27 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void jump() {
-		if(!isJumping) {
-			return;
-		}		
-		
+		if(!isJumping) {return;}		
 		dy = (timerCount - initialTime) - 15;
 	}
-
+	
+	public void move(int dx, int dy) {
+		checkOrientation(dx);
+		 this.xAxis += dx;
+		 this.yAxis += dy;
+	 }
+	 
+	public boolean checkOrientation(int dx) {
+		 if(dx < 0) {
+			 isRightOrientation = false;
+			 return true;
+		 }
+		 else if (dx > 0){
+			isRightOrientation = true;
+			return true;
+		 }
+		 return false;
+	}
 	public void turnOnJumping() {
 		if(!isJumping && !isInAir || isOnWall) {
 			isJumping = true;
@@ -92,7 +103,6 @@ public class Player extends GraphicsProgram {
 	}
 	
 	public void turnOffJumping() {
-//		initialHeight = 0;
 		isJumping = false;
 		isOnWall = false;
 	}
@@ -132,25 +142,15 @@ public class Player extends GraphicsProgram {
 		}
 	}
 	
-	public void move(int dx, int dy) {
-		checkOrientation(dx);
-		 this.xAxis += dx;
-		 this.yAxis += dy;
-	 }
-	 
-	public boolean checkOrientation(int dx) {
-	 if(dx < 0) {
-		 isRightOrientation = false;
-		 return true;
-	 }
-	 else if (dx > 0){
-		isRightOrientation = true;
-		return true;
+	public boolean isDead() {
+		if (hearts <= 0) {return true;}
+		return false;
 	}
-	 return false;
-}
-	 public boolean getIsJumping() {
-		 return this.isJumping;
-	 }
+	
+	public boolean getIsJumping() {
+		return this.isJumping;
+	}
+	
+
 	
 }
