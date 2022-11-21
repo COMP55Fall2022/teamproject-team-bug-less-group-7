@@ -15,11 +15,11 @@ public enum TerrainType {
 		
 	public TerrainType getType(int num) {
 		switch(num) {
-		case 0: return TerrainType.SPIKE;
-		case 1: return TerrainType.GRASS;
-		case 2: return TerrainType.DIRT;
+			case 0: return TerrainType.SPIKE;
+			case 1: return TerrainType.GRASS;
+			case 2: return TerrainType.DIRT;
 		}
-	return null;
+		return null;
 		
 	}
 }

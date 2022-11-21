@@ -3,6 +3,7 @@ package BugJumpApplication;
 import java.awt.event.MouseEvent;
 
 import acm.program.GraphicsProgram;
+import edu.pacific.comp55.starter.GraphicsPane;
 
 public class MainMenu extends GraphicsProgram {
 	private static final int PROGRAMWIDTH = 1920;
@@ -27,9 +28,9 @@ public class MainMenu extends GraphicsProgram {
 		main.startGame();
 	}
 	
+//	public static void main(String[] args) {
+//		new MainMenu().start();
+//	}
 	
-	public static void main(String[] args) {
-		new MainMenu().start();
-	}
 	
 }

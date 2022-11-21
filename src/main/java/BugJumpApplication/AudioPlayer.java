@@ -1,4 +1,4 @@
-package edu.pacific.comp55.starter;
+package BugJumpApplication;
 
 
 /*
@@ -53,6 +53,7 @@ public final class AudioPlayer {
 	 *            filename for the sound, make sure to include the extension
 	 */
 	public void playSound(String folder, String filename) {
+		System.out.println("Sound");
 		playSound(folder, filename, false);
 	}
 
@@ -76,7 +77,7 @@ public final class AudioPlayer {
 		});
 	}
 
-	private void playSoundWithOptions(String folder, String filename, boolean shouldLoop) {
+	public void playSoundWithOptions(String folder, String filename, boolean shouldLoop) {
 		MediaPlayer mPlayer = findSound(folder, filename);
 		if (mPlayer == null || mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
 			mPlayer = createMediaPlayer(folder, filename);

@@ -3,19 +3,21 @@ package BugJumpApplication;
 import javax.swing.Timer;
 import acm.program.GraphicsProgram;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import acm.util.RandomGenerator;
 
-public class Enemy {
+public class Enemy extends GraphicsProgram{
 	
-	private Timer time;
+	private Timer timer = new Timer(35, this);
 	private int xAxis;
 	private int yAxis;
+	private int lastShotTimer;
+	private int lives = 4;
+
 	private boolean isRightOrientation;
 	private boolean willAttack;
-	private boolean hitBarrier;
-	private RandomGenerator rgen = RandomGenerator.getInstance();
+	
 	private EnemyType eType;
+
 	
 	
 	// Enemy constructor; determines type, position, and default variables
@@ -25,7 +27,15 @@ public class Enemy {
 		this.eType = eType;
 		this.willAttack = false;
 		this.isRightOrientation = true;
+		this.timer.start();
+		lastShotTimer = 0;
 	}
+	
+	@Override
+	public void run() {
+		return;
+	}
+	
 	//getters and setters
 	public EnemyType getEnemyType() {
 		return eType;
@@ -51,11 +61,34 @@ public class Enemy {
 		return willAttack;
 	}
 	
+	public int getLastShot() {
+		return lastShotTimer;
+	}
+	
+	public void setLastShot(int lst) {
+		lastShotTimer = lst;
+	}
+	
+	public int getLives() {
+		return lives;
+	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+	
 	//TODO: find a way to get the enemies to notice the player and act accordingly
 	public void switchAwareness(boolean input) {
 		willAttack = input;
 	}
 	
+	public void setIsRightOrientation(boolean condition) {
+		isRightOrientation = condition;
+	}
+	
+	public void moveXAxis(int val) {
+		xAxis += val;
+	}
 	public void actionPerformed(ActionEvent e) {
 		if (willAttack == false) {
 			if (isRightOrientation == true) {
@@ -63,26 +96,16 @@ public class Enemy {
 			}
 			else {
 				xAxis = xAxis - 5;
-
-			}
-		}
-		if (hitBarrier == true) {
-			if (isRightOrientation == true) {
-				isRightOrientation = false;
-			}
-			else {
-				isRightOrientation = true;
 			}
 		}
 	}
-	//TODO: make barriers for enemy to hit.
 	
 	public void startTimer() {
-		time.start();
+		timer.start();
 	}
 	
 	public void stopTimer() {
-		time.stop();
+		timer.stop();
 	}
 	
 	
@@ -91,24 +114,24 @@ public class Enemy {
 		//Array of bullets to be returned
 		Bullet[] bulletArr;
 		switch(eType) {
-			//if melee enemy
 			case SPIDER:
+				return null;
 			case WORM:
 				return null;
 			//shoots 5 bullets in a flower shape, left, left-up, up, right-up, and right
 			case FLOWER:
 				bulletArr = new Bullet[5];
 				for (int i = 0; i < bulletArr.length; i++) {
-						bulletArr[i] = new Bullet(xAxis, yAxis, 2,180 + i*45,false);
+						bulletArr[i] = new Bullet(xAxis, yAxis, 5,180 - i*45,false);
 				}
 				break;
 			//shoots 1 bullet in the direction its facing horizontally
 			case BEATLE:
 				bulletArr = new Bullet[1];
 				if (isRightOrientation) {
-					bulletArr[0] = new Bullet(xAxis,yAxis,2,0,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,5,0, false);
 				} else {
-					bulletArr[0] = new Bullet(xAxis,yAxis,2,180,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,5,180,false);
 				}
 				break;
 			//default

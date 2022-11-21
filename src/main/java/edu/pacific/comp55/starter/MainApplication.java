@@ -9,6 +9,7 @@ public class MainApplication extends GraphicsApplication {
 	private MenuPane menu;
 	private int count;
 
+	
 	public void init() {
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -33,8 +34,8 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	private void playRandomSound() {
-		AudioPlayer audio = AudioPlayer.getInstance();
-		audio.playSound(MUSIC_FOLDER, SOUND_FILES[count % SOUND_FILES.length]);
+		//AudioPlayer audio = AudioPlayer.getInstance();
+		//audio.playSound(MUSIC_FOLDER, SOUND_FILES[count % SOUND_FILES.length]);
 	}
 	
 	public static void main(String[] args) {
