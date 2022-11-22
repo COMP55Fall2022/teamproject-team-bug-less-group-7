@@ -69,9 +69,4 @@ public abstract class GraphicsPane implements Interfaceable {
 		// TODO Auto-generated method stub
 	}
 
-	public void showWinningScreen() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

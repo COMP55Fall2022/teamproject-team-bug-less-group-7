@@ -4,16 +4,15 @@ package BugJumpApplication;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import org.apache.commons.math3.analysis.function.Add;
 
 import acm.graphics.*;
-
 
 
 public class MainGame extends GraphicsPane {
@@ -47,6 +46,7 @@ public class MainGame extends GraphicsPane {
 	private AudioPlayer audio;
 	private String Victory;
 	Dimension dimension;
+
 	
 	private int stars = 0;
 	
@@ -77,7 +77,9 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
+
 		setupWinningScreen();
+
 		
 	}
 
@@ -107,8 +109,6 @@ public class MainGame extends GraphicsPane {
 	public void setHearts(int s) {
 		stars = s;
 	}
-	
-	//TODO: Implement keypress P to pause
 	
 	/**
 	 * Gets the keycode of the last key pressed by the player. 
@@ -685,6 +685,7 @@ public class MainGame extends GraphicsPane {
 		GButton mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2+50, victory.getY()+100, 200, 100, Color.decode("#879383"));
 		program.add(mainMenuButton);		
 	}
+
 
 }
 

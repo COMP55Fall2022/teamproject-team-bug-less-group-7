@@ -133,8 +133,8 @@ public class Player extends GraphicsProgram {
 
 	public void setHearts(int h) {
 		hearts = h;
-		if (hearts > 4) {
-			hearts = 4;
+		if (hearts > 3) {
+			hearts = 3;
 		}
 	}
 	
