@@ -104,6 +104,8 @@ public class MainGame extends GraphicsPane {
 		stars = s;
 	}
 	
+	//TODO: Implement keypress P to pause
+	
 	/**
 	 * Gets the keycode of the last key pressed by the player. 
 	 * Adds key pressed to a list of all keys pressed on the keyboard at once
