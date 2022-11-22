@@ -28,6 +28,7 @@ public class MainApplication extends GraphicsApplication {
 		switchToScreen(new MainGame(this));
 	}
 
+	//TODO: Implement switchToPause
 	
 	public static void main(String[] args) {
 		new MainApplication().start();
