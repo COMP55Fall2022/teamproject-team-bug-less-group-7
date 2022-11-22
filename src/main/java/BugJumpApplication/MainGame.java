@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -16,13 +17,12 @@ import acm.graphics.*;
 
 
 public class MainGame extends GraphicsPane {
-	private static final int PROGRAMHEIGHT = 1080;
-	private static final int PROGRAMWIDTH = 1920;
 	private static final int RIGHT_VELOCITY = 10;
 	private static final int LEFT_VELOCITY = -10;
 	
-	private MainApplication program;
-	
+	/////////////////////////////////////////////////////////////
+
+	/* All player's variables used in this class */
 	private Player player;
 	private GImage playerImage;
 	private int xVel; //left and right velocity of the player object
@@ -30,25 +30,39 @@ public class MainGame extends GraphicsPane {
 	private Boolean isPrevOrientationRight; // used for wall detection
 	private int playerWidth;
 		
-	private int timerCount;
-	private boolean isGamePaused;
-	
+	/////////////////////////////////////////////////////////////
+
+	/* Data Structures that holds all object in game scene */
 	private HashMap<GImage, Collectable> collectablesMap;
 	private HashMap<GImage, Enemy> enemiesMap;
 	private HashMap<GImage, Terrain> terrainMap;
 	private HashMap<GImage, Bullet> bulletMap;
 	
-	private ArrayList<Integer> keyList; //Arraylist of all keys pressed at once
+	//Arraylist of all keys pressed at once
+	private ArrayList<Integer> keyList;
+	
+	
+	/////////////////////////////////////////////////////////////
+
+	/* Variables that are convenient for the game */
+	private int timerCount;
+	private boolean isGamePaused;
+	private int stars = 0;
+	private MainApplication program;
+	private Dimension dimension;
+	
+	
+	/////////////////////////////////////////////////////////////
 	
 	private GLabel starsGlable;
 	private GLabel heartGLabel;
 	private GImage background;
 	private AudioPlayer audio;
-	private String Victory;
-	Dimension dimension;
-
+	private GRect victoryBorder;
+	private GParagraph victory;
+	private GButton nextLevelButton;
 	
-	private int stars = 0;
+	private GButton mainMenuButton;
 	
 	
 	public MainGame(MainApplication e) {
@@ -77,10 +91,6 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
-
-		setupWinningScreen();
-
-		
 	}
 
 	@Override
@@ -96,6 +106,10 @@ public class MainGame extends GraphicsPane {
 		playerImage = null;
 		starsGlable = null;
 		heartGLabel = null;
+		victoryBorder = null;
+		victory = null;
+		nextLevelButton = null;
+		mainMenuButton = null;
 	
 		
 	}
@@ -130,6 +144,14 @@ public class MainGame extends GraphicsPane {
 	public void keyReleased(KeyEvent e) {
 		if (keyList.contains(e.getKeyCode())) {
 			keyList.remove(keyList.indexOf(e.getKeyCode()));
+		}
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		GObject obj = program.getElementAt(e.getX(), e.getY());
+		if (obj == mainMenuButton) {
+			program.switchToMenu();
 		}
 	}
 	
@@ -326,14 +348,12 @@ public class MainGame extends GraphicsPane {
 		if(objectPlayerCollision(new GObject[]{program.getElementAt(player.getX()+2, player.getY() + 54), 
 		   program.getElementAt(player.getX() + (playerWidth-2), player.getY() + 54)})) {
 			
-//			System.out.print("3");
 
 			player.isInAir = false;
 			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 55);
 			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+55);
 			
-//			System.out.println(obj == background);
-//			System.out.println(obj2 == background);
+
 			
 			//obj != null
 			if (obj != null && obj != background) {				
@@ -353,7 +373,6 @@ public class MainGame extends GraphicsPane {
 		if (objectPlayerCollision(new GObject[] {program.getElementAt(player.getX()-6, player.getY()),
 		    program.getElementAt(player.getX()-6, player.getY()+50)})) {
 			
-//			System.out.print("1");
 			GObject obj = program.getElementAt(player.getX() - 6, player.getY()+25);
 			if (obj != null && obj != background) {		
 				player.setX((int)obj.getX()+(int)obj.getWidth());
@@ -365,7 +384,6 @@ public class MainGame extends GraphicsPane {
 		else if(objectPlayerCollision(new GObject[] {program.getElementAt(player.getX()+playerWidth+6, player.getY()),
 				program.getElementAt(player.getX()+playerWidth+6, player.getY() + 50)})) {
 			
-//			System.out.print("2");
 			GObject obj = program.getElementAt(player.getX()+playerWidth+6, player.getY()+25);
 			if (obj != null && obj != background) {				
 				player.setX((int)obj.getX()-playerWidth);
@@ -404,6 +422,9 @@ public class MainGame extends GraphicsPane {
 						player.setHearts(player.getHearts()+1);
 						heartGLabel.setLabel("Hearts: " + player.getHearts());
 						
+						break;
+					case CHEESE:
+						setupWinningScreen();
 						break;
 					case STAR:
 						//Increments total stars by 1;
@@ -552,6 +573,51 @@ public class MainGame extends GraphicsPane {
 		}
 	}
 	
+	private void stopGame() {
+		isGamePaused = true;
+		player.stopTimer();
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			entry.getValue().stopTimer();
+		}
+		
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			entry.getValue().stopTimer();
+		}
+
+	}
+	private void continueGame() {
+		isGamePaused = false;
+		player.startTimer();
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			entry.getValue().startTimer();
+		}
+		
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			entry.getValue().startTimer();
+		}
+	}
+	
+	public void setupWinningScreen() {
+		stopGame();
+		
+		victoryBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
+		victoryBorder.setFillColor(Color.decode("#5f6c5a"));
+		victoryBorder.setFilled(true);
+		program.add(victoryBorder);
+		
+		victory = new GParagraph("Victory!" , 0, 0);
+		victory.setFont("Ariel-Bold-90");
+		victory.setColor(Color.white);
+		victory.setLocation(dimension.getWidth()/2-victory.getWidth()/2, victoryBorder.getY()+victory.getHeight()+5);
+		program.add(victory);
+		
+		nextLevelButton = new GButton("Next Level", dimension.getWidth()/2-200-50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		program.add(nextLevelButton);
+		
+		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2+50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		program.add(mainMenuButton);		
+	}
+	
 	/**
 	 * Sets up the collectables on the main window
 	 */
@@ -594,13 +660,13 @@ public class MainGame extends GraphicsPane {
 	private void setupCollectables() {
 		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
 		GImage image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-		program.add(image);
 		collectablesMap.put(image, collectable);
+		program.add(image);
 		
 		collectable = new Collectable(400, 450, CollectableType.HANDHELD);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-		program.add(image);
 		collectablesMap.put(image, collectable);
+		program.add(image);
 		
 		collectable = new Collectable(800, 250, CollectableType.MELEE);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
@@ -609,10 +675,13 @@ public class MainGame extends GraphicsPane {
 		
 		collectable = new Collectable(800, 650, CollectableType.STAR);
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-		program.add(image);
 		collectablesMap.put(image, collectable);
+		program.add(image);
 
-		program.add(new GImage(CollectableType.CHEESE.toString()));
+		collectable = new Collectable(1500, 600, CollectableType.CHEESE);
+		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
+		collectablesMap.put(image, collectable);
+		program.add(image);
 	}
 	
 	private void setupPlayer() {
@@ -640,51 +709,6 @@ public class MainGame extends GraphicsPane {
 		program.add(image);
 		
 		}
-	
-	private void stopGame() {
-		isGamePaused = true;
-		player.stopTimer();
-		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-			entry.getValue().stopTimer();
-		}
-		
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-			entry.getValue().stopTimer();
-		}
-
-	}
-	private void continueGame() {
-		isGamePaused = false;
-		player.startTimer();
-		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-			entry.getValue().startTimer();
-		}
-		
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-			entry.getValue().startTimer();
-		}
-	}
-	
-	public void setupWinningScreen() {
-		stopGame();
-		
-		GRect victoryBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
-		victoryBorder.setFillColor(Color.decode("#5f6c5a"));
-		victoryBorder.setFilled(true);
-		program.add(victoryBorder);
-		
-		GParagraph victory = new GParagraph("Victory!" , 0, 0);
-		victory.setFont("Ariel-Bold-90");
-		victory.setColor(Color.white);
-		victory.setLocation(dimension.getWidth()/2-victory.getWidth()/2, victoryBorder.getY()+victory.getHeight()+5);
-		program.add(victory);
-		
-		GButton continueButton = new GButton("Continue", dimension.getWidth()/2-200-50, victory.getY()+100, 200, 100, Color.decode("#879383"));
-		program.add(continueButton);
-		
-		GButton mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2+50, victory.getY()+100, 200, 100, Color.decode("#879383"));
-		program.add(mainMenuButton);		
-	}
 
 
 }

@@ -1,71 +1,63 @@
 package BugJumpApplication;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GLabel;
-import acm.graphics.GRect;
+import acm.graphics.GObject;
 
 
 public class MainMenu extends GraphicsPane {
-//	private static final int PROGRAMWIDTH = 1920;
-//	private static final int PROGRAMHEIGHT = 1080;
+
 	private MainApplication program;
+	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+
+	GLabel title;
+	GButton playGButton;
+	GButton tutorialGButton;
+	GButton quitGButton;
 
 	
 	public MainMenu(MainApplication e) {
 		super();
 		program = e;
 	}
-	GLabel title = new GLabel("Bug Jump", 400, 200);
-	GRect play = new GRect (200, 270, 600, 100);
-	GLabel playButton = new GLabel("Play", 470, 330);
-	GRect tutorial = new GRect(200, 430, 600, 100);
-	GLabel tutorialButton = new GLabel("Tutorial", 430, 490);
-	GRect quit = new GRect(200, 590, 600, 100);
-	GLabel quitButton = new GLabel("Quit", 470, 650);
 
 @Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		program.switchToLevelSelector();
+		GObject obj = program.getElementAt(e.getX(), e.getY());
+		if (obj == null) {return;}
+		
+		if (obj == playGButton) {
+			program.switchToLevelSelector();			
+		}
+		else if (obj == quitGButton) {
+			System.exit(0);
+		}
 	}
 
 	@Override
 	public void showContents() {
-		//GRect rect = new GRect(500, 300, 100, 100);
-		//rect.setFillColor(Color.GREEN);
-		//rect.setFilled(true);
-		//add(rect);
+		title = new GLabel("Bug Jump", 0, 200);
+		playGButton = new GButton("Play", 0, 430, 600, 100);
+		tutorialGButton = new GButton("Tutorial", 0, 590, 600, 100);
+		quitGButton = new GButton("Quit", 0, 750, 600, 100);
 		
+		title.setFont("Arial-Bold-100");
+		title.setLocation(dimension.getWidth()/2-title.getWidth()/2, title.getY());
 		program.add(title);
-		title.setFont("Arial-Bold-60");
 		
-		program.add(play);		
-		program.add(playButton);
-		playButton.setFont("Arial-Bold-40");
+		playGButton.setLocation(dimension.getWidth()/2-playGButton.getWidth()/2, playGButton.getY());
+		program.add(playGButton);
 		
-		program.add(tutorial);
-		program.add(tutorialButton);
-		tutorialButton.setFont("Arial-Bold-40");
+		tutorialGButton.setLocation(dimension.getWidth()/2-tutorialGButton.getWidth()/2, tutorialGButton.getY());
+		program.add(tutorialGButton);
 		
-		program.add(quit);
-		program.add(quitButton);
-		quitButton.setFont("Arial-Bold-40");
-		
-		
-		//program.add(new GRect(500, 300, 100, 100));
-		//program.add(new GLabel("Bug Jump",500, 200));
-		
-		
-		
-		
-	
-		
-	}
-
-	private void add(GRect rect) {
-		// TODO Auto-generated method stub
+		quitGButton.setLocation(dimension.getWidth()/2-quitGButton.getWidth()/2, quitGButton.getY());
+		program.add(quitGButton);
 		
 	}
 
@@ -73,6 +65,10 @@ public class MainMenu extends GraphicsPane {
 	public void hideContents() {
 		// TODO Auto-generated method stub
 		program.removeAll();
+		title = null;
+		playGButton = null;
+		tutorialGButton = null;
+		quitGButton = null;
 	}
 	
 	

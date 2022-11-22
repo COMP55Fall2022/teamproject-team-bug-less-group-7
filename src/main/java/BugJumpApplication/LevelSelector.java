@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 
@@ -15,6 +16,7 @@ public class LevelSelector extends GraphicsPane {
 	private final static double BUTTONWIDTH = 400;
 	private final static double BUTTONHEIGHT = 100;
 	
+	private GImage backArrow;
 	private GButton level1;
 	private GButton level2;
 	private GButton level3;
@@ -37,6 +39,10 @@ public class LevelSelector extends GraphicsPane {
 		System.out.println(dimension);
 		
 		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
+		backArrow = new GImage("/Images/backArrow.png", 10, 10);
+		backArrow.setSize(100, 75);
+		program.add(backArrow);
+		
 		level1 = new GButton("Level 1", dimension.getWidth()/2-BUTTONWIDTH/2-BUTTONWIDTH, 400, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
 		level1.setColor(Color.white);
 		level2 = new GButton("Level 2", dimension.getWidth()/2-BUTTONWIDTH/2+BUTTONWIDTH, 400, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
@@ -61,9 +67,17 @@ public class LevelSelector extends GraphicsPane {
 
 	@Override
 	public void hideContents() {
-		// TODO Auto-generated method stub
 		program.getGCanvas().setBackground(Color.white);
-		
+		program.removeAll();
+		backArrow = null;
+		level1 = null;
+		level2 = null;
+		level3 = null;
+		level4 = null;
+		level5 = null;
+		level6 = null;
+		level7 = null;
+		level8 = null;
 	}
 
 	@Override
@@ -77,7 +91,10 @@ public class LevelSelector extends GraphicsPane {
 		GObject obj = program.getElementAt(e.getX(), e.getY());
 		if (obj == null) {return;}
 		
-		if (obj == level1) {
+		if (obj == backArrow) {
+			program.switchToMenu();
+		}
+		else if (obj == level1) {
 			program.switchToGame();
 		}
 	}
