@@ -8,9 +8,7 @@ import java.awt.event.MouseEvent;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
-import acm.program.GraphicsProgram;
-import acm.program.Program;
-import edu.pacific.comp55.starter.GraphicsPane;
+
 
 public class MainMenu extends GraphicsPane {
 //	private static final int PROGRAMWIDTH = 1920;
@@ -45,7 +43,7 @@ public class MainMenu extends GraphicsPane {
 @Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		program.switchToGame();
+		program.switchToLevelSelector();
 	}
 
 	@Override
@@ -81,6 +79,7 @@ public class MainMenu extends GraphicsPane {
 		
 	}
 	
+<<<<<<< HEAD
 	
 	
 
@@ -91,6 +90,8 @@ public class MainMenu extends GraphicsPane {
 		
 	}
 
+=======
+>>>>>>> branch 'main' of https://github.com/COMP55Fall2022/teamproject-team-bug-less-group-7.git
 	@Override
 	public void hideContents() {
 		// TODO Auto-generated method stub
