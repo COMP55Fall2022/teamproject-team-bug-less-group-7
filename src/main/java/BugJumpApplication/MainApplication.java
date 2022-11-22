@@ -28,6 +28,9 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGame() {
 		switchToScreen(new MainGame(this));
 	}
+
+	//TODO: Implement switchToPause
+
 	
 	public void switchToLevelSelector() {
 		switchToScreen(lSelector);

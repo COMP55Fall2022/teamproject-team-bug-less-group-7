@@ -1,5 +1,6 @@
 package BugJumpApplication;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import acm.graphics.*;
+
 
 
 public class MainGame extends GraphicsPane {
@@ -38,6 +40,7 @@ public class MainGame extends GraphicsPane {
 	private GLabel heartGLabel;
 	private GImage background;
 	private AudioPlayer audio;
+	private String Victory;
 	
 	private int stars = 0;
 	
@@ -66,6 +69,7 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
+	//	setupWinningScreen();
 		
 	}
 
@@ -95,6 +99,8 @@ public class MainGame extends GraphicsPane {
 	public void setHearts(int s) {
 		stars = s;
 	}
+	
+	//TODO: Implement keypress P to pause
 	
 	/**
 	 * Gets the keycode of the last key pressed by the player. 
@@ -626,6 +632,40 @@ public class MainGame extends GraphicsPane {
 		program.add(image);
 		
 		}
+	
+//	public void setupWinningScreen() {
+//		System.out.println("Won");
+//		GRect won = new GRect(500, 200, 700, 400);
+//		won.setFillColor(Color.LIGHT_GRAY);
+//		won.setFilled(true);
+//		program.add(won);
+//		
+//		GRect mainMenu = new GRect(600,450,200,100);
+//		mainMenu.setFillColor(Color.BLUE);
+//		mainMenu.setFilled(true);
+//		program.add(mainMenu);
+//		
+//		GRect cRect = new GRect(900,450,200,100);
+//		cRect.setFillColor(Color.BLUE);
+//		cRect.setFilled(true);
+//		program.add(cRect);
+//		
+//		GParagraph cParagraph = new GParagraph("Continue" , 925, 500);
+//		cParagraph.setColor(Color.WHITE);
+//		cParagraph.setFont("Ariel - 40");
+//		program.add(cParagraph);
+//		
+//		GParagraph mmParagraph = new GParagraph("Main Menu" , 605, 500);
+//		mmParagraph.setColor(Color.WHITE);
+//		mmParagraph.setFont("Ariel - 40");
+//		program.add(mmParagraph);
+//		
+//		
+//		GParagraph vParagraph = new GParagraph("Victory!" , 700, 400);
+//		vParagraph.setColor(Color.RED);
+//		vParagraph.setFont("Ariel - 90");
+//		program.add(vParagraph);
+//	}
 
 }
 

@@ -40,7 +40,6 @@ public class MainMenu extends GraphicsPane {
 		program.add(new GRect(200, 200, 200, 200));
 	}
 	
-	
 	@Override
 	public void hideContents() {
 		// TODO Auto-generated method stub
