@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import acm.graphics.*;
-import acm.program.GraphicsProgram;
-import acm.program.Program;
-import edu.pacific.comp55.starter.GraphicsPane;
 
 
 public class MainGame extends GraphicsPane {

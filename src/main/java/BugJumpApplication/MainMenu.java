@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import acm.graphics.GRect;
-import acm.program.GraphicsProgram;
-import acm.program.Program;
-import edu.pacific.comp55.starter.GraphicsPane;
+
 
 public class MainMenu extends GraphicsPane {
 //	private static final int PROGRAMWIDTH = 1920;
@@ -34,7 +32,7 @@ public class MainMenu extends GraphicsPane {
 @Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		program.switchToGame();
+		program.switchToLevelSelector();
 	}
 
 	@Override

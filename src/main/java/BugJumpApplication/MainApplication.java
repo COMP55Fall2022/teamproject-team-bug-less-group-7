@@ -1,6 +1,5 @@
 package BugJumpApplication;
 
-import edu.pacific.comp55.starter.GraphicsApplication;
 
 public class MainApplication extends GraphicsApplication {
 	private static final int PROGRAMHEIGHT = 1080;
@@ -8,6 +7,7 @@ public class MainApplication extends GraphicsApplication {
 
 
 	private MainMenu menu;
+	private LevelSelector lSelector;
 	private MainGame game;
 	
 	public void init() {
@@ -17,6 +17,7 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {
 		setupInteractions();
 		menu = new MainMenu(this);
+		lSelector = new LevelSelector(this);
 		switchToMenu();
 	}
 
@@ -27,8 +28,12 @@ public class MainApplication extends GraphicsApplication {
 	public void switchToGame() {
 		switchToScreen(new MainGame(this));
 	}
-
 	
+	public void switchToLevelSelector() {
+		switchToScreen(lSelector);
+	}
+
+
 	public static void main(String[] args) {
 		new MainApplication().start();
 	}
