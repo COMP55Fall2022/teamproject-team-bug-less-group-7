@@ -45,10 +45,6 @@ public class Player extends GraphicsProgram {
 		return;
 	}
 	
-	public void startTimer() {
-		timer.start();
-	}
-	
 	private void updateCounters() {
 		timerCount++;
 		if (hitCooldown > 0) {hitCooldown--;}
@@ -151,6 +147,13 @@ public class Player extends GraphicsProgram {
 		return this.isJumping;
 	}
 	
+	public void stopTimer() {
+		timer.stop();
+	}
+	
+	public void startTimer() {
+		timer.start();
+	}
 
 	
 }

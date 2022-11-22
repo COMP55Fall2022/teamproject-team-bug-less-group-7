@@ -1,11 +1,16 @@
 package BugJumpApplication;
 
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+
+import org.apache.commons.math3.analysis.function.Add;
 
 import acm.graphics.*;
 
@@ -26,8 +31,8 @@ public class MainGame extends GraphicsPane {
 	private Boolean isPrevOrientationRight; // used for wall detection
 	private int playerWidth;
 		
-	//private Timer timer = new Timer(30, (ActionListener) this);
 	private int timerCount;
+	private boolean isGamePaused;
 	
 	private HashMap<GImage, Collectable> collectablesMap;
 	private HashMap<GImage, Enemy> enemiesMap;
@@ -41,6 +46,7 @@ public class MainGame extends GraphicsPane {
 	private GImage background;
 	private AudioPlayer audio;
 	private String Victory;
+	Dimension dimension;
 	
 	private int stars = 0;
 	
@@ -51,6 +57,7 @@ public class MainGame extends GraphicsPane {
 	
 	@Override
 	public void showContents() {
+		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		keyList = new ArrayList<Integer>();
 		collectablesMap = new HashMap<>();
 		enemiesMap = new HashMap<>();
@@ -59,6 +66,7 @@ public class MainGame extends GraphicsPane {
 		isPrevOrientationRight = null;
 		fireRate = 0;
 		timerCount = 0;
+		isGamePaused = false;
 		
 		//audio = audio.getInstance();
 		//audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
@@ -69,14 +77,14 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
-	//	setupWinningScreen();
+		setupWinningScreen();
 		
 	}
 
 	@Override
 	public void hideContents() {
-		// TODO Auto-generated method stub
-		program.removeAll();		
+		program.removeAll();	
+		dimension = null;
 		collectablesMap = null;
 		enemiesMap = null;
 		terrainMap = null;
@@ -127,7 +135,7 @@ public class MainGame extends GraphicsPane {
 	
 	@Override
 	public void performAction(ActionEvent e) {
-		if (playerImage != null) {
+		if (playerImage != null && isGamePaused == false) {
 			timerCount++;
 			playerImage.setLocation(player.getX(), player.getY());
 			updateBullet();
@@ -255,7 +263,7 @@ public class MainGame extends GraphicsPane {
 			if (player.weapon != null) {fireRate--;}
 	
 			
-			if (player.getY() + 50 > PROGRAMHEIGHT || player.isDead()) {
+			if (player.getY() + 50 > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
 				program.remove(playerImage);
 				playerImage = null;
@@ -560,7 +568,7 @@ public class MainGame extends GraphicsPane {
 	 */
 	private void setupTerrain() {
 		background = new GImage("/Images/forestBackground.jpeg");
-		background.setSize(PROGRAMWIDTH, PROGRAMHEIGHT);
+		background.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(background);
 		
 		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
@@ -633,39 +641,50 @@ public class MainGame extends GraphicsPane {
 		
 		}
 	
-//	public void setupWinningScreen() {
-//		System.out.println("Won");
-//		GRect won = new GRect(500, 200, 700, 400);
-//		won.setFillColor(Color.LIGHT_GRAY);
-//		won.setFilled(true);
-//		program.add(won);
-//		
-//		GRect mainMenu = new GRect(600,450,200,100);
-//		mainMenu.setFillColor(Color.BLUE);
-//		mainMenu.setFilled(true);
-//		program.add(mainMenu);
-//		
-//		GRect cRect = new GRect(900,450,200,100);
-//		cRect.setFillColor(Color.BLUE);
-//		cRect.setFilled(true);
-//		program.add(cRect);
-//		
-//		GParagraph cParagraph = new GParagraph("Continue" , 925, 500);
-//		cParagraph.setColor(Color.WHITE);
-//		cParagraph.setFont("Ariel - 40");
-//		program.add(cParagraph);
-//		
-//		GParagraph mmParagraph = new GParagraph("Main Menu" , 605, 500);
-//		mmParagraph.setColor(Color.WHITE);
-//		mmParagraph.setFont("Ariel - 40");
-//		program.add(mmParagraph);
-//		
-//		
-//		GParagraph vParagraph = new GParagraph("Victory!" , 700, 400);
-//		vParagraph.setColor(Color.RED);
-//		vParagraph.setFont("Ariel - 90");
-//		program.add(vParagraph);
-//	}
+	private void stopGame() {
+		isGamePaused = true;
+		player.stopTimer();
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			entry.getValue().stopTimer();
+		}
+		
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			entry.getValue().stopTimer();
+		}
+
+	}
+	private void continueGame() {
+		isGamePaused = false;
+		player.startTimer();
+		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+			entry.getValue().startTimer();
+		}
+		
+		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+			entry.getValue().startTimer();
+		}
+	}
+	
+	public void setupWinningScreen() {
+		stopGame();
+		
+		GRect victoryBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
+		victoryBorder.setFillColor(Color.decode("#5f6c5a"));
+		victoryBorder.setFilled(true);
+		program.add(victoryBorder);
+		
+		GParagraph victory = new GParagraph("Victory!" , 0, 0);
+		victory.setFont("Ariel-Bold-90");
+		victory.setColor(Color.white);
+		victory.setLocation(dimension.getWidth()/2-victory.getWidth()/2, victoryBorder.getY()+victory.getHeight()+5);
+		program.add(victory);
+		
+		GButton continueButton = new GButton("Continue", dimension.getWidth()/2-200-50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		program.add(continueButton);
+		
+		GButton mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2+50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		program.add(mainMenuButton);		
+	}
 
 }
 
