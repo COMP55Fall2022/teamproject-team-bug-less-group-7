@@ -647,15 +647,15 @@ public class MainGame extends GraphicsPane {
 		program.add(pauseBorder);
 		
 		pause = new GParagraph("Game Paused", 0, 0);
-		pause.setFont("Arial-Bold-Italic-55");
+		pause.setFont("Arial-Bold-Italic-60");
 		pause.setColor(Color.white);
 		pause.setLocation(dimension.getWidth()/2-pause.getWidth()/2, pauseBorder.getY()+pause.getHeight());
 		program.add(pause);
 		
-		resumeButton = new GButton("Resume", dimension.getWidth()/2-125, pause.getY()+75, 250, 75, Color.decode("#879383"));
+		resumeButton = new GButton("Resume", dimension.getWidth()/2-150, pause.getY()+75, 300, 75, Color.decode("#879383"));
 		program.add(resumeButton);
 		
-		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-125, resumeButton.getY()+100, 250, 75, Color.decode("#879383"));
+		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-150, resumeButton.getY()+100, 300, 75, Color.decode("#879383"));
 		program.add(mainMenuButton);
 		
 	}
@@ -669,15 +669,15 @@ public class MainGame extends GraphicsPane {
 		program.add(victoryBorder);
 		
 		victory = new GParagraph("Victory!" , 0, 0);
-		victory.setFont("Ariel-Bold-90");
+		victory.setFont("Arial-Bold-80");
 		victory.setColor(Color.white);
-		victory.setLocation(dimension.getWidth()/2-victory.getWidth()/2, victoryBorder.getY()+victory.getHeight()+5);
+		victory.setLocation(dimension.getWidth()/2-victory.getWidth()/2, victoryBorder.getY()+victory.getHeight());
 		program.add(victory);
 		
-		nextLevelButton = new GButton("Next Level", dimension.getWidth()/2-200-50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		nextLevelButton = new GButton("Next Level", dimension.getWidth()/2-110, victory.getY()+victory.getHeight()/2, 220, 70, Color.decode("#879383"));
 		program.add(nextLevelButton);
 		
-		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2+50, victory.getY()+100, 200, 100, Color.decode("#879383"));
+		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, nextLevelButton.getY()+nextLevelButton.getHeight()+10, 375, 90, Color.decode("#879383"));
 		program.add(mainMenuButton);		
 	}
 	
