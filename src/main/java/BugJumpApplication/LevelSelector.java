@@ -78,6 +78,7 @@ public class LevelSelector extends GraphicsPane {
 		level6 = null;
 		level7 = null;
 		level8 = null;
+		System.gc();
 	}
 
 	@Override

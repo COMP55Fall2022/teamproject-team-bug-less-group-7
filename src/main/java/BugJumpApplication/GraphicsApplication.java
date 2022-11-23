@@ -38,9 +38,10 @@ public abstract class GraphicsApplication extends GraphicsProgram {
 		if(curScreen != null) {
 			curScreen.hideContents();
 		}
-		if (timer != null) {			
+		if (timer != null) {	
 			timer.stop();
 			timer = null;
+			System.gc();
 		}
 		newScreen.showContents();
 		curScreen = newScreen;
@@ -67,7 +68,6 @@ public abstract class GraphicsApplication extends GraphicsProgram {
 	public void mousePressed(MouseEvent e) {
 		if(curScreen != null) {
 			curScreen.mousePressed(e);
-			System.out.println("testing");
 		}
 	}
 	

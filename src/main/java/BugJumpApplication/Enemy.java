@@ -1,13 +1,10 @@
 package BugJumpApplication;
 
-import javax.swing.Timer;
 import acm.program.GraphicsProgram;
 import java.awt.event.ActionEvent;
-import acm.util.RandomGenerator;
 
 public class Enemy extends GraphicsProgram{
 	
-	private Timer timer = new Timer(35, this);
 	private int xAxis;
 	private int yAxis;
 	private int lastShotTimer;
@@ -27,7 +24,6 @@ public class Enemy extends GraphicsProgram{
 		this.eType = eType;
 		this.willAttack = false;
 		this.isRightOrientation = true;
-		this.timer.start();
 		lastShotTimer = 0;
 	}
 	
@@ -99,15 +95,6 @@ public class Enemy extends GraphicsProgram{
 			}
 		}
 	}
-	
-	public void startTimer() {
-		timer.start();
-	}
-	
-	public void stopTimer() {
-		timer.stop();
-	}
-	
 	
 	//TODO: implement attack (bullet)
 	public Bullet[] attack() {

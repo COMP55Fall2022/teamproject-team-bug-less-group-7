@@ -69,6 +69,7 @@ public class MainMenu extends GraphicsPane {
 		playGButton = null;
 		tutorialGButton = null;
 		quitGButton = null;
+		System.gc();
 	}
 	
 	

@@ -18,6 +18,7 @@ public class MainApplication extends GraphicsApplication {
 		setupInteractions();
 		menu = new MainMenu(this);
 		lSelector = new LevelSelector(this);
+		game = new MainGame(this);
 		switchToMenu();
 	}
 
@@ -26,7 +27,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToGame() {
-		switchToScreen(new MainGame(this));
+		switchToScreen(game);
 	}
 
 	public void switchToLevelSelector() {

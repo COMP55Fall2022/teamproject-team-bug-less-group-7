@@ -2,13 +2,10 @@ package BugJumpApplication;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Timer;
-
 import acm.program.GraphicsProgram;
 
 public class Bullet extends GraphicsProgram{
-	private Timer timer;
-	private int runoutTimer = 100;
+	private int runoutTimer;
 	private int xAxis;
 	private int yAxis;
 	private int vel;
@@ -21,8 +18,7 @@ public class Bullet extends GraphicsProgram{
 		this.vel = vel;
 		this.theta = theta;
 		this.isFriendly = isFriendly;
-		this.timer = new Timer(25, this);
-		timer.start();
+		this.runoutTimer = 100;
 	}
 	
 	public Bullet(int x, int y, int vel, int theta, boolean isFriendly, int timer) {
@@ -31,21 +27,16 @@ public class Bullet extends GraphicsProgram{
 		this.vel = vel;
 		this.theta = theta;
 		this.isFriendly = isFriendly;
-		this.timer = new Timer(25, this);
-		runoutTimer = timer;
-		this.timer.start();
+		this.runoutTimer = timer;
 	}
 	
 	@Override
 	public void run() {
-		System.out.println();
 		return;
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-//		xAxis += dx;
-//		yAxis += dy;
+	public void actionPerformed(ActionEvent e) {;
 		runoutTimer--;
 		
 	}
@@ -82,13 +73,4 @@ public class Bullet extends GraphicsProgram{
 	public int getTimer() {
 		return runoutTimer;
 	}
-	
-	public void startTimer() {
-		timer.start();
-	}
-	
-	public void stopTimer() {
-		timer.stop();
-	}
-	
 }

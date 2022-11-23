@@ -23,7 +23,7 @@ public class Player extends GraphicsProgram {
 	private int hearts;
 	private int hitCooldown = 0;
 	
-	Timer timer = new Timer(25, this);
+	private Timer timer = new Timer(25, this);
 	
 	//Constructor for player.java that defaults the variables for the player and sets the x and y
 	//to the inputed values.
@@ -153,6 +153,11 @@ public class Player extends GraphicsProgram {
 	
 	public void startTimer() {
 		timer.start();
+	}
+	
+	public void deleteTimer() {
+		stopTimer();
+		timer = null;
 	}
 
 	

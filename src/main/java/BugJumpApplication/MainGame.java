@@ -103,7 +103,8 @@ public class MainGame extends GraphicsPane {
 
 	@Override
 	public void hideContents() {
-		program.removeAll();	
+		program.removeAll();
+		player.deleteTimer();
 		player = null;
 		playerImage = null;
 		dimension = null;
@@ -121,6 +122,7 @@ public class MainGame extends GraphicsPane {
 		pauseBorder = null;
 		pause = null;
 		resumeButton = null;
+		System.gc();
 	
 		
 	}
@@ -165,7 +167,7 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
-			program.switchToScreen(new PauseScreen(program));
+			return;
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -182,19 +184,16 @@ public class MainGame extends GraphicsPane {
 			doEnemyActions();
 			playerMovement();
 			playerWeapon();
+			
+			
 			if (keyList.contains(80)) {
 				setupPauseGameScreen();
 			}
-	
-	
 			
 			if (player.getY() + 50 > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
-				program.remove(playerImage);
-				playerImage = null;
 				program.switchToMenu();
 			}
-			
 
 			
 		}
@@ -531,11 +530,12 @@ public class MainGame extends GraphicsPane {
 			
 			key.movePolar(val.getVelocity(), val.getTheta());
 			if(checkBulletCollision(key, val)) {keysToRemove.add(key); continue;}
-			if (val.hasTimerRunout()) {keysToRemove.add(key);}		
+			if (val.hasTimerRunout()) {keysToRemove.add(key);}
+			val.actionPerformed(null);
 		}
 		
 		for (GImage gImage : keysToRemove) {
-			bulletMap.get(gImage).stopTimer();
+//			bulletMap.get(gImage).stopTimer();
 			bulletMap.remove(gImage);
 			program.remove(gImage);
 		}
@@ -564,6 +564,7 @@ public class MainGame extends GraphicsPane {
 				}
 			}
 			else {
+				each.actionPerformed(null);
 				eachImage.setLocation(each.getX(),each.getY());
 				
 				if((program.getElementAt(each.getX()-2, each.getY()+52) == background || program.getElementAt(each.getX()-2, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
@@ -602,25 +603,25 @@ public class MainGame extends GraphicsPane {
 	private void stopGame() {
 		isGamePaused = true;
 		player.stopTimer();
-		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-			entry.getValue().stopTimer();
-		}
-		
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-			entry.getValue().stopTimer();
-		}
+//		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+//			entry.getValue().stopTimer();
+//		}
+//		
+//		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+//			entry.getValue().stopTimer();
+//		}
 
 	}
 	private void continueGame() {
 		isGamePaused = false;
 		player.startTimer();
-		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-			entry.getValue().startTimer();
-		}
-		
-		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-			entry.getValue().startTimer();
-		}
+//		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
+//			entry.getValue().startTimer();
+//		}
+//		
+//		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
+//			entry.getValue().startTimer();
+//		}
 	}
 	
 	public void unpauseGameScreen() {
