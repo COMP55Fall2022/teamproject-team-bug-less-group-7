@@ -56,8 +56,9 @@ public class MainGame extends GraphicsPane {
 	
 	/////////////////////////////////////////////////////////////
 	
-	private GLabel starsGlable;
-	private GLabel heartGLabel;
+	private GImage starGImage;
+	private GImage heartGImage;
+	
 	private GImage background;
 	private AudioPlayer audio;
 	private GRect victoryBorder;
@@ -105,6 +106,8 @@ public class MainGame extends GraphicsPane {
 	public void hideContents() {
 		program.removeAll();
 		player.deleteTimer();
+		stars = 0;
+		background = null;
 		player = null;
 		playerImage = null;
 		dimension = null;
@@ -113,8 +116,6 @@ public class MainGame extends GraphicsPane {
 		terrainMap = null;
 		bulletMap = null;
 		keyList = null;
-		starsGlable = null;
-		heartGLabel = null;
 		victoryBorder = null;
 		victory = null;
 		nextLevelButton = null;
@@ -122,6 +123,8 @@ public class MainGame extends GraphicsPane {
 		pauseBorder = null;
 		pause = null;
 		resumeButton = null;
+		starGImage = null;
+		heartGImage = null;
 		System.gc();
 	
 		
@@ -167,7 +170,7 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
-			return;
+			program.switchToGame();;
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -176,7 +179,7 @@ public class MainGame extends GraphicsPane {
 	
 	@Override
 	public void performAction(ActionEvent e) {
-		if (playerImage != null && isGamePaused == false) {
+		if (playerImage != null && isGamePaused == false) { 
 			timerCount++;
 			playerImage.setLocation(player.getX(), player.getY());
 			updateBullet();
@@ -445,15 +448,16 @@ public class MainGame extends GraphicsPane {
 				switch(collectablesMap.get(gImage).getCType()) {
 					case HEART:
 						//Increases player hearts by 1 while hearts < 3 (The max amount of hearts)}
-						player.setHearts(player.getHearts()+1);
-						heartGLabel.setLabel("Hearts: " + player.getHearts());
-						
+						player.setHearts(player.getHearts()+1);						
+						heartGImage.setImage("/Images/heart UI_"+ player.getHearts() + ".png");
 						break;
 					case CHEESE:
-						setupWinningScreen();
-						break;
-					case STAR:
-						starsGlable.setLabel("Stars: " + ++stars);
+						if (stars >= 1) {							
+							setupWinningScreen();
+						}
+						return false;
+					case STAR:	
+						starGImage.setImage("/Images/star UI_" + ++stars + ".png");
 						break;
 					case HANDHELD:
 						player.weapon = new Weapon(WeaponType.HANDHELD);
@@ -472,7 +476,7 @@ public class MainGame extends GraphicsPane {
 			else if (enemiesMap.containsKey(gImage)) {
 				if (!(player.getHitCooldown() > 0)) {				
 					player.setHearts(player.getHearts()-1);
-					heartGLabel.setLabel("Hearts: " + player.getHearts());
+					heartGImage.setImage("/Images/heart UI_" + player.getHearts() + ".png");
 					player.resetHitCooldown();
 				}
 				return false;
@@ -488,32 +492,6 @@ public class MainGame extends GraphicsPane {
 		return true;
 }
 	
-	private boolean checkBulletCollision(GImage key, Bullet val) {
-		GObject obj1 = program.getElementAt(key.getX()-2, key.getY());
-		GObject obj2 = program.getElementAt(key.getX()-2, key.getY()+key.getHeight());
-		GObject obj3 = program.getElementAt(key.getX()+key.getWidth()+2, key.getY());
-		GObject obj4 = program.getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
-		
-		
-		if (val.isFriendly() == false && (obj1 == playerImage || obj2 == playerImage || obj3 == playerImage || obj4 == playerImage)) {
-			if (!(player.getHitCooldown() > 0)) {				
-				player.setHearts(player.getHearts()-1);
-				heartGLabel.setLabel("Hearts: " + player.getHearts());
-				player.resetHitCooldown();
-			}
-			return true;
-		}
-
-		if (val.isFriendly() && ((enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4))){
-			return true;
-		}
-	
-		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3) || terrainMap.containsKey(obj4)) {				
-			return true;
-		}
-		return false;
-		
-	}
 	
 	/**
 	 * updates bullet location on the GUI
@@ -542,6 +520,59 @@ public class MainGame extends GraphicsPane {
 		
 	}
 	
+	private boolean checkBulletCollision(GImage key, Bullet val) {
+		GObject obj1 = program.getElementAt(key.getX()-2, key.getY());
+		GObject obj2 = program.getElementAt(key.getX()-2, key.getY()+key.getHeight());
+		GObject obj3 = program.getElementAt(key.getX()+key.getWidth()+2, key.getY());
+		GObject obj4 = program.getElementAt(key.getX()+key.getWidth()+2, key.getY()+key.getHeight());
+		
+		
+		if (val.isFriendly() == false && (obj1 == playerImage || obj2 == playerImage || obj3 == playerImage || obj4 == playerImage)) {
+			if (!(player.getHitCooldown() > 0)) {				
+				player.setHearts(player.getHearts()-1);
+				heartGImage.setImage("/Images/heart UI_" + player.getHearts() + ".png"); 
+				player.resetHitCooldown();
+			}
+			return true;
+		}
+
+		if (val.isFriendly() && ((enemiesMap.containsKey(obj1)) || enemiesMap.containsKey(obj2)  || enemiesMap.containsKey(obj3)  || enemiesMap.containsKey(obj4))){
+			Enemy enemy  = null;
+			GObject temp = null;
+			
+			System.out.println(obj1);
+			System.out.println(obj2);
+			System.out.println(obj3);
+			System.out.println(obj4);
+			
+			if (enemiesMap.containsKey(obj1)) {
+				enemy = enemiesMap.get(obj1);
+				temp = obj1;
+			}
+			else if (enemiesMap.containsKey(obj2)) {
+				enemy = enemiesMap.get(obj2);
+				temp = obj2;
+			}
+			else if (enemiesMap.containsKey(obj3)) {
+				enemy = enemiesMap.get(obj3);
+				temp = obj3;
+			}
+			else if (enemiesMap.containsKey(obj4)) {
+				enemy = enemiesMap.get(obj4);
+				temp = obj4;
+			}
+			
+			enemy.setLives(enemy.getLives()-1);
+			if (enemy.isDead()) {program.remove(temp); enemiesMap.remove(temp);}
+			return true;
+		}
+	
+		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3) || terrainMap.containsKey(obj4)) {				
+			return true;
+		}
+		return false;
+		
+	}
 	
 	//For now just attacks but could do other stuff?
 	private void doEnemyActions() {
@@ -685,11 +716,12 @@ public class MainGame extends GraphicsPane {
 	 * Sets up the collectables on the main window
 	 */
 	private void setupGUI() {
-		heartGLabel = new GLabel("Hearts: " + player.getHearts() , 50, 50);
-		starsGlable = new GLabel("Stars: " + stars, 1400 , 50);
-		program.add(heartGLabel);
-		program.add(starsGlable);
-		
+		heartGImage = new GImage("/Images/heart UI_3.png", 50, 50);
+		starGImage = new GImage("/Images/star UI_0.png", 0, 50);
+		starGImage.setLocation(dimension.getWidth()-starGImage.getWidth()-50, starGImage.getY());
+				
+		program.add(heartGImage);
+		program.add(starGImage);
 	}
 	
 	/**

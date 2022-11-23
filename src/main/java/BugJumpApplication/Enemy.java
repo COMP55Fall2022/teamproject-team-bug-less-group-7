@@ -73,6 +73,10 @@ public class Enemy extends GraphicsProgram{
 		this.lives = lives;
 	}
 	
+	public boolean isDead() {
+		if (lives <= 0) {return true;}
+		return false;
+	}
 	//TODO: find a way to get the enemies to notice the player and act accordingly
 	public void switchAwareness(boolean input) {
 		willAttack = input;
