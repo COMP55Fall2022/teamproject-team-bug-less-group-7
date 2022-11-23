@@ -1,10 +1,7 @@
 package BugJumpApplication;
 import acm.graphics.*;
-import acm.program.*;
-import acm.util.*;
-import edu.pacific.comp55.starter.GraphicsPane;
+ import acm.util.*;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
@@ -17,7 +14,7 @@ public class PauseScreen extends GraphicsPane{
 		program = e;
 	}
 	
-	GLabel title = new GLabel("PAUSE", 200, 200);
+	GLabel title = new GLabel("Game Paused", 0, 200);
 	GRect resume = new GRect(200,300,1120,400);
 	GRect saveNQuit = new GRect(200, 600, 1120, 400);
 	

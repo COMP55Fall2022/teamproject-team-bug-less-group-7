@@ -36,7 +36,7 @@ public class Player extends GraphicsProgram {
 		initialTime = -1;
 		timerCount = 0;
 		
-		hearts = 4;
+		hearts = 3;
 		dy = 0;
 	}
 	

@@ -3,6 +3,7 @@ package BugJumpApplication;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.util.Map.Entry;
 
 
 import acm.graphics.*;
+import javafx.scene.effect.Glow;
 
 
 public class MainGame extends GraphicsPane {
@@ -61,8 +63,13 @@ public class MainGame extends GraphicsPane {
 	private GRect victoryBorder;
 	private GParagraph victory;
 	private GButton nextLevelButton;
-	
 	private GButton mainMenuButton;
+	
+	private GRect pauseBorder;
+	private GParagraph pause;
+	private GButton resumeButton;
+	
+	
 	
 	
 	public MainGame(MainApplication e) {
@@ -91,25 +98,29 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
+		setupPauseGameScreen();
 	}
 
 	@Override
 	public void hideContents() {
 		program.removeAll();	
+		player = null;
+		playerImage = null;
 		dimension = null;
 		collectablesMap = null;
 		enemiesMap = null;
 		terrainMap = null;
 		bulletMap = null;
 		keyList = null;
-		player = null;
-		playerImage = null;
 		starsGlable = null;
 		heartGLabel = null;
 		victoryBorder = null;
 		victory = null;
 		nextLevelButton = null;
 		mainMenuButton = null;
+		pauseBorder = null;
+		pause = null;
+		resumeButton = null;
 	
 		
 	}
@@ -132,7 +143,7 @@ public class MainGame extends GraphicsPane {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		
-		if (!keyList.contains(keyCode)) {
+		if (!keyList.contains(keyCode) && playerImage != null && isGamePaused == false) {
 			keyList.add(keyCode);
 		}
 	}
@@ -153,6 +164,12 @@ public class MainGame extends GraphicsPane {
 		if (obj == mainMenuButton) {
 			program.switchToMenu();
 		}
+		else if(obj == nextLevelButton) {
+			program.switchToScreen(new PauseScreen(program));
+		}
+		else if (obj == resumeButton) {
+			unpauseGameScreen();
+		}
 	}
 	
 	@Override
@@ -163,126 +180,12 @@ public class MainGame extends GraphicsPane {
 			updateBullet();
 			enemyAwareness();
 			doEnemyActions();
-	
-			// If the d key is held and the a key is not
-			if (keyList.contains(68) && !keyList.contains(65)) {
-				if (xVel < RIGHT_VELOCITY) {
-					xVel += 2;
-				}
-				
-			}
-			// If the a key is held and the d key is not
-			else if (keyList.contains(65) && !keyList.contains(68)) {
-				if (xVel > LEFT_VELOCITY) {
-					xVel -= 2;
-				}
-				// Case for if no key is held or no specific key combination is found
-			} else {
-				// Slows momentum of player to a stop
-				if (xVel != 0) {
-					if (xVel > 0) {
-						xVel -= 2;
-					} else {
-						xVel += 2;
-					}
-				}
-			}
-			if(player.checkOrientation(xVel)) {
-				changePlayerImage();
-			}
-			
-	
-			if (keyList.contains(87)) {
-				player.turnOnJumping();
+			playerMovement();
+			playerWeapon();
+			if (keyList.contains(80)) {
+				setupPauseGameScreen();
 			}
 	
-			if (checkCollision()) {
-				if (isPrevOrientationRight == player.isRightOrientation) {
-					xVel = 0;
-				} else if (isPrevOrientationRight != player.isRightOrientation) {
-					player.isOnWall = false;
-				}
-			}
-			
-			if (player.getX() <= 100 && xVel < 0) {
-				for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
-					GImage key = entry.getKey();
-					Terrain val = entry.getValue();
-					key.setLocation(key.getX()-xVel, key.getY());
-				}
-				for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
-					GImage key = entry.getKey();
-					Collectable val = entry.getValue();
-					key.setLocation(key.getX()-xVel, key.getY());
-				}
-				for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
-					GImage key = entry.getKey();
-					Enemy val = entry.getValue();
-	
-					val.moveXAxis(-xVel);
-					if (val.getAwareness()) {
-						key.setLocation(val.getX(), val.getY());
-					}
-					
-				}
-			}
-			else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
-				for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
-					GImage key = entry.getKey();
-					Terrain val = entry.getValue();
-					key.setLocation(key.getX()-xVel, key.getY());
-				}
-				for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
-					GImage key = entry.getKey();
-					Collectable val = entry.getValue();
-					key.setLocation(key.getX()-xVel, key.getY());
-				}
-				for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
-					GImage key = entry.getKey();
-					Enemy val = entry.getValue();
-					val.moveXAxis(-xVel);
-					if (val.getAwareness()) {
-						key.setLocation(val.getX(), val.getY());
-					}
-				}
-			}
-			else {
-				player.move(xVel, 0);
-			}	
-	
-			
-			// adding a bullet on the screen when pressing Space
-			if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
-				switch (player.weapon.wType) {
-				case HANDHELD: {
-					Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
-					GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
-					if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
-					bulletMap.put(image, bullet);
-					program.add(image);
-					fireRate = 35;
-					break;
-				}
-				case MELEE:
-					Bullet bullet;
-					GImage image; 
-					if (player.isRightOrientation) {
-						bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 15);
-						image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
-					}
-					else {
-						bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 15);
-						image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
-					}
-					bulletMap.put(image, bullet);
-					program.add(image);
-					fireRate = 35;
-					break;
-				default:
-					System.out.println("Unknown Weapon Type");
-				}
-			}
-			if (player.weapon != null) {fireRate--;}
 	
 			
 			if (player.getY() + 50 > dimension.getHeight() || player.isDead()) {
@@ -290,11 +193,12 @@ public class MainGame extends GraphicsPane {
 				program.remove(playerImage);
 				playerImage = null;
 				program.switchToMenu();
-				
 			}
+			
+
+			
 		}
 	}
-
 	
 	private void changePlayerImage() {
 		if (player.weapon != null) {
@@ -327,6 +231,129 @@ public class MainGame extends GraphicsPane {
 				return;
 			}
 		}
+	}
+	
+	private void playerMovement() {
+		// If the d key is held and the a key is not
+		if (keyList.contains(68) && !keyList.contains(65)) {
+			if (xVel < RIGHT_VELOCITY) {
+				xVel += 2;
+			}
+			
+		}
+		// If the a key is held and the d key is not
+		else if (keyList.contains(65) && !keyList.contains(68)) {
+			if (xVel > LEFT_VELOCITY) {
+				xVel -= 2;
+			}
+			// Case for if no key is held or no specific key combination is found
+		} else {
+			// Slows momentum of player to a stop
+			if (xVel != 0) {
+				if (xVel > 0) {
+					xVel -= 2;
+				} else {
+					xVel += 2;
+				}
+			}
+		}
+		if(player.checkOrientation(xVel)) {
+			changePlayerImage();
+		}
+		
+		//jumping
+		if (keyList.contains(87)) {
+			player.turnOnJumping();
+		}
+
+		if (checkCollision()) {
+			if (isPrevOrientationRight == player.isRightOrientation) {
+				xVel = 0;
+			} else if (isPrevOrientationRight != player.isRightOrientation) {
+				player.isOnWall = false;
+			}
+		}
+		
+		if (player.getX() <= 100 && xVel < 0) {
+			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
+				GImage key = entry.getKey();
+				Terrain val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Collectable val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Enemy val = entry.getValue();
+
+				val.moveXAxis(-xVel);
+				if (val.getAwareness()) {
+					key.setLocation(val.getX(), val.getY());
+				}
+				
+			}
+		}
+		else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
+			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
+				GImage key = entry.getKey();
+				Terrain val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Collectable val = entry.getValue();
+				key.setLocation(key.getX()-xVel, key.getY());
+			}
+			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
+				GImage key = entry.getKey();
+				Enemy val = entry.getValue();
+				val.moveXAxis(-xVel);
+				if (val.getAwareness()) {
+					key.setLocation(val.getX(), val.getY());
+				}
+			}
+		}
+		else {
+			player.move(xVel, 0);
+		}	
+	}
+	
+	private void playerWeapon() {
+		// adding a bullet on the screen when pressing Space
+		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
+			switch (player.weapon.wType) {
+			case HANDHELD: {
+				Bullet bullet = player.weapon.attack(new GPoint(player.getX(), player.getY()), player.isRightOrientation);
+				GImage image =  new GImage("/Images/rightBullet.png", bullet.getX(), bullet.getY());
+				if (!player.isRightOrientation) {image.setImage("/Images/leftBullet.png");}
+				bulletMap.put(image, bullet);
+				program.add(image);
+				fireRate = 35;
+				break;
+			}
+			case MELEE:
+				Bullet bullet;
+				GImage image; 
+				if (player.isRightOrientation) {
+					bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 15);
+					image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
+				}
+				else {
+					bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 15);
+					image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
+				}
+				bulletMap.put(image, bullet);
+				program.add(image);
+				fireRate = 35;
+				break;
+			default:
+				System.out.println("Unknown Weapon Type");
+			}
+		}
+		if (player.weapon != null) {fireRate--;}
 	}
 	
 	/**
@@ -427,9 +454,7 @@ public class MainGame extends GraphicsPane {
 						setupWinningScreen();
 						break;
 					case STAR:
-						//Increments total stars by 1;
 						starsGlable.setLabel("Stars: " + ++stars);
-						
 						break;
 					case HANDHELD:
 						player.weapon = new Weapon(WeaponType.HANDHELD);
@@ -510,6 +535,7 @@ public class MainGame extends GraphicsPane {
 		}
 		
 		for (GImage gImage : keysToRemove) {
+			bulletMap.get(gImage).stopTimer();
 			bulletMap.remove(gImage);
 			program.remove(gImage);
 		}
@@ -595,6 +621,42 @@ public class MainGame extends GraphicsPane {
 		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
 			entry.getValue().startTimer();
 		}
+	}
+	
+	public void unpauseGameScreen() {
+		program.remove(pauseBorder);
+		program.remove(pause);
+		program.remove(resumeButton);
+		program.remove(mainMenuButton);
+		pauseBorder = null;
+		pause = null;
+		resumeButton = null;
+		mainMenuButton = null;
+		continueGame();
+	}
+	
+	public void setupPauseGameScreen() {
+		if (pauseBorder != null) {
+			System.out.println("help");return;}
+		stopGame();
+		
+		pauseBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
+		pauseBorder.setFillColor(Color.decode("#5f6c5a"));
+		pauseBorder.setFilled(true);
+		program.add(pauseBorder);
+		
+		pause = new GParagraph("Game Paused", 0, 0);
+		pause.setFont("Arial-Bold-Italic-55");
+		pause.setColor(Color.white);
+		pause.setLocation(dimension.getWidth()/2-pause.getWidth()/2, pauseBorder.getY()+pause.getHeight());
+		program.add(pause);
+		
+		resumeButton = new GButton("Resume", dimension.getWidth()/2-125, pause.getY()+75, 250, 75, Color.decode("#879383"));
+		program.add(resumeButton);
+		
+		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-125, resumeButton.getY()+100, 250, 75, Color.decode("#879383"));
+		program.add(mainMenuButton);
+		
 	}
 	
 	public void setupWinningScreen() {
