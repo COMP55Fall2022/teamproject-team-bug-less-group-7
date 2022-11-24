@@ -41,6 +41,8 @@ public class MainMenu extends GraphicsPane {
 
 	@Override
 	public void showContents() {
+		
+		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
 		title = new GLabel("Bug Jump", 0, 200);
 		playGButton = new GButton("Play", 0, 430, 600, 100);
 		tutorialGButton = new GButton("Tutorial", 0, 590, 600, 100);
