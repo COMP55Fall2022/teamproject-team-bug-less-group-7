@@ -63,7 +63,11 @@ public class MainGame extends GraphicsPane {
 	private AudioPlayer audio;
 	private GRect victoryBorder;
 	private GParagraph victory;
+	private GRect gameOverBorder;
+	private GParagraph over;
+	
 	private GButton nextLevelButton;
+	private GButton restartButton;
 	private GButton mainMenuButton;
 	
 	private GRect pauseBorder;
@@ -100,6 +104,7 @@ public class MainGame extends GraphicsPane {
 		program.setupTimer(30);
 		player.startTimer();
 		setupPauseGameScreen();
+	//	setupGameOverScreen();
 	}
 
 	@Override
@@ -119,6 +124,7 @@ public class MainGame extends GraphicsPane {
 		victoryBorder = null;
 		victory = null;
 		nextLevelButton = null;
+		restartButton = null;
 		mainMenuButton = null;
 		pauseBorder = null;
 		pause = null;
@@ -171,6 +177,9 @@ public class MainGame extends GraphicsPane {
 		}
 		else if(obj == nextLevelButton) {
 			program.switchToGame();;
+		}
+		else if(obj == restartButton) {
+			program.switchToGame();
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -711,6 +720,28 @@ public class MainGame extends GraphicsPane {
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, nextLevelButton.getY()+nextLevelButton.getHeight()+10, 375, 90, Color.decode("#879383"));
 		program.add(mainMenuButton);		
 	}
+	
+	public void setupGameOverScreen() {
+		stopGame();
+		
+		gameOverBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
+		gameOverBorder.setFillColor(Color.decode("#5f6c5a"));
+		gameOverBorder.setFilled(true);
+		program.add(gameOverBorder);
+		
+		over = new GParagraph("Game Over!" , 0, 0);
+		over.setFont("Arial-Bold-80");
+		over.setColor(Color.RED);
+		over.setLocation(dimension.getWidth()/2-over.getWidth()/2, gameOverBorder.getY()+over.getHeight());
+		program.add(over);
+		
+		restartButton = new GButton("Restart", dimension.getWidth()/2-110, over.getY()+over.getHeight()/2, 220, 70, Color.decode("#879383"));
+		program.add(restartButton);
+		
+		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, restartButton.getY()+restartButton.getHeight()+10, 375, 90, Color.decode("#879383"));
+		program.add(mainMenuButton);		
+	}
+	
 	
 	/**
 	 * Sets up the collectables on the main window
