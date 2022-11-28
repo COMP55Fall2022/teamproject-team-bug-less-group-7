@@ -52,15 +52,15 @@ public class MainMenu extends GraphicsPane {
 		title.setLocation(dimension.getWidth()/2-title.getWidth()/2, title.getY());
 		program.add(title);
 		
-		playGButton.setLocation(dimension.getWidth()/2-playGButton.getWidth()/2, playGButton.getY());
-		program.add(playGButton);
 		
-		tutorialGButton.setLocation(dimension.getWidth()/2-tutorialGButton.getWidth()/2, tutorialGButton.getY());
-		program.add(tutorialGButton);
-		
-		quitGButton.setLocation(dimension.getWidth()/2-quitGButton.getWidth()/2, quitGButton.getY());
+		quitGButton.setLocation(dimension.getWidth()/2-quitGButton.getWidth()/2, dimension.getHeight()/2+quitGButton.getHeight());
 		program.add(quitGButton);
 		
+		tutorialGButton.setLocation(dimension.getWidth()/2-tutorialGButton.getWidth()/2, quitGButton.getY()-tutorialGButton.getHeight()-10);
+		program.add(tutorialGButton);
+		
+		playGButton.setLocation(dimension.getWidth()/2-playGButton.getWidth()/2, tutorialGButton.getY()-playGButton.getHeight()-10);
+		program.add(playGButton);
 	}
 
 	@Override

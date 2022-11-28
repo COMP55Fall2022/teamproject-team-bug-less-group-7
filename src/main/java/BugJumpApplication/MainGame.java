@@ -193,7 +193,7 @@ public class MainGame extends GraphicsPane {
 				setupPauseGameScreen();
 			}
 			
-			if (player.getY() + 50 > dimension.getHeight() || player.isDead()) {
+			if (player.getY() > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
 				program.switchToMenu();
 			}
