@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -97,7 +98,11 @@ public class MainGame extends GraphicsPane {
 		
 		//audio = audio.getInstance();
 		//audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
-		fileReader = new FileReader(level);
+		try {
+			fileReader = new FileReader(level);
+		} catch (FileNotFoundException e) {
+			System.out.println("No Level File for Level: " + level);
+		}
 		
 		setupTerrain();
 		setupCollectables();
@@ -785,10 +790,12 @@ public class MainGame extends GraphicsPane {
 		program.add(image);
 		terrainMap.put(image, terrain);
 		*/
+		terrainMap = fileReader.getTerrainMap();
 	}
 	
 	// sets up the collectables on the main window
 	private void setupCollectables() {
+		/*
 		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
 		GImage image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		collectablesMap.put(image, collectable);
@@ -813,18 +820,24 @@ public class MainGame extends GraphicsPane {
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		collectablesMap.put(image, collectable);
 		program.add(image);
+		*/
+		collectablesMap = fileReader.getCollectableMaps();
 	}
 	
 	private void setupPlayer() {
+		/*
 		player = new Player(200, 300);
 		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
 		playerWidth = (int)playerImage.getWidth();
 		program.add(playerImage);
+		*/
+		player = fileReader.getPlayer();
 		
 	}
 	
 	private void setupEnemies() {
-		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
+		/* 
+		tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
 		GImage image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		program.add(image);
@@ -838,6 +851,8 @@ public class MainGame extends GraphicsPane {
 		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		program.add(image);
+		*/
+		enemiesMap = fileReader.getEnemyMap();
 		
 		}
 
