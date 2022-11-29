@@ -104,7 +104,7 @@ public class MainGame extends GraphicsPane {
 		program.setupTimer(30);
 		player.startTimer();
 		setupPauseGameScreen();
-	//	setupGameOverScreen();
+		//setupGameOverScreen();
 	}
 
 	@Override
@@ -176,9 +176,11 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
-			program.switchToGame();;
+			program.switchToGame();
 		}
 		else if(obj == restartButton) {
+			
+			System.out.println("Restart");
 			program.switchToGame();
 		}
 		else if (obj == resumeButton) {
@@ -204,7 +206,7 @@ public class MainGame extends GraphicsPane {
 			
 			if (player.getY() + 50 > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
-				program.switchToMenu();
+				setupGameOverScreen();
 			}
 
 			
@@ -736,6 +738,7 @@ public class MainGame extends GraphicsPane {
 		program.add(over);
 		
 		restartButton = new GButton("Restart", dimension.getWidth()/2-110, over.getY()+over.getHeight()/2, 220, 70, Color.decode("#879383"));
+		
 		program.add(restartButton);
 		
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, restartButton.getY()+restartButton.getHeight()+10, 375, 90, Color.decode("#879383"));
