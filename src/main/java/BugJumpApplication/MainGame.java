@@ -3,7 +3,6 @@ package BugJumpApplication;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 
 import java.awt.event.ActionEvent;
@@ -15,7 +14,6 @@ import java.util.Map.Entry;
 
 
 import acm.graphics.*;
-import javafx.scene.effect.Glow;
 
 
 public class MainGame extends GraphicsPane {
