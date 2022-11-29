@@ -200,7 +200,7 @@ public class MainGame extends GraphicsPane {
 				setupPauseGameScreen();
 			}
 			
-			if (player.getY() > dimension.getHeight() || player.isDead()) {
+			if (player.getY() + playerImage.getHeight()/2 > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
 				program.switchToMenu();
 			}
@@ -813,6 +813,7 @@ public class MainGame extends GraphicsPane {
 		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
 		playerWidth = (int)playerImage.getWidth();
 		program.add(playerImage);
+		
 		
 	}
 	

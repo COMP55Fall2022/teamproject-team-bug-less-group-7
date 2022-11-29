@@ -1,7 +1,7 @@
 package BugJumpApplication;
 
 public enum TerrainType {
-	SPIKE, GRASS, DIRT;
+	SPIKE, GRASS, DIRT, NONE;
 	
 	public String toString() {
 		switch(this){
