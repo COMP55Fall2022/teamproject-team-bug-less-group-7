@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -41,6 +42,8 @@ public class MainGame extends GraphicsPane {
 	//Arraylist of all keys pressed at once
 	private ArrayList<Integer> keyList;
 	
+	//File Reader object to load levels
+	private FileReader fileReader;
 	
 	/////////////////////////////////////////////////////////////
 
@@ -50,6 +53,7 @@ public class MainGame extends GraphicsPane {
 	private int stars = 0;
 	private MainApplication program;
 	private Dimension dimension;
+	private int level = 0;
 	
 	
 	/////////////////////////////////////////////////////////////
@@ -94,6 +98,12 @@ public class MainGame extends GraphicsPane {
 		
 		//audio = audio.getInstance();
 		//audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
+		try {
+			fileReader = new FileReader(level);
+		} catch (FileNotFoundException e) {
+			System.out.println("No Level File for Level: " + level);
+		}
+		
 		setupTerrain();
 		setupCollectables();
 		setupPlayer();
@@ -757,6 +767,7 @@ public class MainGame extends GraphicsPane {
 	 * Sets up the collectables on the main window
 	 */
 	private void setupTerrain() {
+		/*
 		background = new GImage("/Images/forestBackground.jpeg");
 		background.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(background);
@@ -778,10 +789,13 @@ public class MainGame extends GraphicsPane {
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		program.add(image);
 		terrainMap.put(image, terrain);
+		*/
+		terrainMap = fileReader.getTerrainMap();
 	}
 	
 	// sets up the collectables on the main window
 	private void setupCollectables() {
+		/*
 		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
 		GImage image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		collectablesMap.put(image, collectable);
@@ -806,19 +820,25 @@ public class MainGame extends GraphicsPane {
 		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
 		collectablesMap.put(image, collectable);
 		program.add(image);
+		*/
+		collectablesMap = fileReader.getCollectableMaps();
 	}
 	
 	private void setupPlayer() {
+		/*
 		player = new Player(200, 300);
 		playerImage = new GImage("/Images/rightPlayer.png", 50, 50);
 		playerWidth = (int)playerImage.getWidth();
 		program.add(playerImage);
+		*/
+		player = fileReader.getPlayer();
 		
 		
 	}
 	
 	private void setupEnemies() {
-		Enemy tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
+		/* 
+		tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
 		GImage image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		program.add(image);
@@ -832,6 +852,8 @@ public class MainGame extends GraphicsPane {
 		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
 		enemiesMap.put(image, tempEnemy);
 		program.add(image);
+		*/
+		enemiesMap = fileReader.getEnemyMap();
 		
 		}
 
