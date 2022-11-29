@@ -43,6 +43,8 @@ public class MainGame extends GraphicsPane {
 	//Arraylist of all keys pressed at once
 	private ArrayList<Integer> keyList;
 	
+	//File Reader object to load levels
+	private FileReader fileReader;
 	
 	/////////////////////////////////////////////////////////////
 
@@ -52,6 +54,7 @@ public class MainGame extends GraphicsPane {
 	private int stars = 0;
 	private MainApplication program;
 	private Dimension dimension;
+	private int level = 0;
 	
 	
 	/////////////////////////////////////////////////////////////
@@ -96,6 +99,8 @@ public class MainGame extends GraphicsPane {
 		
 		//audio = audio.getInstance();
 		//audio.playSoundWithOptions("sounds", "r2d2.mp3", true);
+		fileReader = new FileReader(level);
+		
 		setupTerrain();
 		setupCollectables();
 		setupPlayer();
@@ -759,6 +764,7 @@ public class MainGame extends GraphicsPane {
 	 * Sets up the collectables on the main window
 	 */
 	private void setupTerrain() {
+		/*
 		background = new GImage("/Images/forestBackground.jpeg");
 		background.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(background);
@@ -780,6 +786,7 @@ public class MainGame extends GraphicsPane {
 		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
 		program.add(image);
 		terrainMap.put(image, terrain);
+		*/
 	}
 	
 	// sets up the collectables on the main window
