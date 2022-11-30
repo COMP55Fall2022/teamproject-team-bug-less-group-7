@@ -3,7 +3,6 @@ package BugJumpApplication;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import acm.graphics.GImage;
 
@@ -17,20 +16,20 @@ public class FileReader{
 	
 	
 	public FileReader(int level) throws FileNotFoundException {
-		readLevel();
+		readLevel(level);
 	}
 
-	private void readLevel() throws FileNotFoundException {
-		File file = new File("media/Bug Jump Level 1.txt");
+	private void readLevel(int level) throws FileNotFoundException {
+		File file = new File("media/Level" + level + ".txt");
 		Scanner scanner = new Scanner(file);
 		String currentLine;
 		
 		
 		//player Reader
+		scanner.nextLine();
 		currentLine = scanner.nextLine();
 		for(int i = 0; i < Integer.parseInt(currentLine); i++) {
-			scanner.nextLine();
-			String[] content = scanner.nextLine().split("-");
+			String[] content = scanner.nextLine().trim().split("-");
 			player = new Player(Integer.parseInt(content[0]), Integer.parseInt(content[1]));
 			playerGImage = new GImage("/Images/rightPlayer.png", player.getX(), player.getY());
 		}
@@ -40,8 +39,6 @@ public class FileReader{
 		scanner.nextLine();
 		currentLine = scanner.nextLine();
 
-		
-//		System.exit(0);
 		// Enemy Reader
 		for(int i = 0; i < Integer.parseInt(currentLine); i++) {
 			Enemy enemy;
@@ -54,6 +51,7 @@ public class FileReader{
 		scanner.nextLine();
 		currentLine = scanner.nextLine();
 		
+		// Terrain Reader
 		for(int i = 0; i < Integer.parseInt(currentLine); i++) {
 			Terrain terrain;
 			GImage image;
@@ -64,32 +62,55 @@ public class FileReader{
 			image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
 			image.setSize(terrain.getWidth(), terrain.getHeight());
 			terrainMap.put(image, terrain);
-			
-			
 		}		
 		
+		scanner.nextLine();
+		scanner.nextLine();
+		currentLine = scanner.nextLine();
 		
-		for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
-			GImage key = entry.getKey();
-			Terrain val = entry.getValue();
-			System.out.println(key);
-			System.out.println(val);
-		}
+		// Collectable Reader
+		for(int i = 0; i < Integer.parseInt(currentLine); i++) {
+			Collectable collectable;
+			GImage image;
+			String[] content = scanner.nextLine().trim().split("-");			
+			collectable = new Collectable(Integer.parseInt(content[0]), Integer.parseInt(content[1]), CollectableType.NONE.getType(Integer.parseInt(content[2])));
+			image = new GImage(collectable.getCType().toString(), collectable.getX(), collectable.getY());
+			collectablesMap.put(image, collectable);
+		}	
+		
 		scanner.close();
 
-		}
+	}
 		
+	public static void main(String[] args) throws FileNotFoundException {
+		FileReader file = new FileReader(1);
+	}
+	public GImage getplayerImage() {
+		// TODO Auto-generated method stub
+		return playerGImage;
+	}
+	
+	public Player getPlayer() {
+		// TODO Auto-generated method stub
+		return player;
+	}
 	
 	public HashMap<GImage, Enemy> getEnemyMap() {
 		return enemiesMap;
 	}
 	
-
-	public static void main(String[] args) throws FileNotFoundException {
-		FileReader file = new FileReader(0);
-		
-
+	public HashMap<GImage, Collectable> getCollectableMaps() {
+		// TODO Auto-generated method stub
+		return collectablesMap;
 	}
+
+
+	public HashMap<GImage, Terrain> getTerrainMap() {
+		// TODO Auto-generated method stub
+		return terrainMap;
+	}
+
+
 	
 
 }
