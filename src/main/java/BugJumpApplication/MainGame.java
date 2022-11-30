@@ -303,7 +303,7 @@ public class MainGame extends GraphicsPane {
 			}
 		}
 		
-		if (player.getX() <= 100 && xVel < 0) {
+		if (player.getX() <= (int)dimension.getWidth()*.25 && xVel < 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
@@ -325,7 +325,7 @@ public class MainGame extends GraphicsPane {
 				
 			}
 		}
-		else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
+		else if (player.getX()+playerImage.getWidth() >= (int)dimension.getWidth()*.75 && xVel > 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
