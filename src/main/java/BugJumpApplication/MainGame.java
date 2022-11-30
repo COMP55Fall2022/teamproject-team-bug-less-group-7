@@ -18,12 +18,13 @@ import acm.graphics.*;
 
 
 public class MainGame extends GraphicsPane {
-	private static final int RIGHT_VELOCITY = 10;
-	private static final int LEFT_VELOCITY = -10;
 	
 	/////////////////////////////////////////////////////////////
 
 	/* All player's variables used in this class */
+	private static final int RIGHT_VELOCITY = 10;
+	private static final int LEFT_VELOCITY = -10;
+	
 	private Player player;
 	private GImage playerImage;
 	private int xVel; //left and right velocity of the player object
@@ -42,8 +43,6 @@ public class MainGame extends GraphicsPane {
 	//Arraylist of all keys pressed at once
 	private ArrayList<Integer> keyList;
 	
-	//File Reader object to load levels
-	private FileReader fileReader;
 	
 	/////////////////////////////////////////////////////////////
 
@@ -55,6 +54,8 @@ public class MainGame extends GraphicsPane {
 	private Dimension dimension;
 	private int level;
 	
+	//File Reader object to load levels
+	private FileReader fileReader;
 	
 	/////////////////////////////////////////////////////////////
 	
@@ -531,7 +532,6 @@ public class MainGame extends GraphicsPane {
 		}
 		
 		for (GImage gImage : keysToRemove) {
-//			bulletMap.get(gImage).stopTimer();
 			bulletMap.remove(gImage);
 			program.remove(gImage);
 		}
@@ -585,7 +585,7 @@ public class MainGame extends GraphicsPane {
 			return true;
 		}
 	
-		if(terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3) || terrainMap.containsKey(obj4)) {				
+		if(val.isMelee() == false && (terrainMap.containsKey(obj1) || terrainMap.containsKey(obj2) ||  terrainMap.containsKey(obj3) || terrainMap.containsKey(obj4))) {				
 			return true;
 		}
 		return false;
