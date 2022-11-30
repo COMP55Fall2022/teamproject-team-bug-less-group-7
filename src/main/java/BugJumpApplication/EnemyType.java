@@ -1,7 +1,7 @@
 package BugJumpApplication;
 
 public enum EnemyType {
-	FLOWER,SPIDER,WORM,BEATLE;
+	FLOWER,SPIDER,WORM,BEATLE, NONE;
 	
 	public String toString() {
 		switch(this) {

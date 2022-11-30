@@ -26,12 +26,12 @@ public class Collectable {
 		return this.xAxis;
 	}
 
-	public static int getWidth() {
-		return width;
+	public int getWidth() {
+		return this.width;
 	}
 
-	public static int getHeight() {
-		return height;
+	public int getHeight() {
+		return this.height;
 	}
 
 	@Override

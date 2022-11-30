@@ -11,6 +11,7 @@ public class Bullet extends GraphicsProgram{
 	private int vel;
 	private int theta;
 	private boolean isFriendly;
+	private boolean isMelee;
 	
 	public Bullet(int x, int y, int vel, int theta, boolean isFriendly) {
 		this.xAxis = x;
@@ -18,6 +19,7 @@ public class Bullet extends GraphicsProgram{
 		this.vel = vel;
 		this.theta = theta;
 		this.isFriendly = isFriendly;
+		this.isMelee = false;
 		this.runoutTimer = 100;
 	}
 	
@@ -28,6 +30,7 @@ public class Bullet extends GraphicsProgram{
 		this.theta = theta;
 		this.isFriendly = isFriendly;
 		this.runoutTimer = timer;
+		this.isMelee = true;
 	}
 	
 	@Override
@@ -59,6 +62,10 @@ public class Bullet extends GraphicsProgram{
 	
 	public boolean isFriendly() {
 		return this.isFriendly;
+	}
+	
+	public boolean isMelee() {
+		return this.isMelee;
 	}
 	
 	public boolean hasTimerRunout() {

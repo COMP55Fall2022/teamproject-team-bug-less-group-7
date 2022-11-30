@@ -96,7 +96,7 @@ public class LevelSelector extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if (obj == level1) {
-			program.switchToGame();
+			program.switchToGame(1);
 		}
 	}
 
