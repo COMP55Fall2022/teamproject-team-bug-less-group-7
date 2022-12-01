@@ -25,6 +25,9 @@ public class Enemy extends GraphicsProgram{
 		this.willAttack = false;
 		this.isRightOrientation = true;
 		lastShotTimer = 0;
+		if (isRightOrientation) {
+			
+		}
 	}
 	
 	@Override

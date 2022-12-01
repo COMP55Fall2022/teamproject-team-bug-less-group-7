@@ -616,10 +616,11 @@ public class MainGame extends GraphicsPane {
 				each.actionPerformed(null);
 				eachImage.setLocation(each.getX(),each.getY());
 				
-				if((program.getElementAt(each.getX()-2, each.getY()+52) == background || program.getElementAt(each.getX()-2, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
+				if(bulletMap.containsKey(program.getElementAt(each.getX()-2, each.getY()+52))|| program.getElementAt(each.getX()-2, each.getY()+52) == background || 
+				   program.getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
-				}
-				else if ((program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
+				}  
+				else if (bulletMap.containsKey(program.getElementAt(each.getX()+52, each.getY()+52)) || program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()+52, each.getY()))) {
 					each.setIsRightOrientation(false);
 				}
 
