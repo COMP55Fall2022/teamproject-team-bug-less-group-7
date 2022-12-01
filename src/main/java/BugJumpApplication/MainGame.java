@@ -83,6 +83,7 @@ public class MainGame extends GraphicsPane {
 	public MainGame(MainApplication e, int level) {
 		program = e;
 		this.level = level;
+		//this.level = 3;
 	}
 	
 	@Override
@@ -113,9 +114,12 @@ public class MainGame extends GraphicsPane {
 		setupEnemies();
 		program.setupTimer(30);
 		player.startTimer();
+
+		
+
 		fileReader = null;
 	//	setupGameOverScreen();
-	}
+}
 
 	@Override
 	public void hideContents() {
@@ -186,10 +190,15 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
+
+	
 			program.switchToGame(1);
-		}
+	}
 		else if(obj == restartButton) {
-			program.switchToGame(level);
+
+			
+			System.out.println("Restart");
+	program.switchToGame(level);
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -214,7 +223,7 @@ public class MainGame extends GraphicsPane {
 			
 			if (player.getY() + playerImage.getHeight()/2 > dimension.getHeight() || player.isDead()) {
 				System.out.println("player is dead");
-				program.switchToMenu();
+				setupGameOverScreen();
 			}
 
 			
@@ -295,7 +304,7 @@ public class MainGame extends GraphicsPane {
 			}
 		}
 		
-		if (player.getX() <= 100 && xVel < 0) {
+		if (player.getX() <= (int)dimension.getWidth()*.25 && xVel < 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
@@ -317,7 +326,7 @@ public class MainGame extends GraphicsPane {
 				
 			}
 		}
-		else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
+		else if (player.getX()+playerImage.getWidth() >= (int)dimension.getWidth()*.75 && xVel > 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
@@ -739,13 +748,14 @@ public class MainGame extends GraphicsPane {
 		gameOverBorder.setFilled(true);
 		program.add(gameOverBorder);
 		
-		over = new GParagraph("Game Over!" , 0, 0);
+		over = new GParagraph("You Suck!" , 0, 0);
 		over.setFont("Arial-Bold-80");
 		over.setColor(Color.RED);
 		over.setLocation(dimension.getWidth()/2-over.getWidth()/2, gameOverBorder.getY()+over.getHeight());
 		program.add(over);
 		
 		restartButton = new GButton("Restart", dimension.getWidth()/2-110, over.getY()+over.getHeight()/2, 220, 70, Color.decode("#879383"));
+		
 		program.add(restartButton);
 		
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, restartButton.getY()+restartButton.getHeight()+10, 375, 90, Color.decode("#879383"));
