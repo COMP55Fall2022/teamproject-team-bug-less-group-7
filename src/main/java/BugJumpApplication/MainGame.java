@@ -82,7 +82,12 @@ public class MainGame extends GraphicsPane {
 	
 	public MainGame(MainApplication e, int level) {
 		program = e;
+<<<<<<< HEAD
 		this.level = 0;
+=======
+		this.level = level;
+		//this.level = 3;
+>>>>>>> branch 'main' of https://github.com/COMP55Fall2022/teamproject-team-bug-less-group-7.git
 	}
 	
 	@Override
@@ -303,7 +308,7 @@ public class MainGame extends GraphicsPane {
 			}
 		}
 		
-		if (player.getX() <= 100 && xVel < 0) {
+		if (player.getX() <= (int)dimension.getWidth()*.25 && xVel < 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
@@ -325,7 +330,7 @@ public class MainGame extends GraphicsPane {
 				
 			}
 		}
-		else if (player.getX()+playerImage.getWidth() >= 1000 && xVel > 0) {
+		else if (player.getX()+playerImage.getWidth() >= (int)dimension.getWidth()*.75 && xVel > 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
 				Terrain val = entry.getValue();
@@ -624,10 +629,11 @@ public class MainGame extends GraphicsPane {
 				each.actionPerformed(null);
 				eachImage.setLocation(each.getX(),each.getY());
 				
-				if((program.getElementAt(each.getX()-2, each.getY()+52) == background || program.getElementAt(each.getX()-2, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
+				if(bulletMap.containsKey(program.getElementAt(each.getX()-2, each.getY()+52))|| program.getElementAt(each.getX()-2, each.getY()+52) == background || 
+				   program.getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
-				}
-				else if ((program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()+52, each.getY()))) {
+				} 
+				else if (bulletMap.containsKey(program.getElementAt(each.getX()+52, each.getY()+52)) || program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()+52, each.getY()))) {
 					each.setIsRightOrientation(false);
 				}
 
