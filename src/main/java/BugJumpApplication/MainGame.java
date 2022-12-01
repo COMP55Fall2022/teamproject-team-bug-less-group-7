@@ -627,7 +627,7 @@ public class MainGame extends GraphicsPane {
 				if((program.getElementAt(each.getX()-2, each.getY()+52) == background || program.getElementAt(each.getX()-2, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
 				}
-				else if ((program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
+				else if ((program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null) || terrainMap.containsKey(program.getElementAt(each.getX()+52, each.getY()))) {
 					each.setIsRightOrientation(false);
 				}
 
