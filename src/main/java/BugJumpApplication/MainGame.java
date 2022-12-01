@@ -82,7 +82,7 @@ public class MainGame extends GraphicsPane {
 	
 	public MainGame(MainApplication e, int level) {
 		program = e;
-		this.level = level;
+		this.level = 0;
 	}
 	
 	@Override
