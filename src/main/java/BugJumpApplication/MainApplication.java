@@ -17,8 +17,6 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void run() {	
-		audio = audio.getInstance();
-		audio.playSoundWithOptions("Music", "MainMenuMusic.mp3", true);
 		setupInteractions();
 		menu = new MainMenu(this);
 		lSelector = new LevelSelector(this);
