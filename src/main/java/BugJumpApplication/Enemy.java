@@ -7,8 +7,9 @@ public class Enemy extends GraphicsProgram{
 	
 	private int xAxis;
 	private int yAxis;
+	private int xVel;
 	private int lastShotTimer;
-	private int lives = 4;
+	private int lives = 3;
 
 	private boolean isRightOrientation;
 	private boolean willAttack;
@@ -25,6 +26,24 @@ public class Enemy extends GraphicsProgram{
 		this.willAttack = false;
 		this.isRightOrientation = true;
 		lastShotTimer = 0;
+		determineSpeed();
+	}
+	
+	private void determineSpeed() {
+		switch (eType) {
+		case BEETLE: {
+			this.xVel = 8;
+			break;
+		}
+		case SPIDER:
+			this.xVel = 9;
+			break;
+		case WORM:
+			this.xVel = 3;
+			break;
+		default:
+			this.xVel = 5;
+		}
 	}
 	
 	@Override
@@ -92,10 +111,10 @@ public class Enemy extends GraphicsProgram{
 	public void actionPerformed(ActionEvent e) {
 		if (willAttack == false) {
 			if (isRightOrientation == true) {
-				xAxis = xAxis + 5;
+				xAxis = xAxis + xVel;
 			}
 			else {
-				xAxis = xAxis - 5;
+				xAxis = xAxis - xVel;
 			}
 		}
 	}
@@ -117,12 +136,12 @@ public class Enemy extends GraphicsProgram{
 				}
 				break;
 			//shoots 1 bullet in the direction its facing horizontally
-			case BEATLE:
+			case BEETLE:
 				bulletArr = new Bullet[1];
 				if (isRightOrientation) {
-					bulletArr[0] = new Bullet(xAxis,yAxis,5,0, false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,10,0, false);
 				} else {
-					bulletArr[0] = new Bullet(xAxis,yAxis,5,180,false);
+					bulletArr[0] = new Bullet(xAxis,yAxis,10,180,false);
 				}
 				break;
 			//default
