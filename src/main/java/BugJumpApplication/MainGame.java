@@ -770,7 +770,8 @@ public class MainGame extends GraphicsPane {
 		gameOverBorder.setFilled(true);
 		program.add(gameOverBorder);
 		
-		over = new GParagraph("You Suck!" , 0, 0);
+		//over = new GParagraph("You Suck!" , 0, 0);
+		over = new GParagraph("Skill Issue Bruv" , 0, 0);
 		over.setFont("Arial-Bold-80");
 		over.setColor(Color.RED);
 		over.setLocation(dimension.getWidth()/2-over.getWidth()/2, gameOverBorder.getY()+over.getHeight());
