@@ -81,13 +81,8 @@ public class MainGame extends GraphicsPane {
 	
 	
 	public MainGame(MainApplication e, int level) {
-		program = e;
-<<<<<<< HEAD
-		this.level = 0;
-=======
+		//this.level = 0;
 		this.level = level;
-		//this.level = 3;
->>>>>>> branch 'main' of https://github.com/COMP55Fall2022/teamproject-team-bug-less-group-7.git
 	}
 	
 	@Override
