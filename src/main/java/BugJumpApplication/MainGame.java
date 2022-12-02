@@ -82,9 +82,14 @@ public class MainGame extends GraphicsPane {
 	
 	public MainGame(MainApplication e, int level) {
 		//this.level = 0;
-		this.level = level;
+
+		//this.level = 3;
+
+		//this.level = 0;
+		
+		this.level = 3;
 	}
-	
+
 	@Override
 	public void showContents() {
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -229,6 +234,9 @@ public class MainGame extends GraphicsPane {
 		}
 	}
 	
+	/**
+	 * Changes the player's image depending on it orientation and weapon
+	 */
 	private void changePlayerImage() {
 		if (player.weapon != null) {
 			switch (player.weapon.getWeaponType()) {
@@ -262,6 +270,9 @@ public class MainGame extends GraphicsPane {
 		}
 	}
 	
+	/**
+	 * Method for player's movement
+	 */
 	private void playerMovement() {
 		// If the d key is held and the a key is not
 		if (keyList.contains(68) && !keyList.contains(65)) {
@@ -294,7 +305,8 @@ public class MainGame extends GraphicsPane {
 		if (keyList.contains(87)) {
 			player.turnOnJumping();
 		}
-
+		
+		// Method call for player Collision
 		if (checkCollision()) {
 			if (isPrevOrientationRight == player.isRightOrientation) {
 				xVel = 0;
@@ -303,37 +315,36 @@ public class MainGame extends GraphicsPane {
 			}
 		}
 		
+		// Move all objects right when player moves left
 		if (player.getX() <= (int)dimension.getWidth()*.25 && xVel < 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
-				Terrain val = entry.getValue();
 				key.setLocation(key.getX()-xVel, key.getY());
 			}
 			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
 				GImage key = entry.getKey();
-				Collectable val = entry.getValue();
 				key.setLocation(key.getX()-xVel, key.getY());
 			}
 			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
 				GImage key = entry.getKey();
 				Enemy val = entry.getValue();
-
-				val.moveXAxis(-xVel);
-				if (val.getAwareness()) {
-					key.setLocation(val.getX(), val.getY());
-				}
 				
+				val.moveXAxis(-xVel);
+				if (val.getAwareness()) {key.setLocation(val.getX(), val.getY());}
 			}
-		}
+			for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) {
+				GImage key = entry.getKey();				
+				key.move(-xVel, 0);
+			}
+			
+		} // Move all objects left when player moves right
 		else if (player.getX()+playerImage.getWidth() >= (int)dimension.getWidth()*.75 && xVel > 0) {
 			for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 				GImage key = entry.getKey();
-				Terrain val = entry.getValue();
 				key.setLocation(key.getX()-xVel, key.getY());
 			}
 			for (Entry<GImage, Collectable> entry : collectablesMap.entrySet()) {
 				GImage key = entry.getKey();
-				Collectable val = entry.getValue();
 				key.setLocation(key.getX()-xVel, key.getY());
 			}
 			for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
@@ -343,6 +354,10 @@ public class MainGame extends GraphicsPane {
 				if (val.getAwareness()) {
 					key.setLocation(val.getX(), val.getY());
 				}
+			}
+			for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) {
+				GImage key = entry.getKey();
+				key.move(-xVel, 0);
 			}
 		}
 		else {
@@ -350,6 +365,9 @@ public class MainGame extends GraphicsPane {
 		}	
 	}
 	
+	/**
+	 * Checks if "Space" has been pressed to shoot a bullet/melee wave
+	 */
 	private void playerWeapon() {
 		// adding a bullet on the screen when pressing Space
 		if (keyList.contains(32) && player.weapon != null && fireRate <= 0) {
@@ -390,9 +408,10 @@ public class MainGame extends GraphicsPane {
 	 * @return true if player is colliding with a wall. False otherwise
 	 */
 	private boolean checkCollision() {
-		if (objectPlayerCollision(new GObject[] {program.getElementAt(player.getX()+.333*playerWidth, player.getY()-6),
-			program.getElementAt(player.getX()+.667*playerWidth, player.getY()-6)})) {
-				GObject obj = program.getElementAt(player.getX() + playerWidth/2, player.getY()-6);
+		// was 6 before
+		if (objectPlayerCollision(new GObject[] {program.getElementAt(player.getX()+.333*playerWidth, player.getY()-4),
+			program.getElementAt(player.getX()+.667*playerWidth, player.getY()-4)})) {
+				GObject obj = program.getElementAt(player.getX() + playerWidth/2, player.getY()-4);
 				player.turnOffJumping();
 				if (obj != null && obj != background) {				
 					player.setY((int)obj.getY()+(int)obj.getHeight()+1);
@@ -401,13 +420,13 @@ public class MainGame extends GraphicsPane {
 			
 		
 		// functionality for ground detection
-		if(objectPlayerCollision(new GObject[]{program.getElementAt(player.getX()+2, player.getY() + 54), 
-		   program.getElementAt(player.getX() + (playerWidth-2), player.getY() + 54)})) {
+		if(objectPlayerCollision(new GObject[]{program.getElementAt(player.getX()+2, player.getY() + 52), // was 54 before
+		   program.getElementAt(player.getX() + (playerWidth-2), player.getY() + 52)})) {
 			
 
 			player.isInAir = false;
-			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 55);
-			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+55);
+			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 53); // was 55 before
+			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+53);
 			
 
 			
@@ -546,6 +565,12 @@ public class MainGame extends GraphicsPane {
 		
 	}
 	
+	/**
+	 * checks collision points of a bullet 
+	 * @param key the GImage associated with the bullet object
+	 * @param val the bullet object itself
+	 * @return true if bullet hits a valid object
+	 */
 	private boolean checkBulletCollision(GImage key, Bullet val) {
 		GObject obj1 = program.getElementAt(key.getX()-2, key.getY());
 		GObject obj2 = program.getElementAt(key.getX()-2, key.getY()+key.getHeight());
@@ -600,13 +625,16 @@ public class MainGame extends GraphicsPane {
 		
 	}
 	
-	//For now just attacks but could do other stuff?
+	
 	private void doEnemyActions() {
 		
 		for (Entry<GImage, Enemy> entry : enemiesMap.entrySet()) {
 			Enemy each = entry.getValue();
 			GImage eachImage = entry.getKey();
-			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEATLE || each.getEnemyType() == EnemyType.FLOWER)) {
+			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEETLE || each.getEnemyType() == EnemyType.FLOWER)) {
+				if (player.getX() <= each.getX()) {each.setIsRightOrientation(false);}
+				else {each.setIsRightOrientation(true);}
+				
 				if (timerCount - each.getLastShot() >= 150) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
@@ -644,16 +672,13 @@ public class MainGame extends GraphicsPane {
 			ePointx = all.getX(); 		
 			ePointy = all.getY();
  
-			if(all.getEnemyType() != EnemyType.BEATLE && all.getEnemyType() != EnemyType.FLOWER) {continue;}
+			if(all.getEnemyType() != EnemyType.BEETLE && all.getEnemyType() != EnemyType.FLOWER) {continue;}
  
 			if (Math.abs(player.getX()-ePointx) <= 400 && Math.abs(player.getY()-ePointy) <= 150) {
 				all.switchAwareness(true);
-				//System.out.println("sees player");
-				break;
 			}
 			else {
 				all.switchAwareness(false);
-				//System.out.println("Awareness : False");
 			}
 		}
 	}
@@ -747,7 +772,8 @@ public class MainGame extends GraphicsPane {
 		gameOverBorder.setFilled(true);
 		program.add(gameOverBorder);
 		
-		over = new GParagraph("You Suck!" , 0, 0);
+		//over = new GParagraph("You Suck!" , 0, 0);
+		over = new GParagraph("Skill Issue Bruv" , 0, 0);
 		over.setFont("Arial-Bold-80");
 		over.setColor(Color.RED);
 		over.setLocation(dimension.getWidth()/2-over.getWidth()/2, gameOverBorder.getY()+over.getHeight());
