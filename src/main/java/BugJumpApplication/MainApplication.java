@@ -9,12 +9,14 @@ public class MainApplication extends GraphicsApplication {
 	private MainMenu menu;
 	private LevelSelector lSelector;
 	private MainGame game;
+	private AudioPlayer audio;
+
 	
 	public void init() {
 		setSize(PROGRAMHEIGHT, PROGRAMWIDTH);
 	}
 
-	public void run() {
+	public void run() {	
 		setupInteractions();
 		menu = new MainMenu(this);
 		lSelector = new LevelSelector(this);

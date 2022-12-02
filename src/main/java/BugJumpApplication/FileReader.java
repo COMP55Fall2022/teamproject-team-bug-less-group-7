@@ -20,7 +20,7 @@ public class FileReader{
 	}
 
 	private void readLevel(int level) throws FileNotFoundException {
-		File file = new File("media/Level" + level + ".txt");
+		File file = new File("media/Levels/level" + level + ".txt");
 		Scanner scanner = new Scanner(file);
 		String currentLine;
 		
