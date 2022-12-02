@@ -1,14 +1,14 @@
 package BugJumpApplication;
 
 public enum EnemyType {
-	FLOWER,SPIDER,WORM,BEATLE, NONE;
+	FLOWER,SPIDER,WORM,BEETLE, NONE;
 	
 	public String toString() {
 		switch(this) {
 			case FLOWER: return "/Images/sunflower.png";
 			case SPIDER: return "/Images/spider.png";
 			case WORM: return "/Images/worm.png";
-			case BEATLE: return "/Images/beatle.png";
+			case BEETLE: return "/Images/beetle.png";
 		}
 		return "n/a";
 	}
@@ -18,7 +18,7 @@ public enum EnemyType {
 			case 0: return EnemyType.FLOWER;
 			case 1: return EnemyType.SPIDER;
 			case 2: return EnemyType.WORM;
-			case 3: return EnemyType.BEATLE;
+			case 3: return EnemyType.BEETLE;
 		}
 		return null;
 		
