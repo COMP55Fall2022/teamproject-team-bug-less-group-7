@@ -86,7 +86,7 @@ public class MainGame extends GraphicsPane {
 
 		this.level = 3;
 
-		this.level = 0;
+		this.level = 1;
 		
 //		this.level = 3;
 
