@@ -83,7 +83,6 @@ public class MainGame extends GraphicsPane {
 	public MainGame(MainApplication e, int level) {
 		program = e;
 		this.level = level;
-		this.level = 6;
 	}
 
 	@Override
@@ -807,10 +806,10 @@ public class MainGame extends GraphicsPane {
 	 */
 	private void setupTerrain() {
 		
-//		background = new GImage("/Images/Background" +level+ ".jpeg");
-//		
-//		background.setSize(dimension.getWidth(), dimension.getHeight());
-//		program.add(background);
+		background = new GImage("/Images/Background" +level+ ".jpeg");
+		
+		background.setSize(dimension.getWidth(), dimension.getHeight());
+		program.add(background);
 		
 		
 		terrainMap = fileReader.getTerrainMap();
