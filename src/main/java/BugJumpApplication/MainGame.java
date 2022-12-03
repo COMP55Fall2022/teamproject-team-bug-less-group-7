@@ -111,13 +111,9 @@ public class MainGame extends GraphicsPane {
 		setupPlayer();
 		setupGUI();
 		setupEnemies();
-		program.setupTimer(30);
+		program.setupTimer(25);
 		player.startTimer();
-
-		
-
 		fileReader = null;
-	//	setupGameOverScreen();
 }
 
 	@Override
@@ -216,11 +212,8 @@ public class MainGame extends GraphicsPane {
 			}
 			
 			if (player.getY() + playerImage.getHeight()/2 > dimension.getHeight() || player.isDead()) {
-				System.out.println("player is dead");
 				setupGameOverScreen();
 			}
-
-			
 		}
 	}
 	
@@ -404,7 +397,7 @@ public class MainGame extends GraphicsPane {
 				GObject obj = program.getElementAt(player.getX() + playerWidth/2, player.getY()-4);
 				player.turnOffJumping();
 				if (obj != null && obj != background) {				
-					player.setY((int)obj.getY()+(int)obj.getHeight()+1);
+					player.setY((int)obj.getY()+(int)obj.getHeight()+10);
 				}
 		}
 			
@@ -585,11 +578,6 @@ public class MainGame extends GraphicsPane {
 			Enemy enemy  = null;
 			GObject temp = null;
 			
-			System.out.println(obj1);
-			System.out.println(obj2);
-			System.out.println(obj3);
-			System.out.println(obj4);
-			
 			if (enemiesMap.containsKey(obj1)) {
 				enemy = enemiesMap.get(obj1);
 				temp = obj1;
@@ -629,7 +617,7 @@ public class MainGame extends GraphicsPane {
 				if (player.getX() <= each.getX()) {each.setIsRightOrientation(false);}
 				else {each.setIsRightOrientation(true);}
 				
-				if (timerCount - each.getLastShot() >= 150) {
+				if (timerCount - each.getLastShot() >= 100) {
 					each.setLastShot(timerCount);
 					Bullet[] bullets = each.attack();
 					if (bullets != null) {
@@ -680,25 +668,11 @@ public class MainGame extends GraphicsPane {
 	private void stopGame() {
 		isGamePaused = true;
 		player.stopTimer();
-//		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-//			entry.getValue().stopTimer();
-//		}
-//		
-//		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-//			entry.getValue().stopTimer();
-//		}
-
 	}
+	
 	private void continueGame() {
 		isGamePaused = false;
 		player.startTimer();
-//		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {
-//			entry.getValue().startTimer();
-//		}
-//		
-//		for (Entry<GImage, Bullet> entry : bulletMap.entrySet()) { 
-//			entry.getValue().startTimer();
-//		}
 	}
 	
 	public void unpauseGameScreen() {
@@ -714,8 +688,7 @@ public class MainGame extends GraphicsPane {
 	}
 	
 	public void setupPauseGameScreen() {
-		if (pauseBorder != null) {
-			System.out.println("help");return;}
+		if (pauseBorder != null) {return;}
 		stopGame();
 		
 		pauseBorder = new GRect(dimension.getWidth()/2-700/2, dimension.getHeight()/2-400/2, 700, 400);
@@ -805,35 +778,15 @@ public class MainGame extends GraphicsPane {
 	 * Sets up the Terrain on level
 	 */
 	private void setupTerrain() {
-		
 		background = new GImage("/Images/Background" +level+ ".jpeg");
-		
 		background.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(background);
-		
 		
 		terrainMap = fileReader.getTerrainMap();
 		for (Entry<GImage, Terrain> entry : terrainMap.entrySet()) {
 			GImage key = entry.getKey();
 			program.add(key);
 		}
-//		Terrain terrain = new Terrain(0, 500, 800, 500, TerrainType.GRASS);
-//		GImage image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
-//		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
-//		program.add(image);
-//		terrainMap.put(image, terrain);
-//		
-//		terrain = new Terrain(900, 700, 800, 200, TerrainType.GRASS);
-//		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
-//		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
-//		program.add(image);
-//		terrainMap.put(image, terrain);
-//		
-//		terrain = new Terrain(700, 300, 200, 100, TerrainType.DIRT);
-//		image = new GImage(terrain.getTerrainType().toString(), terrain.getX(), terrain.getY());
-//		image.setSize((double)terrain.getWidth(), (double)terrain.getHeight());
-//		program.add(image);
-//		terrainMap.put(image, terrain);
 	}
 	
 	// sets up the collectables on level
@@ -844,33 +797,6 @@ public class MainGame extends GraphicsPane {
 			GImage key = entry.getKey();
 			program.add(key);
 		}
-
-		
-//		Collectable collectable = new Collectable(300, 450, CollectableType.HEART);
-//		GImage image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-//		collectablesMap.put(image, collectable);
-//		program.add(image);
-//		
-//		collectable = new Collectable(400, 450, CollectableType.HANDHELD);
-//		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-//		collectablesMap.put(image, collectable);
-//		program.add(image);
-//		
-//		collectable = new Collectable(800, 250, CollectableType.MELEE);
-//		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-//		collectablesMap.put(image, collectable);
-//		program.add(image);
-//		
-//		collectable = new Collectable(800, 650, CollectableType.STAR);
-//		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-//		collectablesMap.put(image, collectable);
-//		program.add(image);
-//
-//		collectable = new Collectable(1500, 600, CollectableType.CHEESE);
-//		image = new GImage(collectable.toString(), collectable.getX(), collectable.getY());
-//		collectablesMap.put(image, collectable);
-//		program.add(image);
-		
 	}
 	
 	
@@ -882,21 +808,6 @@ public class MainGame extends GraphicsPane {
 			program.add(key);	
 		}
 		
-//		Enemy tempEnemy;
-//		tempEnemy = new Enemy (500,450,EnemyType.FLOWER);
-//		GImage image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
-//		enemiesMap.put(image, tempEnemy);
-//		program.add(image);
-//		
-//		tempEnemy = new Enemy (750,250,EnemyType.WORM);
-//		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
-//		program.add(image);
-//		enemiesMap.put(image, tempEnemy);
-//			
-//		tempEnemy = new Enemy (950,650,EnemyType.SPIDER);
-//		image = new GImage(tempEnemy.getEnemyType().toString(),tempEnemy.getX(),tempEnemy.getY());
-//		enemiesMap.put(image, tempEnemy);
-//		program.add(image);
 		
 		
 	}

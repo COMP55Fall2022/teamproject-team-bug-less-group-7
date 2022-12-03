@@ -104,8 +104,8 @@ public class LevelSelector extends GraphicsPane {
 		else if (obj == level3) {
 			program.switchToGame(3);
 		}
-		else if (obj == level2) {
-			program.switchToGame(2);
+		else if (obj == level4) {
+			program.switchToGame(4);
 		}
 	}
 
