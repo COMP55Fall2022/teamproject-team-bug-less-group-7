@@ -1,0 +1,42 @@
+General Format:
+
+Object Type:
+# of Objects
+#-#-#(Parameters of object separated by dash (-))
+
+Examples:
+
+Player //Note player does not have colon (:)
+1 //Only ever one player
+x-y
+
+Enemies:
+n
+x-y-type
+
+//Eneny Types
+0 = Flower
+1 = Spider
+2 = Worm
+3 = Beatle
+
+Terrain:
+n
+x-y-width-height-type
+
+//Terrain Types
+0 = Spike
+1 = Grass
+2 = Dirt
+
+Collectables:
+n
+x-y-type
+
+//Collectable Types
+0 = Heart
+1 = Star
+2 = Cheese
+3 = Handheld
+4 = Melee
+

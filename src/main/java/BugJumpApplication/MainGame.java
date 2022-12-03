@@ -81,21 +81,8 @@ public class MainGame extends GraphicsPane {
 	
 	
 	public MainGame(MainApplication e, int level) {
-
 		program = e;
 		this.level = level;
-		this.level = 2;
-
-		//this.level = 0;
-
-		this.level = 1;
-		
-		//this.level = 3;
-
-		//this.level = 0;
-		
-		this.level = 3;
-
 	}
 
 	@Override
@@ -202,15 +189,10 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
-
-	
-			program.switchToGame(1);
-	}
+			program.switchToGame(level+1);
+		}
 		else if(obj == restartButton) {
-
-			
-			System.out.println("Restart");
-	program.switchToGame(level);
+			program.switchToGame(level);
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -820,7 +802,8 @@ public class MainGame extends GraphicsPane {
 	 */
 	private void setupTerrain() {
 		
-		background = new GImage("/Images/forestBackground.jpeg");
+		background = new GImage("/Images/Background" +level+ ".jpeg");
+		
 		background.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(background);
 		

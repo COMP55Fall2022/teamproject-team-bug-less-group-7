@@ -34,6 +34,9 @@ public class MainMenu extends GraphicsPane {
 		if (obj == playGButton) {
 			program.switchToLevelSelector();			
 		}
+		else if (obj == tutorialGButton) {
+			program.switchToGame(0);
+		}
 		else if (obj == quitGButton) {
 			System.exit(0);
 		}
