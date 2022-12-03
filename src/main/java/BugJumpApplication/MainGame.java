@@ -190,15 +190,10 @@ public class MainGame extends GraphicsPane {
 			program.switchToMenu();
 		}
 		else if(obj == nextLevelButton) {
-
-	
-			program.switchToGame(1);
-	}
+			program.switchToGame(level+1);
+		}
 		else if(obj == restartButton) {
-
-			
-			System.out.println("Restart");
-	program.switchToGame(level);
+			program.switchToGame(level);
 		}
 		else if (obj == resumeButton) {
 			unpauseGameScreen();
@@ -423,6 +418,7 @@ public class MainGame extends GraphicsPane {
 			player.isInAir = false;
 			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 53); // was 55 before
 			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+53);
+			GObject obj3 = program.getElementAt(player.getX() + playerWidth/2, player.getY()+53);
 			
 
 			
@@ -434,6 +430,9 @@ public class MainGame extends GraphicsPane {
 			else if (obj2 != null && obj2 != background) {
 				player.setY((int)obj2.getY()-51);
 			} 
+			else if (obj3 != null && obj3 != background) {
+				player.setY((int)obj3.getY()-51);
+			}
 		}
 		else {
 			player.isInAir = true;
@@ -808,9 +807,10 @@ public class MainGame extends GraphicsPane {
 	 */
 	private void setupTerrain() {
 		
-		background = new GImage("/Images/forestBackground.jpeg");
-		background.setSize(dimension.getWidth(), dimension.getHeight());
-		program.add(background);
+//		background = new GImage("/Images/Background" +level+ ".jpeg");
+//		
+//		background.setSize(dimension.getWidth(), dimension.getHeight());
+//		program.add(background);
 		
 		
 		terrainMap = fileReader.getTerrainMap();
