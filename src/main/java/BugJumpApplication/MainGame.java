@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-
 import acm.graphics.*;
 
 
@@ -211,7 +210,7 @@ public class MainGame extends GraphicsPane {
 				setupPauseGameScreen();
 			}
 			
-			if (player.getY() + playerImage.getHeight()/2 > dimension.getHeight() || player.isDead()) {
+			if (player.getY() + playerImage.getHeight() >= dimension.getHeight() || player.isDead()) {
 				setupGameOverScreen();
 			}
 		}
@@ -779,7 +778,7 @@ public class MainGame extends GraphicsPane {
 	 */
 	private void setupTerrain() {
 		background = new GImage("/Images/Background" +level+ ".jpeg");
-		background.setSize(dimension.getWidth(), dimension.getHeight());
+		background.setSize(dimension.getWidth(), dimension.getHeight()+10);
 		program.add(background);
 		
 		terrainMap = fileReader.getTerrainMap();

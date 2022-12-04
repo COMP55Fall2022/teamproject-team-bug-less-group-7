@@ -1,31 +1,29 @@
 package BugJumpApplication;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class MainApplication extends GraphicsApplication {
 	private static final int PROGRAMHEIGHT = 1080;
 	private static final int PROGRAMWIDTH = 1920;
+	private Dimension dimension;
 
 
-	private MainMenu menu;
-	private LevelSelector lSelector;
-	private MainGame game;
 	private AudioPlayer audio;
 
 	
 	public void init() {
-		setSize(PROGRAMHEIGHT, PROGRAMWIDTH);
+		dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize((int)dimension.getWidth(), (int)dimension.getHeight());
 	}
 
 	public void run() {	
 		setupInteractions();
-		menu = new MainMenu(this);
-		lSelector = new LevelSelector(this);
-
 		switchToMenu();
 	}
 
 	public void switchToMenu() {
-		switchToScreen(menu);
+		switchToScreen(new MainMenu(this));
 	}
 
 	public void switchToGame(int level) {
@@ -33,7 +31,7 @@ public class MainApplication extends GraphicsApplication {
 	}
 
 	public void switchToLevelSelector() {
-		switchToScreen(lSelector);
+		switchToScreen(new LevelSelector(this));
 	}
 	
 	public static void main(String[] args) {
