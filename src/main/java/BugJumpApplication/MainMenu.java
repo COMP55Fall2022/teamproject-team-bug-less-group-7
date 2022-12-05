@@ -19,7 +19,8 @@ public class MainMenu extends GraphicsPane {
 	GButton playGButton;
 	GButton tutorialGButton;
 	GButton quitGButton;
-
+	
+	private int[] levelstars;
 	
 	public MainMenu(MainApplication e) {
 		super();
@@ -81,6 +82,14 @@ public class MainMenu extends GraphicsPane {
 	@Override
 	public void performAction(ActionEvent e) {
 		return;
+	}
+	
+	public void setStars(int level, int stars) {
+		if(level >= levelstars.length) {
+			System.out.println("Level int too large");
+			return;
+		}
+		levelstars[level] = stars;
 	}
 	
 	
