@@ -757,7 +757,9 @@ public class MainGame extends GraphicsPane {
 		program.add(nextLevelButton);
 		
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, nextLevelButton.getY()+nextLevelButton.getHeight()+10, 375, 90, Color.decode("#879383"));
-		program.add(mainMenuButton);		
+		program.add(mainMenuButton);
+		
+		program.setStars(this.level,stars);
 	}
 	
 	public void setupGameOverScreen() {
