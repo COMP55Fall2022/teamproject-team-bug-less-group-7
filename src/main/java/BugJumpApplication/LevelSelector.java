@@ -5,10 +5,15 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GPoint;
 
 public class LevelSelector extends GraphicsPane {
 	private MainApplication program;
@@ -23,12 +28,15 @@ public class LevelSelector extends GraphicsPane {
 	private GButton button2;
 	private GButton button3;
 	private GButton button4;
+	private Boolean isOnSecondPage; 
+	private ArrayList<GPoint> buttonsGPoint;
 	private GImage LV1;
 	private GImage LV2;
 	private GImage LV3;
 	private GImage LV4;
-	private Boolean isOnSecondPage;
 
+	
+	
 	public LevelSelector(MainApplication e) {
 		super();
 		program = e;
@@ -36,6 +44,7 @@ public class LevelSelector extends GraphicsPane {
 
 	@Override
 	public void showContents() {
+
 
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		isOnSecondPage = false;
@@ -45,19 +54,24 @@ public class LevelSelector extends GraphicsPane {
 		jGLabel.setLocation(dimension.getWidth() / 2 - jGLabel.getSize().getWidth() / 2, 100);
 		jGLabel.setColor(Color.white);
 		program.add(jGLabel);
-
-		button1 = new GButton("Level 1", dimension.getWidth() / 2 - BUTTONWIDTH / 2 - BUTTONWIDTH, 400, BUTTONWIDTH,
-				BUTTONHEIGHT, Color.decode("#879383"));
+		
+		buttonsGPoint = new ArrayList<>();
+		button1 = new GButton("Level 1", dimension.getWidth()/2-BUTTONWIDTH/2-BUTTONWIDTH, 400, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
 		button1.setColor(Color.white);
-		button2 = new GButton("Level 2", dimension.getWidth() / 2 - BUTTONWIDTH / 2 + BUTTONWIDTH, 400, BUTTONWIDTH,
-				BUTTONHEIGHT, Color.decode("#879383"));
+		buttonsGPoint.add(button1.getLocation());
+		
+		button2 = new GButton("Level 2", dimension.getWidth()/2-BUTTONWIDTH/2+BUTTONWIDTH, 400, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
 		button2.setColor(Color.white);
-		button3 = new GButton("Level 3", dimension.getWidth() / 2 - BUTTONWIDTH / 2 - BUTTONWIDTH, 800, BUTTONWIDTH,
-				BUTTONHEIGHT, Color.decode("#879383"));
+		buttonsGPoint.add(button2.getLocation());
+		
+		button3 = new GButton("Level 3", dimension.getWidth()/2-BUTTONWIDTH/2-BUTTONWIDTH, 800, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
 		button3.setColor(Color.white);
-		button4 = new GButton("Level 4", dimension.getWidth() / 2 - BUTTONWIDTH / 2 + BUTTONWIDTH, 800, BUTTONWIDTH,
-				BUTTONHEIGHT, Color.decode("#879383"));
+		buttonsGPoint.add(button3.getLocation());
+
+		button4 = new GButton("Level 4", dimension.getWidth()/2-BUTTONWIDTH/2+BUTTONWIDTH, 800, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
 		button4.setColor(Color.white);
+		buttonsGPoint.add(button4.getLocation());
+		
 		program.add(button1);
 		program.add(button2);
 		program.add(button3);
@@ -67,6 +81,9 @@ public class LevelSelector extends GraphicsPane {
 		pageButton.setSize(150, 100);
 		pageButton.setLocation(dimension.getWidth() / 2 - pageButton.getWidth() / 2, pageButton.getY());
 		program.add(pageButton);
+		
+		readSaveFile(1);
+		
 
 		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
 		backArrow = new GImage("/Images/backArrow.png", 10, 10);
@@ -96,8 +113,13 @@ public class LevelSelector extends GraphicsPane {
 		button2 = null;
 		button3 = null;
 		button4 = null;
+		LV1 = null;
+		LV2 = null;
+		LV3 = null;
+		LV4 = null;
 		pageButton = null;
 		isOnSecondPage = null;
+		buttonsGPoint = null;
 		System.gc();
 	}
 
@@ -145,8 +167,36 @@ public class LevelSelector extends GraphicsPane {
 				program.switchToGame(8);
 			}
 		}
-	}
+	}	
 
+	private void readSaveFile(int startPos) {
+		String currentLine;
+		FileReader file;
+		try {
+			file = new FileReader("media/saveFile.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+		Scanner scanner = new Scanner(file);
+		
+		for (int i = 0; i < startPos-1; i++) {
+			scanner.nextLine();
+		}
+		
+		for (int i = 0; i < 4; i++) {
+			currentLine = scanner.nextLine().trim();
+			char currentChar = currentLine.charAt(currentLine.length()-1);
+			
+			System.out.println(currentLine.charAt(currentLine.length()-1));
+			double xPos = buttonsGPoint.get(startPos-1+i).getX();
+			double yPos = buttonsGPoint.get(startPos-1+i).getY();
+			program.add(new GImage("/Images/star UI_" + currentChar+".png", xPos, yPos));
+			
+		}
+		scanner.close();
+	}
+	
 	private void switchPage() {
 		if (isOnSecondPage) {
 			pageButton.setImage("/Images/Page1Button.png");
