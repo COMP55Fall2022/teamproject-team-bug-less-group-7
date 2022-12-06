@@ -620,6 +620,7 @@ public class MainGame extends GraphicsPane {
 			if (each.getAwareness() && (each.getEnemyType() == EnemyType.BEETLE || each.getEnemyType() == EnemyType.FLOWER)) {
 				if (player.getX() <= each.getX()) {each.setIsRightOrientation(false);}
 				else {each.setIsRightOrientation(true);}
+				changeEnemyImage(each, eachImage);
 				
 				if (timerCount - each.getLastShot() >= 100) {
 					each.setLastShot(timerCount);
@@ -641,15 +642,44 @@ public class MainGame extends GraphicsPane {
 				if(bulletMap.containsKey(program.getElementAt(each.getX()-2, each.getY()+52))|| program.getElementAt(each.getX()-2, each.getY()+52) == background || 
 				   program.getElementAt(each.getX()-2, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()-2, each.getY()))) {
 					each.setIsRightOrientation(true);
+					changeEnemyImage(each, eachImage);
 				} 
 				else if (bulletMap.containsKey(program.getElementAt(each.getX()+52, each.getY()+52)) || program.getElementAt(each.getX()+52, each.getY()+52) == background || program.getElementAt(each.getX()+52, each.getY()+52) == null || terrainMap.containsKey(program.getElementAt(each.getX()+52, each.getY()))) {
 					each.setIsRightOrientation(false);
+					changeEnemyImage(each, eachImage);
 				}
 
 			}
 		}
 	}
 	
+	private void changeEnemyImage(Enemy each, GImage image) {
+		EnemyType enemyType = each.getEnemyType();
+		if (enemyType != EnemyType.WORM && enemyType != EnemyType.BEETLE) {return;}
+		
+		switch (enemyType) {
+		case BEETLE: {
+			if (each.getOrientation()) { // if enemy is looking right		
+				image.setImage("/Images/rightBeetle.png");
+			}
+			else {
+				image.setImage("/Images/leftBeetle.png");				
+			}
+			break;
+		}
+		case WORM:
+			if (each.getOrientation()) { // if enemy is looking right
+				image.setImage("/Images/rightWorm.png");
+			}
+			else {				
+				image.setImage("/Images/leftWorm.png");
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + enemyType);
+		}
+	}
+
 	private void enemyAwareness() {
 		int ePointx, ePointy;
 		for(Entry<GImage,Enemy> entry : enemiesMap.entrySet()) {

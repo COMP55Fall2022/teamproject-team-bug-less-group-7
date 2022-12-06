@@ -7,8 +7,8 @@ public enum EnemyType {
 		switch(this) {
 			case FLOWER: return "/Images/sunflower.png";
 			case SPIDER: return "/Images/spider.png";
-			case WORM: return "/Images/worm.png";
-			case BEETLE: return "/Images/beetle.png";
+			case WORM: return "/Images/rightWorm.png";
+			case BEETLE: return "/Images/rightBeetle.png";
 		}
 		return "n/a";
 	}
