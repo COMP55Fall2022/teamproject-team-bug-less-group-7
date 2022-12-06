@@ -191,7 +191,7 @@ public class LevelSelector extends GraphicsPane {
 			System.out.println(currentLine.charAt(currentLine.length()-1));
 			double xPos = buttonsGPoint.get(startPos-1+i).getX();
 			double yPos = buttonsGPoint.get(startPos-1+i).getY();
-			program.add(new GImage("/Images/star UI_" + currentChar+".png", xPos, yPos));
+			program.add(new GImage("/Images/star UI_" +currentChar+ ".png", xPos, yPos));
 			
 		}
 		scanner.close();
