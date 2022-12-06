@@ -49,11 +49,12 @@ public class LevelSelector extends GraphicsPane {
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		isOnSecondPage = false;
 
-		GLabel jGLabel = new GLabel("Level Selector", 0, 0);
-		jGLabel.setFont("Arial-Bold-50");
-		jGLabel.setLocation(dimension.getWidth() / 2 - jGLabel.getSize().getWidth() / 2, 100);
-		jGLabel.setColor(Color.white);
-		program.add(jGLabel);
+		GLabel title = new GLabel("Level Selector", 0, 0);
+		title.setFont("Arial-Bold-50");
+		title.setLocation(dimension.getWidth() / 2 - title.getSize().getWidth() / 2, 100);
+		title.setColor(Color.white);
+		program.add(title);
+		
 		
 		buttonsGPoint = new ArrayList<>();
 		button1 = new GButton("Level 1", dimension.getWidth()/2-BUTTONWIDTH/2-BUTTONWIDTH, 400, BUTTONWIDTH, BUTTONHEIGHT, Color.decode("#879383"));
@@ -81,14 +82,7 @@ public class LevelSelector extends GraphicsPane {
 		pageButton.setSize(150, 100);
 		pageButton.setLocation(dimension.getWidth() / 2 - pageButton.getWidth() / 2, pageButton.getY());
 		program.add(pageButton);
-		
-		readSaveFile(1);
-		
 
-		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
-		backArrow = new GImage("/Images/backArrow.png", 10, 10);
-		backArrow.setSize(100, 75);
-		program.add(backArrow);
 
 		LV1 = new GImage("/Images/LV1.png");
 		LV2 = new GImage("/Images/LV2.png");
@@ -102,6 +96,12 @@ public class LevelSelector extends GraphicsPane {
 		program.add(LV2);
 		program.add(LV3);
 		program.add(LV4);
+		
+		readSaveFile(1);
+		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
+		backArrow = new GImage("/Images/backArrow.png", 10, 10);
+		backArrow.setSize(100, 75);
+		program.add(backArrow);
 	}
 
 	@Override
@@ -147,23 +147,23 @@ public class LevelSelector extends GraphicsPane {
 		}
 
 		if (!isOnSecondPage) {
-			if (obj == button1) {
+			if (obj == button1 || obj == LV1) {
 				program.switchToGame(1);
-			} else if (obj == button2) {
+			} else if (obj == button2 || obj == LV2) {
 				program.switchToGame(2);
-			} else if (obj == button3) {
+			} else if (obj == button3 || obj == LV3) {
 				program.switchToGame(3);
-			} else if (obj == button4) {
+			} else if (obj == button4 || obj == LV4) {
 				program.switchToGame(4);
 			}
 		} else {
-			if (obj == button1) {
+			if (obj == button1 || obj == LV1) {
 				program.switchToGame(5);
-			} else if (obj == button2) {
+			} else if (obj == button2 || obj == LV2) {
 				program.switchToGame(6);
-			} else if (obj == button3) {
+			} else if (obj == button3 || obj == LV3) {
 				program.switchToGame(7);
-			} else if (obj == button4) {
+			} else if (obj == button4 || obj == LV4) {
 				program.switchToGame(8);
 			}
 		}
@@ -178,19 +178,17 @@ public class LevelSelector extends GraphicsPane {
 			e.printStackTrace();
 			return;
 		}
-		Scanner scanner = new Scanner(file);
 		
-		for (int i = 0; i < startPos-1; i++) {
-			scanner.nextLine();
-		}
+		Scanner scanner = new Scanner(file);
+		for (int i = 0; i < startPos-1; i++) scanner.nextLine();
+		
 		
 		for (int i = 0; i < 4; i++) {
 			currentLine = scanner.nextLine().trim();
 			char currentChar = currentLine.charAt(currentLine.length()-1);
 			
-			System.out.println(currentLine.charAt(currentLine.length()-1));
-			double xPos = buttonsGPoint.get(startPos-1+i).getX();
-			double yPos = buttonsGPoint.get(startPos-1+i).getY();
+			double xPos = buttonsGPoint.get(i).getX()+(BUTTONWIDTH/2-150/2);
+			double yPos = buttonsGPoint.get(i).getY()-50;
 			program.add(new GImage("/Images/star UI_" +currentChar+ ".png", xPos, yPos));
 			
 		}
@@ -217,6 +215,7 @@ public class LevelSelector extends GraphicsPane {
 			LV2.setBounds(button2.getX(), 150, BUTTONWIDTH, 250);
 			LV3.setBounds(button1.getX(), 550, BUTTONWIDTH, 250);
 			LV4.setBounds(button2.getX(), 550, BUTTONWIDTH, 250);
+			readSaveFile(1);
 		} else {
 			pageButton.setImage("/Images/Page2Button.png");
 			pageButton.setSize(150, 100);
@@ -236,6 +235,7 @@ public class LevelSelector extends GraphicsPane {
 			LV2.setBounds(button2.getX(), 150, BUTTONWIDTH, 250);
 			LV3.setBounds(button1.getX(), 550, BUTTONWIDTH, 250);
 			LV4.setBounds(button2.getX(), 550, BUTTONWIDTH, 250);
+			readSaveFile(5);
 		}
 	}
 
