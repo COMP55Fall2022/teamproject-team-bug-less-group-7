@@ -1,6 +1,5 @@
 package BugJumpApplication;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -9,8 +8,6 @@ import java.awt.event.MouseEvent;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GRect;
-
 
 public class MainMenu extends GraphicsPane {
 
@@ -23,9 +20,7 @@ public class MainMenu extends GraphicsPane {
 	GButton tutorialGButton;
 	GButton quitGButton;
 	GImage menuBackground;
-	
-	private int[] levelstars;
-	
+		
 	public MainMenu(MainApplication e) {
 		super();
 		program = e;
