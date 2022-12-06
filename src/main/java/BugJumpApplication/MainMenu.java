@@ -84,13 +84,13 @@ public class MainMenu extends GraphicsPane {
 		return;
 	}
 	
-	public void setStars(int level, int stars) {
-		if(level >= levelstars.length) {
-			System.out.println("Level int too large");
-			return;
-		}
-		levelstars[level] = stars;
-	}
+//	public void setStars(int level, int stars) {
+//		if(level >= levelstars.length) {
+//			System.out.println("Level int too large");
+//			return;
+//		}
+//		levelstars[level] = stars;
+//	}
 	
 	
 }

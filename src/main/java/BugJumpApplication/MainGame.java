@@ -15,6 +15,11 @@ import java.util.Map.Entry;
 
 import acm.graphics.*;
 
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class MainGame extends GraphicsPane {
 	
@@ -729,7 +734,7 @@ public class MainGame extends GraphicsPane {
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, nextLevelButton.getY()+nextLevelButton.getHeight()+10, 375, 90, Color.decode("#879383"));
 		program.add(mainMenuButton);
 		
-		program.setStars(this.level,stars);
+		updateStars();
 	}
 	
 	public void setupGameOverScreen() {
@@ -753,6 +758,53 @@ public class MainGame extends GraphicsPane {
 		
 		mainMenuButton = new GButton("Main Menu", dimension.getWidth()/2-187.5, restartButton.getY()+restartButton.getHeight()+10, 375, 90, Color.decode("#879383"));
 		program.add(mainMenuButton);		
+		
+		
+	}
+	
+	
+	/**
+	 * Takes in the current save file and updates the save file with the stars gotten on the level.
+	 * @throws IOException 
+	 */
+	private void updateStars() {
+		//TODO: better way of counting total levels
+		String lineArr[] = new String[8];
+		//TODO: Location of Save file
+		File file = new File("");
+		try {
+			Scanner scanner = new Scanner(file);
+			String currLine;
+			
+			for (int i = 0; i < lineArr.length; i++) {
+				currLine = scanner.nextLine();
+				if (currLine != "") lineArr[i] = currLine;
+			}
+			
+			scanner.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		}
+		
+		String newLine = level + " : " + stars;
+		lineArr[level-1] = newLine;
+		
+		try {
+			new FileWriter("", false).close();
+			FileWriter writer = new FileWriter(file);
+			String txt = "";
+			for (int i = 0; i < lineArr.length; i++) {
+				txt = txt + lineArr[i] + "\n";
+			}
+			writer.write(txt);
+			writer.close();
+			System.out.println("Wrote to save file");
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
