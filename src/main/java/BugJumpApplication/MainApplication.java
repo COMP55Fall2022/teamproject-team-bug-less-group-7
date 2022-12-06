@@ -8,7 +8,6 @@ public class MainApplication extends GraphicsApplication {
 	private static final int PROGRAMWIDTH = 1920;
 	private Dimension dimension;
 
-
 	private AudioPlayer audio;
 
 	
