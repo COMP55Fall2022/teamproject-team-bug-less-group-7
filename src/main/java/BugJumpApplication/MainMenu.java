@@ -6,8 +6,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GRect;
 
 
 public class MainMenu extends GraphicsPane {
@@ -15,10 +17,12 @@ public class MainMenu extends GraphicsPane {
 	private MainApplication program;
 	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
+	int background;
 	GLabel title;
 	GButton playGButton;
 	GButton tutorialGButton;
 	GButton quitGButton;
+	GImage menuBackground;
 	
 	private int[] levelstars;
 	
@@ -45,8 +49,10 @@ public class MainMenu extends GraphicsPane {
 
 	@Override
 	public void showContents() {
+		menuBackground = new GImage("/Images/mainMenuBackground.jpg");
+		menuBackground.setSize(dimension.getWidth(), dimension.getHeight());
+		program.add(menuBackground);
 		
-		program.getGCanvas().setBackground(Color.decode("#5f6c5a"));
 		title = new GLabel("Bug Jump", 0, 200);
 		playGButton = new GButton("Play", 0, 430, 600, 100);
 		tutorialGButton = new GButton("Tutorial", 0, 590, 600, 100);

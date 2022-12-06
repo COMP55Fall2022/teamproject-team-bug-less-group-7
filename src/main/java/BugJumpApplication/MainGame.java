@@ -819,7 +819,7 @@ public class MainGame extends GraphicsPane {
 			System.out.println(e);
 		}
 		
-		String newLine = level + " : " + stars;
+		String newLine = Integer.toString(stars);
 		lineArr[level-1] = newLine;
 		
 		try {
