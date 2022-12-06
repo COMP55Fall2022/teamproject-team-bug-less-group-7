@@ -801,7 +801,7 @@ public class MainGame extends GraphicsPane {
 		//TODO: better way of counting total levels
 		String lineArr[] = new String[8];
 		//TODO: Location of Save file
-		File file = new File("");
+		File file = new File("media/saveFile.txt");
 		try {
 			Scanner scanner = new Scanner(file);
 			String currLine;
@@ -821,7 +821,7 @@ public class MainGame extends GraphicsPane {
 		lineArr[level-1] = newLine;
 		
 		try {
-			new FileWriter("", false).close();
+			new FileWriter("media/saveFile.txt", false).close();
 			FileWriter writer = new FileWriter(file);
 			String txt = "";
 			for (int i = 0; i < lineArr.length; i++) {
