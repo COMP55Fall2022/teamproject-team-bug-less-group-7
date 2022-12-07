@@ -8,8 +8,8 @@ public class MainApplication extends GraphicsApplication {
 	private static final int PROGRAMWIDTH = 1920;
 	private Dimension dimension;
 
-
 	private AudioPlayer audio;
+	private boolean hasMainGameStarted;
 
 	
 	public void init() {
@@ -20,19 +20,39 @@ public class MainApplication extends GraphicsApplication {
 	public void run() {	
 		setupInteractions();
 		switchToMenu();
+		audio = AudioPlayer.getInstance();
+		audio.playSound("music", "MENU_LEVEL_SELECT_BGM_MASTER.mp3", true);
+		hasMainGameStarted = false;
+		
+	}
+	
+	private void startMusic() {
+		if (hasMainGameStarted) {
+			audio.stopSound("music", "LEVEL_BGM_MASTER.mp3");
+			audio.playSound("music", "MENU_LEVEL_SELECT_BGM_MASTER.mp3", true);
+			hasMainGameStarted = false;
+		}
 	}
 
 	public void switchToMenu() {
+		startMusic();
 		switchToScreen(new MainMenu(this));
 	}
 
+	public void switchToLevelSelector() {
+		startMusic();
+		switchToScreen(new LevelSelector(this));
+	}
+	
 	public void switchToGame(int level) {
+		if (!hasMainGameStarted) {			
+			audio.stopSound("music", "MENU_LEVEL_SELECT_BGM_MASTER.mp3");
+			audio.playSound("music", "LEVEL_BGM_MASTER.mp3", true);
+			hasMainGameStarted = true;
+		}
 		switchToScreen(new MainGame(this, level));
 	}
 
-	public void switchToLevelSelector() {
-		switchToScreen(new LevelSelector(this));
-	}
 	
 	public static void main(String[] args) {
 		new MainApplication().start();

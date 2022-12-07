@@ -372,11 +372,11 @@ public class MainGame extends GraphicsPane {
 				Bullet bullet;
 				GImage image; 
 				if (player.isRightOrientation) {
-					bullet = new Bullet(player.getX()+60, player.getY()-50, 15, 0, true, 15);
+					bullet = new Bullet(player.getX()+60, player.getY()-(64-50), 15, 0, true, 10);
 					image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				else {
-					bullet = new Bullet(player.getX()-150, player.getY()-50, 15, 180, true, 15);
+					bullet = new Bullet(player.getX()-150, player.getY()-(64-50), 15, 180, true, 10);
 					image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				bulletMap.put(image, bullet);
@@ -628,7 +628,7 @@ public class MainGame extends GraphicsPane {
 					if (bullets != null) {
 						for (int i = 0; i < bullets.length; i++) {
 							Bullet b = bullets[i];
-							GImage bImage = new GImage("/Images/rightBullet.png", b.getX(),b.getY());
+							GImage bImage = new GImage("/Images/petalBullet.png", b.getX(),b.getY());
 							bulletMap.put(bImage,b);
 							program.add(bImage);
 						}
@@ -798,43 +798,51 @@ public class MainGame extends GraphicsPane {
 	 * @throws IOException 
 	 */
 	private void updateStars() {
-		//TODO: better way of counting total levels
-		String lineArr[] = new String[8];
-		//TODO: Location of Save file
-		File file = new File("media/saveFile.txt");
-		try {
-			Scanner scanner = new Scanner(file);
-			String currLine;
+		if (level != 0) {
+			//TODO: better way of counting total levels
+			String lineArr[] = new String[8];
+			//TODO: Location of Save file
+			File file = new File("media/saveFile.txt");
+			try {
+				Scanner scanner = new Scanner(file);
+				String currLine;
+				
+				for (int i = 0; i < lineArr.length; i++) {
+					currLine = scanner.nextLine();
+					if (currLine != "") lineArr[i] = currLine;
+				}
+				
+				scanner.close();
+				
+			} 
+			catch (FileNotFoundException e) {
+				System.out.println(e);
+			}
+			if (Integer.parseInt(lineArr[level-1]) >= stars) {return;}
 			
+			String newLine = Integer.toString(stars);
+			lineArr[level-1] = newLine;
 			for (int i = 0; i < lineArr.length; i++) {
-				currLine = scanner.nextLine();
-				if (currLine != "") lineArr[i] = currLine;
+				System.out.println(lineArr[i]);
 			}
 			
-			scanner.close();
-			
-		} catch (FileNotFoundException e) {
-			System.out.println(e);
-		}
-		
-		String newLine = level + " : " + stars;
-		lineArr[level-1] = newLine;
-		
-		try {
-			new FileWriter("media/saveFile.txt", false).close();
-			FileWriter writer = new FileWriter(file);
-			String txt = "";
-			for (int i = 0; i < lineArr.length; i++) {
-				txt = txt + lineArr[i] + "\n";
+			try {
+				//new FileWriter("media/saveFile.txt", false).close();
+				FileWriter writer = new FileWriter(file);
+				String txt = "";
+				for (int i = 0; i < lineArr.length; i++) {
+					txt = txt + lineArr[i] + "\n";
+				}
+				writer.write(txt);
+				writer.close();
+				System.out.println("Wrote to save file");
+				
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
 			}
-			writer.write(txt);
-			writer.close();
-			System.out.println("Wrote to save file");
 			
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		
 	}
 	
 	

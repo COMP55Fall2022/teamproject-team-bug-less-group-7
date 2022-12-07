@@ -109,7 +109,7 @@ public final class AudioPlayer {
 			return resource.toString();
 		} catch (NullPointerException ex) {
 			try {
-				final URL newResource = getClass().getClassLoader().getResource("../" + folder + filename);
+				final URL newResource = getClass().getClassLoader().getResource("/" + folder + filename);
 				return newResource.toString();
 			} catch (NullPointerException ex1) {
 				ex.printStackTrace();
