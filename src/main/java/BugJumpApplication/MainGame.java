@@ -372,11 +372,11 @@ public class MainGame extends GraphicsPane {
 				Bullet bullet;
 				GImage image; 
 				if (player.isRightOrientation) {
-					bullet = new Bullet(player.getX()+60, player.getY()-(64-50), 15, 0, true, 10);
+					bullet = new Bullet(player.getX()+60, player.getY()-(64-50), 15, 0, true, 15);
 					image = new GImage("/Images/rightMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				else {
-					bullet = new Bullet(player.getX()-150, player.getY()-(64-50), 15, 180, true, 10);
+					bullet = new Bullet(player.getX()-150, player.getY()-(64-50), 15, 180, true, 15);
 					image = new GImage("/Images/leftMeleeWave.png", bullet.getX(), bullet.getY());
 				}
 				bulletMap.put(image, bullet);
@@ -407,14 +407,14 @@ public class MainGame extends GraphicsPane {
 			
 		
 		// functionality for ground detection
-		if(objectPlayerCollision(new GObject[]{program.getElementAt(player.getX()+2, player.getY() + 52), // was 54 before
-		   program.getElementAt(player.getX() + (playerWidth-2), player.getY() + 52)})) {
+		if(objectPlayerCollision(new GObject[]{program.getElementAt(player.getX()+2, player.getY() + 54), // was 54 before
+		   program.getElementAt(player.getX() + (playerWidth-2), player.getY() + 54)})) {
 			
 
 			player.isInAir = false;
-			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 53); // was 55 before
-			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+53);
-			GObject obj3 = program.getElementAt(player.getX() + playerWidth/2, player.getY()+53);
+			GObject obj = program.getElementAt(player.getX() + 5, player.getY() + 55); // was 55 before
+			GObject obj2 = program.getElementAt(player.getX() + (playerWidth-5), player.getY()+55);
+			GObject obj3 = program.getElementAt(player.getX() + playerWidth/2, player.getY()+55);
 			
 
 			
@@ -441,7 +441,7 @@ public class MainGame extends GraphicsPane {
 			
 			GObject obj = program.getElementAt(player.getX() - 6, player.getY()+25);
 			if (obj != null && obj != background) {		
-				player.setX((int)obj.getX()+(int)obj.getWidth());
+				player.setX((int)obj.getX()+(int)obj.getWidth()+1);
 			}
 			isPrevOrientationRight = false;
 			player.isOnWall = true;
@@ -452,7 +452,7 @@ public class MainGame extends GraphicsPane {
 			
 			GObject obj = program.getElementAt(player.getX()+playerWidth+6, player.getY()+25);
 			if (obj != null && obj != background) {				
-				player.setX((int)obj.getX()-playerWidth);
+				player.setX((int)obj.getX()-playerWidth-1);
 			}
 			isPrevOrientationRight = true;
 			player.isOnWall = true;
@@ -818,13 +818,10 @@ public class MainGame extends GraphicsPane {
 			catch (FileNotFoundException e) {
 				System.out.println(e);
 			}
-			if (Integer.parseInt(lineArr[level-1]) >= stars) {return;}
 			
+			if (Integer.parseInt(lineArr[level-1]) >= stars) {return;}
 			String newLine = Integer.toString(stars);
 			lineArr[level-1] = newLine;
-			for (int i = 0; i < lineArr.length; i++) {
-				System.out.println(lineArr[i]);
-			}
 			
 			try {
 				//new FileWriter("media/saveFile.txt", false).close();
@@ -835,8 +832,6 @@ public class MainGame extends GraphicsPane {
 				}
 				writer.write(txt);
 				writer.close();
-				System.out.println("Wrote to save file");
-				
 			} 
 			catch (IOException e) {
 				e.printStackTrace();

@@ -230,7 +230,7 @@ public class LevelSelector extends GraphicsPane {
 			LV1.setImage("/Images/LV5.png");
 			LV2.setImage("/Images/LV6.png");
 			LV3.setImage("/Images/LV7.png");
-			LV4.setImage("/Images/LV4.png");
+			LV4.setImage("/Images/LV8.png");
 			LV1.setBounds(button1.getX(), 150, BUTTONWIDTH, 250);
 			LV2.setBounds(button2.getX(), 150, BUTTONWIDTH, 250);
 			LV3.setBounds(button1.getX(), 550, BUTTONWIDTH, 250);
@@ -238,5 +238,5 @@ public class LevelSelector extends GraphicsPane {
 			readSaveFile(5);
 		}
 	}
-
+	
 }

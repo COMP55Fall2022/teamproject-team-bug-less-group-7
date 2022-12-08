@@ -12,14 +12,13 @@ import acm.graphics.GObject;
 public class MainMenu extends GraphicsPane {
 
 	private MainApplication program;
-	Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	Dimension dimension;
 
-	int background;
-	GLabel title;
-	GButton playGButton;
-	GButton tutorialGButton;
-	GButton quitGButton;
-	GImage menuBackground;
+	private GLabel title;
+	private GButton playGButton;
+	private GButton tutorialGButton;
+	private GButton quitGButton;
+	private GImage menuBackground;
 		
 	public MainMenu(MainApplication e) {
 		super();
@@ -44,6 +43,7 @@ public class MainMenu extends GraphicsPane {
 
 	@Override
 	public void showContents() {
+		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		menuBackground = new GImage("/Images/mainMenuBackground.jpg");
 		menuBackground.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(menuBackground);
@@ -76,22 +76,13 @@ public class MainMenu extends GraphicsPane {
 		playGButton = null;
 		tutorialGButton = null;
 		quitGButton = null;
+		menuBackground = null;
+		dimension = null;
 		System.gc();
 	}
-	
 	
 	@Override
 	public void performAction(ActionEvent e) {
 		return;
-	}
-	
-//	public void setStars(int level, int stars) {
-//		if(level >= levelstars.length) {
-//			System.out.println("Level int too large");
-//			return;
-//		}
-//		levelstars[level] = stars;
-//	}
-	
-	
+	}	
 }
