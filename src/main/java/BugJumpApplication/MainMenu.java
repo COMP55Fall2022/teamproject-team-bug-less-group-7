@@ -45,6 +45,7 @@ public class MainMenu extends GraphicsPane {
 	public void showContents() {
 		dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		menuBackground = new GImage("/Images/mainMenuBackground.jpg");
+		menuBackground.setLocation(0, 0);
 		menuBackground.setSize(dimension.getWidth(), dimension.getHeight());
 		program.add(menuBackground);
 		
