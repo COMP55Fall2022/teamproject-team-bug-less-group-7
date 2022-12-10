@@ -1,4 +1,4 @@
-package edu.pacific.comp55.starter;
+package BugJumpApplication;
 
 import java.util.ArrayList;
 
